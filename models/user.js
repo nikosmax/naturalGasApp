@@ -5,7 +5,7 @@ var userSchema=new Schema({
     name: String,
     username:{type:String,required: true,unique:true},
     password:{type:String,required:true},
-    created_at:Date
+    created_date:{type:Date,default:Date.now}
 });
 
 //create the mongoose Model by calling mongoose.model.

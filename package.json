@@ -8,14 +8,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/emdDevelop/nodejs-express.git"
+    "url": "git+https://github.com/emdDevelop/koinoxrista.git"
   },
   "author": "Dionisis-Anna",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/emdDevelop/nodejs-express/issues"
-  },
-  "homepage": "https://github.com/emdDevelop/nodejs-express#readme",
+  "homepage": "https://github.com/emdDevelop/koinoxrista#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
     "ejs": "^2.5.6",

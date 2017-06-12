@@ -1,10 +1,17 @@
 var express=require('express');
 var path=require('path');
 var bodyParser = require('body-parser');
+var mongoose=require('mongoose');
 var expressValidator = require('express-validator');
+var User=require('./models/user');
 
 var router=express.Router();
 var server=express();
+
+var db='mongodb://localhost/test';
+
+//connect to database test;
+mongoose.connect(db);
 
 //view engine setup
 server.set('views', path.join(__dirname, 'views'));

@@ -24,7 +24,13 @@ router.get('/about',function(req,res){
 
 //User profile page
 router.get('/profile',function(req,res){
+    User.getUsers(function(err,users) {
+        if (err) throw err;
+        console.log(users);
+       // res.json(users);
+    })
     res.render('profile');
+
 })
 
 router.post('/users/add',function(req,res){

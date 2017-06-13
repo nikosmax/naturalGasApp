@@ -12,3 +12,9 @@ var userSchema=new Schema({
 var User=mongoose.model('User',userSchema);
 
 module.exports=User;
+
+//Get users
+module.exports.getUsers=function(callback,limit){
+    User.find(callback).limit(limit);
+
+}

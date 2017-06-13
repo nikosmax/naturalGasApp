@@ -2,16 +2,20 @@ var express=require('express');
 var path=require('path');
 var bodyParser = require('body-parser');
 var mongoose=require('mongoose');
+mongoose.Promise = global.Promise;
 var expressValidator = require('express-validator');
-var User=require('./models/user');
+//var User=require('./models/user');
 
 var router=express.Router();
 var server=express();
 
-var db='mongodb://localhost/test';
-
 //connect to database test;
-mongoose.connect(db);
+mongoose.connect('mongodb://localhost/test');
+var db=mongoose.connection;
+db.on("error", console.error.bind(console, "connection error"));
+db.once('open', function() {
+    console.log("Connection to database succeeded.");
+});
 
 //view engine setup
 server.set('views', path.join(__dirname, 'views'));

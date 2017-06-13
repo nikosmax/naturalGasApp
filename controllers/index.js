@@ -1,5 +1,6 @@
 var express=require('express');
 var router=express.Router();
+var User=require('../models/user');
 
 //Home page
 router.get('/',function(req,res){
@@ -21,8 +22,40 @@ router.get('/about',function(req,res){
     res.render('about');
 })
 
+//User profile page
+router.get('/profile',function(req,res){
+    res.render('profile');
+})
+
 router.post('/users/add',function(req,res){
-    req.checkBody('email','First Name is Required').notEmpty();
+    req.checkBody('name','Name is required').notEmpty();
+    req.checkBody('username','First Name is Required').notEmpty();
+    req.checkBody('pwd','last Name is Recuired').notEmpty();
+
+    var errors=req.validationErrors();
+
+    if(errors){
+        console.log("errors");
+    }else{
+        var newUser=new User({
+            name: req.body.name,
+            username:req.body.username,
+            password:req.body.pwd
+        })
+
+        newUser.save(function(err){
+            if (err) throw err;
+
+            else console.log('User saved successfully');
+        })
+        console.log(newUser);
+        res.redirect('/profile');
+    }
+
+})
+
+router.post('/users/login',function(req,res){
+    req.checkBody('username','First Name is Required').notEmpty();
     req.checkBody('pwd','last Name is Recuired').notEmpty();
 
     var errors=req.validationErrors();

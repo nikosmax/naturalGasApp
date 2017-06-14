@@ -26,7 +26,7 @@ router.get('/about',function(req,res){
 router.get('/profile',function(req,res){
     User.getUsers(function(err,users) {
         if (err) throw err;
-        console.log(users);
+        //console.log(users);
        // res.json(users);
     })
     res.render('profile');
@@ -42,6 +42,7 @@ router.post('/users/add',function(req,res){
 
     if(errors){
         console.log("errors");
+        res.redirect('/signup')
     }else{
         var newUser=new User({
             name: req.body.name,
@@ -49,15 +50,19 @@ router.post('/users/add',function(req,res){
             password:req.body.pwd
         })
 
+      //  User.findOne({name: newUser.name},function(err,user){
+     //      if(err) throw err;
+      //      console.log(user.name + '  exist');
+     //   })
+
         newUser.save(function(err){
-            if (err) throw err;
+            if (err) console.log(err);
 
             else console.log('User saved successfully');
         })
-        console.log(newUser);
+        //console.log(newUser);
         res.redirect('/profile');
     }
-
 })
 
 router.post('/users/login',function(req,res){
@@ -71,7 +76,6 @@ router.post('/users/login',function(req,res){
     }else{
         console.log('success');
     }
-
 })
 
 module.exports = router;

@@ -30,15 +30,14 @@ router.get('/about',function(req,res){
 
 //User profile page
 router.get('/profile',requireLogin,function(req,res){
-    User.getUsers(function(err,users) {
-        if (err) throw err;
+    //User.getUsers(function(err,users) {
+    //    if (err) throw err;
         //console.log(users);
        // res.json(users);
-    })
+   // })
     res.render('profile',{
         name: req.user.name
     });
-
 })
 
 router.post('/users/add',function(req,res){
@@ -67,7 +66,6 @@ router.post('/users/add',function(req,res){
 
         newUser.save(function(err){
             if (err) console.log(err);
-
             else console.log('User saved successfully');
         })
         //console.log(newUser);
@@ -77,36 +75,58 @@ router.post('/users/add',function(req,res){
 
 router.post('/login',function(req,res){
     req.checkBody('username','User Name is Required').notEmpty();
-    req.checkBody('pwd','last Name is Recuired').notEmpty();
+    req.checkBody('pwd','Password is Recuired').notEmpty();
 
     var errors=req.validationErrors();
 
-    if(errors){
+    if(errors)
+    {
         console.log("errors");
         res.render('login');
-    }else{
+    }
+    else
+    {
         User.findOne({username: req.body.username},function(err,user){
-        if(err) throw err;
-            if(!user){
+            if(err) throw err;
+            if(!user)
+            {
                 res.render('login',{
                     errors: 'invalid user'
                 });
-            }else if(req.body.pwd === user.password){
-                // sets a cookie with the user's info
-                req.session.user=user;
-                res.redirect('/profile');
-                console.log('Successful login');
+            }
+            else
+            {
+                user.comparePassword(req.body.pwd, function(err, isMatch) {
+                    if (err) throw err;
+                    if(isMatch)
+                    {
+                         //sets a cookie with the user's info
+                         req.session.user=user;
+                         res.redirect('/profile');
+                         console.log('Successful login');
+                    }
+                    else
+                    {
+                         console.log('wrong password');
+                         res.render('login',{
+                         errors: 'Wrong password'
+                          });
+                    }
+                });
             }
         })
     }
 })
 
 function requireLogin (req, res, next) {
-    if (!req.user) {
+    if (!req.user)
+    {
         res.redirect('/login');
-    } else {
+    }
+    else
+    {
         next();
     }
-};
+}
 
 module.exports = router;

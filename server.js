@@ -5,9 +5,9 @@ var mongoose=require('mongoose');
 mongoose.Promise = global.Promise;
 //var expressValidator = require('express-validator');
 var session = require('client-sessions');
-var User=require('./models/user');
+var User=require('./models/user');//database for user configutation
 
-var router=express.Router();
+//var router=express.Router();
 var server=express();
 
 //connect to database test;
@@ -21,7 +21,6 @@ db.once('open', function() {
 //view engine setup
 server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'ejs'); // set up ejs for templating
-
 
 //middlewares
 server.use(bodyParser.json());
@@ -40,9 +39,10 @@ server.use(function(req,res,next){
  such as the request path name, authenticated user, user settings,
  and so on.
  */
+
 server.use(session({
     cookieName: 'session',
-    secret: 'random_string_goes_here',
+    secret: '0GBlJZ9EKBt2Zbi2flRPvztczCewBxXKjhjhhhjh',
     duration: 30 * 60 * 1000,
     activeDuration: 5 * 60 * 1000
 }))

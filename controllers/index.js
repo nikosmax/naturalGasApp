@@ -35,14 +35,16 @@ router.get('/profile',function(req,res){
 
 router.post('/users/add',function(req,res){
     req.checkBody('name','Name is required').notEmpty();
-    req.checkBody('username','First Name is Required').notEmpty();
-    req.checkBody('pwd','last Name is Recuired').notEmpty();
+    req.checkBody('username','Email is Required').notEmpty();
+    req.checkBody('pwd','Password is Recuired').notEmpty();
 
     var errors=req.validationErrors();
 
     if(errors){
-        console.log("errors");
-        res.redirect('/signup')
+        console.log(errors);
+        res.render('signup',{
+            errors:errors
+        })
     }else{
         var newUser=new User({
             name: req.body.name,
@@ -65,16 +67,28 @@ router.post('/users/add',function(req,res){
     }
 })
 
-router.post('/users/login',function(req,res){
-    req.checkBody('username','First Name is Required').notEmpty();
+router.post('/login',function(req,res){
+    req.checkBody('username','User Name is Required').notEmpty();
     req.checkBody('pwd','last Name is Recuired').notEmpty();
 
     var errors=req.validationErrors();
 
     if(errors){
         console.log("errors");
+        res.render('login');
     }else{
-        console.log('success');
+        User.findOne({username: req.body.username},function(err,user){
+        if(err) throw err;
+            if(!user){
+                res.render('login',{
+                    errors: 'invalid user'
+                });
+            }else{
+                if(req.body.pwd === user.password)
+                res.redirect('/profile');
+                console.log('Successful login');
+            }
+        })
     }
 })
 

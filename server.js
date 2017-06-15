@@ -21,9 +21,24 @@ db.once('open', function() {
 server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'ejs'); // set up ejs for templating
 
+
 //middlewares
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({extended: false}));
+//Set static path to public folder
+server.use(express.static(path.join(__dirname,'public')));
+server.use(function(req,res,next){
+    res.locals.errors=null;
+    next();
+});
+/*
+ An object that contains response local variables scoped to the
+ request, and therefore available only to the view(s) rendered
+ during that request / response cycle (if any).
+ This property is useful for exposing request-level information
+ such as the request path name, authenticated user, user settings,
+ and so on.
+ */
 server.use(require('./middlewares/users'));
 server.use(require('./controllers'));
 /*We load the controllers/index.js file.

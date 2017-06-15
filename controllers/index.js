@@ -12,6 +12,12 @@ router.get('/login',function(req,res){
     res.render('login');
 })
 
+//Logout page
+router.get('/logout',function(req,res){
+    req.session.reset();
+    res.redirect('/');
+})
+
 //SignUp page
 router.get('/signup',function(req,res){
     res.render('signup');
@@ -23,13 +29,15 @@ router.get('/about',function(req,res){
 })
 
 //User profile page
-router.get('/profile',function(req,res){
+router.get('/profile',requireLogin,function(req,res){
     User.getUsers(function(err,users) {
         if (err) throw err;
         //console.log(users);
        // res.json(users);
     })
-    res.render('profile');
+    res.render('profile',{
+        name: req.user.name
+    });
 
 })
 
@@ -83,13 +91,22 @@ router.post('/login',function(req,res){
                 res.render('login',{
                     errors: 'invalid user'
                 });
-            }else{
-                if(req.body.pwd === user.password)
+            }else if(req.body.pwd === user.password){
+                // sets a cookie with the user's info
+                req.session.user=user;
                 res.redirect('/profile');
                 console.log('Successful login');
             }
         })
     }
 })
+
+function requireLogin (req, res, next) {
+    if (!req.user) {
+        res.redirect('/login');
+    } else {
+        next();
+    }
+};
 
 module.exports = router;

@@ -3,8 +3,9 @@ var path=require('path');
 var bodyParser = require('body-parser');
 var mongoose=require('mongoose');
 mongoose.Promise = global.Promise;
-var expressValidator = require('express-validator');
-//var User=require('./models/user');
+//var expressValidator = require('express-validator');
+var session = require('client-sessions');
+var User=require('./models/user');
 
 var router=express.Router();
 var server=express();
@@ -39,6 +40,28 @@ server.use(function(req,res,next){
  such as the request path name, authenticated user, user settings,
  and so on.
  */
+server.use(session({
+    cookieName: 'session',
+    secret: 'random_string_goes_here',
+    duration: 30 * 60 * 1000,
+    activeDuration: 5 * 60 * 1000
+}))
+server.use(function(req, res, next) {
+    if (req.session && req.session.user) {
+        User.findOne({ username: req.session.user.username }, function(err, user) {
+            if (user) {
+                req.user = user;
+                delete req.user.password; // delete the password from the session
+                req.session.user = user;  //refresh the session value
+                res.locals.user = user;
+            }
+            // finishing processing the middleware and run the route
+            next();
+        });
+    } else {
+        next();
+    }
+});
 server.use(require('./middlewares/users'));
 server.use(require('./controllers'));
 /*We load the controllers/index.js file.

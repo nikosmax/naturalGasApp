@@ -2,6 +2,12 @@ var express=require('express');
 var router=express.Router();
 var User=require('../models/user');
 
+/*
+ It loads the router with its routes and defines a prefix for all the
+ routes loaded inside.The prefix part is optional.
+ */
+router.use('/users', require('./users'));
+
 //Home page
 router.get('/',function(req,res){
     res.render('index');
@@ -14,6 +20,7 @@ router.get('/login',function(req,res){
 
 //Logout page
 router.get('/logout',function(req,res){
+    console.log('Logout');
     req.session.reset();
     res.redirect('/');
 })
@@ -28,49 +35,44 @@ router.get('/about',function(req,res){
     res.render('about');
 })
 
-//User profile page
-router.get('/profile',requireLogin,function(req,res){
-    //User.getUsers(function(err,users) {
-    //    if (err) throw err;
-        //console.log(users);
-       // res.json(users);
-   // })
-    res.render('profile',{
-        name: req.user.name
-    });
-})
-
-router.post('/users/add',function(req,res){
+router.post('/signup',function(req,res){
+    User.findOne({username: req.body.username},function(err,user){
+        if(err) throw err;
+    var messages=[];
     req.checkBody('name','Name is required').notEmpty();
     req.checkBody('username','Email is Required').notEmpty();
     req.checkBody('pwd','Password is Recuired').notEmpty();
-
     var errors=req.validationErrors();
+      if(errors){
+          errors.forEach(function(error){
+              messages.push(error.msg); //push errors msg to messages array
+          })
+      }
 
-    if(errors){
-        console.log(errors);
-        res.render('signup',{
-            errors:errors
-        })
-    }else{
-        var newUser=new User({
-            name: req.body.name,
-            username:req.body.username,
-            password:req.body.pwd
-        })
+        if(user){
+            messages.push('Username not Availiable');
+        }
 
-      //  User.findOne({name: newUser.name},function(err,user){
-     //      if(err) throw err;
-      //      console.log(user.name + '  exist');
-     //   })
+        if(messages[0]!=null){
+            console.log(messages);
+            res.render('signup',{
+                errors:messages
+            })
+        }else {
+            var newUser=new User({
+                name: req.body.name,
+                username:req.body.username,
+                password:req.body.pwd
+            })
 
-        newUser.save(function(err){
-            if (err) console.log(err);
-            else console.log('User saved successfully');
-        })
-        //console.log(newUser);
-        res.redirect('/profile');
-    }
+            newUser.save(function(err){
+                if (err) console.log(err);
+                else console.log('User saved successfully');
+            })
+            //console.log(newUser);
+            res.redirect('/users/profile');
+        }
+    })
 })
 
 router.post('/login',function(req,res){
@@ -102,7 +104,7 @@ router.post('/login',function(req,res){
                     {
                          //sets a cookie with the user's info
                          req.session.user=user;
-                         res.redirect('/profile');
+                         res.redirect('/users/profile');
                          console.log('Successful login');
                     }
                     else
@@ -117,16 +119,5 @@ router.post('/login',function(req,res){
         })
     }
 })
-
-function requireLogin (req, res, next) {
-    if (!req.user)
-    {
-        res.redirect('/login');
-    }
-    else
-    {
-        next();
-    }
-}
 
 module.exports = router;

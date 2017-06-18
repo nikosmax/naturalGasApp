@@ -3,7 +3,7 @@
 
 <div class="container">
     <% include templates/body.ejs %>
-    <form method="post" action="/users/add">
+    <form method="post" action="/signup">
         <div class="form-group">
             <label for="name">Name:</label>
             <input type="text" class="form-control" name="name">
@@ -22,7 +22,7 @@
     <% if(errors != undefined){ %>
     <ul class="list-group">
         <% errors.forEach(function(error){ %>
-        <li class="list-group-item list-group-item-danger"><%= error.msg %></li>
+        <li class="list-group-item list-group-item-danger"><%= error %></li>
         <% }) %>
     </ul>
     <%}%>

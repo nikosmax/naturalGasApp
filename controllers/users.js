@@ -1,6 +1,7 @@
 var express=require('express');
 var router=express.Router();
 var User=require('../models/user');
+var Block=require('../models/block')
 
 //User profile page
 router.get('/profile',requireLogin,function(req,res){
@@ -13,7 +14,36 @@ router.get('/profile',requireLogin,function(req,res){
     });
 })
 
+router.post('/block',requireLogin,function(req,res){
+    var newBlock= new Block({
+        address:    req.body.address,
+        location:   req.body.location,
+        postal:     req.body.postal,
+        nameRes:    req.body.nameRes,
+        phone:      req.body.phone,
+        mobile:     req.body.mobile,
+        heatType:   req.body.heatType,
+        user :      req.user._id
+    })
+
+    newBlock.save(function(err){
+        if (err) console.log(err);
+        else console.log('Block saved successfully');
+        res.render('block',{
+            name:       req.user.name,
+            address:    newBlock.address,
+            location:   newBlock.location,
+            postal:     newBlock.postal,
+            nameRes:    newBlock.nameRes,
+            phone:      newBlock.phone,
+            mobile:     newBlock.mobile,
+            heatType:   newBlock.heatType
+        });
+    })
+})
+
 router.get('/block',requireLogin,function(req,res){
+
     res.render('block',{
         name: req.user.name
     });

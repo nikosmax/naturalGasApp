@@ -14,6 +14,20 @@ router.get('/profile',requireLogin,function(req,res){
     });
 })
 
+router.post('/updateProfile',function(req,res){
+    User.findById(req.user._id,function(err,user){
+        if(err) throw err;
+        user.name=req.body.name;
+        user.username=req.body.username;
+
+        user.save(function(err,update){
+            if(err) throw err;
+            console.log('update');
+            res.redirect('profile');
+        })
+    })
+})
+
 router.post('/block',requireLogin,function(req,res){
     var newBlock= new Block({
         address:    req.body.address,
@@ -43,25 +57,42 @@ router.post('/block',requireLogin,function(req,res){
 })
 
 router.get('/block',requireLogin,function(req,res){
+Block.find({'user': req.user._id},function(err,block) {
+    if (err) throw err;
+    if (block[0] != null) {
+        res.render('block', {
+        name: req.user.name,
+        address: block[0].address,
+        location: block[0].location,
+        postal: block[0].postal,
+        nameRes: block[0].nameRes,
+        phone: block[0].phone,
+        mobile: block[0].mobile,
+        heatType: block[0].heatType
+    });
+    }else{
+            res.render('block', {
+            name: req.user.name,
+            address: '',
+            location: '',
+            postal: '',
+            nameRes: '',
+            phone: '',
+            mobile: '',
+            heatType: ''
+        });
+    }
+})
+})
 
-    res.render('block',{
-        name: req.user.name
+//Flat page
+router.get('/flat',requireLogin,function(req,res){
+    res.render('flat',{
+        name: req.user.name,
     });
 })
 
-router.post('/updateProfile',function(req,res){
-    User.findById(req.user._id,function(err,user){
-        if(err) throw err;
-        user.name=req.body.name;
-        user.username=req.body.username;
 
-        user.save(function(err,update){
-            if(err) throw err;
-            console.log('update');
-            res.redirect('profile');
-        })
-    })
-})
 
 module.exports = router;
 

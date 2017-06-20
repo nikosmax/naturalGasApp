@@ -1,0 +1,37 @@
+<% include templates/header.ejs %>
+<body>
+
+<div class="container">
+    <% include templates/body.ejs %>
+    <div class="row content">
+        <% include templates/navbar.ejs %>
+        <div class="col-sm-9">
+            <h4>Στοιχεία Διαμερισμάτων</h4>
+            <form method="post" action="/users/block">
+                <div class="form-group">
+                    <label for="name">Όνομα:</label>
+                    <input type="text" class="form-control" name="address" value="">
+                </div>
+                <div class="form-group">
+                    <label for="name">Επίθετο:</label>
+                    <input type="text" class="form-control" name="location" value="">
+                </div>
+                <div class="form-group">
+                    <label for="name">Τηλέφωνο:</label>
+                    <input type="text" class="form-control" name="phone" value="">
+                </div>
+                <div class="form-group">
+                    <label for="name">Κινητό:</label>
+                    <input type="text" class="form-control" name="mobile" value="">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Καταχώρηση</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<% include templates/footer.ejs %>
+</body>
+
+</html>

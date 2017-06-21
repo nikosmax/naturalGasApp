@@ -10,11 +10,11 @@
             <form method="post" action="/users/block">
                 <div class="form-group">
                     <label for="name">Όνομα:</label>
-                    <input type="text" class="form-control" name="address" value="">
+                    <input type="text" class="form-control" name="firstname" value="">
                 </div>
                 <div class="form-group">
                     <label for="name">Επίθετο:</label>
-                    <input type="text" class="form-control" name="location" value="">
+                    <input type="text" class="form-control" name="lastname" value="">
                 </div>
                 <div class="form-group">
                     <label for="name">Τηλέφωνο:</label>
@@ -23,6 +23,27 @@
                 <div class="form-group">
                     <label for="name">Κινητό:</label>
                     <input type="text" class="form-control" name="mobile" value="">
+                </div>
+                <div class="form-group">
+                    <label for="name">Αριθμός Διαμερίσματος:</label>
+                    <input type="text" class="form-control" name="flatNum" value="">
+                </div>
+                <div class="form-group">
+                    <label for="name">Αναλογία Δαπανών Κοινοχρήστων:</label>
+                    <input type="text" class="form-control" name="koinratio" value="">
+                </div>
+                <div class="form-group">
+                    <label for="name">Αναλογία Δαπανών Ανελκυστήρα:</label>
+                    <input type="text" class="form-control" name="liftratio" value="">
+                </div>
+                <div class="form-group">
+                    <label for="name">Χιλιοστά Διαμερίσματος:</label>
+                    <input type="text" class="form-control" name="flatxil" value="">
+                </div>
+                <div class="form-group">
+                    <label for="name">Ιδιοκτήτης:</label>
+                    <label class="radio-inline"><input type="radio" name="Owner">Ναι</label>
+                    <label class="radio-inline"><input type="radio" name="Owner">Όχι</label>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Καταχώρηση</button>

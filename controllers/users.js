@@ -1,7 +1,8 @@
 var express=require('express');
 var router=express.Router();
 var User=require('../models/user');
-var Block=require('../models/block')
+var Block=require('../models/block');
+var Flat=require('../models/flat');
 
 //User profile page
 router.get('/profile',requireLogin,function(req,res){

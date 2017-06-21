@@ -6,6 +6,7 @@ var User=require('../models/user');
  It loads the router with its routes and defines a prefix for all the
  routes loaded inside.The prefix part is optional.
  */
+
 router.use('/users', require('./users'));
 
 //Home page
@@ -71,6 +72,8 @@ router.post('/signup',function(req,res){
             })
             //console.log(newUser);
             res.redirect('/users/profile');
+
+
         }
     })
 })

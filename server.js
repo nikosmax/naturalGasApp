@@ -5,10 +5,25 @@ var mongoose=require('mongoose');
 mongoose.Promise = global.Promise;
 //var expressValidator = require('express-validator');
 var session = require('client-sessions');
+var mailer = require('express-mailer');
+
 var User=require('./models/user');//database for user configutation
 
 //var router=express.Router();
 var server=express();
+
+mailer.extend(server, {
+    from: 'no-reply@example.com',
+    host: 'smtp.gmail.com', // hostname
+    secureConnection: true, // use SSL
+    port: 465, // port for secure SMTP
+    transportMethod: 'SMTP', // default is SMTP. Accepts anything that nodemailer accepts
+    auth: {
+        user: 'dionisis.ef@gmail.com',
+        pass: 'ek762000'
+    }
+});
+
 
 //connect to database test;
 mongoose.connect('mongodb://localhost/test');
@@ -21,6 +36,21 @@ db.once('open', function() {
 //view engine setup
 server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'ejs'); // set up ejs for templating
+
+//send email
+server.mailer.send('email', {
+    to: 'dionisis.ef@gmail.com', // REQUIRED. This can be a comma delimited string just like a normal email to field.
+    subject: 'Test Email', // REQUIRED.
+    otherProperty: 'Other Property' // All additional properties are also passed to the template as local variables.
+}, function (err) {
+    if (err) {
+        // handle error
+        console.log(err);
+        console.log('There was an error sending the email');
+        return;
+    }
+    console.log('Email Sent');
+});
 
 //middlewares
 server.use(bodyParser.json());

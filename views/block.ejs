@@ -7,7 +7,7 @@
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
             <h4>Στοιχεία Πολυκατοικίας</h4>
-            <form method="post" action="/users/block">
+            <form method="post" action="/users/block" id="blockPost">
                 <div class="form-group">
                     <label for="name">Διεύθυνση:</label>
                     <input type="text" class="form-control" name="address" value="<%= address %>">
@@ -44,10 +44,57 @@
 
                 <button type="submit" class="btn btn-primary">Καταχώρηση</button>
             </form>
+            <form method="post" action="/users/blockUpdate" id="blockUpdate">
+                <div class="form-group">
+                    <label for="name">Διεύθυνση:</label>
+                    <input type="text" class="form-control" name="address" value="<%= address %>">
+                </div>
+                <div class="form-group">
+                    <label for="name">Περιοχή:</label>
+                    <input type="text" class="form-control" name="location" value="<%= location %>">
+                </div>
+                <div class="form-group">
+                    <label for="name">Τ.Κ:</label>
+                    <input type="text" class="form-control" name="postal" value="<%= postal %>">
+                </div>
+                <div class="form-group">
+                    <label for="name">Όνομα Διαχειριστή:</label>
+                    <input type="text" class="form-control" name="nameRes" value="<%= nameRes %>">
+                </div>
+                <div class="form-group">
+                    <label for="name">Τηλέφωνο:</label>
+                    <input type="text" class="form-control" name="phone" value="<%= phone %>">
+                </div>
+                <div class="form-group">
+                    <label for="name">Κινητό:</label>
+                    <input type="text" class="form-control" name="mobile" value="<%= mobile %>">
+                </div>
+                <div class="form-group">
+                    <label for="sel1">Είδος Θέρμανσης:</label>
+                    <select class="form-control" name="heatType">
+                        <option>Κεντρική θέρμανση</option>
+                        <option>Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης</option>
+                        <option>Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες</option>
+                        <option>Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Διόρθωση Στοιχείων</button>
+            </form>
         </div>
     </div>
 </div>
-
+<% if(flag) {%>
+<script>
+    document.getElementById("blockPost").style.display='none';
+    document.getElementById("blockUpdate").style.display='block';
+</script>
+<%} else if(!flag){%>
+<script>
+    document.getElementById("blockPost").style.display='block';
+    document.getElementById("blockUpdate").style.display='none';
+</script>
+<%}%>
 <% include templates/footer.ejs %>
 </body>
 

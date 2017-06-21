@@ -104,8 +104,8 @@ router.post('/login',function(req,res){
                     {
                          //sets a cookie with the user's info
                          req.session.user=user;
+                        console.log('Successful login');
                          res.redirect('/users/profile');
-                         console.log('Successful login');
                     }
                     else
                     {

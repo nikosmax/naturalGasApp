@@ -14,7 +14,7 @@ router.get('/profile',requireLogin,function(req,res){
     });
 })
 
-router.post('/updateProfile',function(req,res){
+router.post('/updateProfile',requireLogin,function(req,res){
     User.findById(req.user._id,function(err,user){
         if(err) throw err;
         user.name=req.body.name;
@@ -68,7 +68,8 @@ Block.find({'user': req.user._id},function(err,block) {
         nameRes: block[0].nameRes,
         phone: block[0].phone,
         mobile: block[0].mobile,
-        heatType: block[0].heatType
+        heatType: block[0].heatType,
+        flag: 1
     });
     }else{
             res.render('block', {
@@ -79,7 +80,8 @@ Block.find({'user': req.user._id},function(err,block) {
             nameRes: '',
             phone: '',
             mobile: '',
-            heatType: ''
+            heatType: '',
+            flag: 0
         });
     }
 })
@@ -91,7 +93,6 @@ router.get('/flat',requireLogin,function(req,res){
         name: req.user.name,
     });
 })
-
 
 
 module.exports = router;

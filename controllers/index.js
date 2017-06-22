@@ -1,12 +1,32 @@
 var express=require('express');
 var router=express.Router();
+var path=require('path');
 var User=require('../models/user');
+var transporter=require('../middlewares/nodemailer');
+var EmailTemplate = require('email-templates').EmailTemplate;
+
+/*
+ For each of your email templates (e.g. a welcome email to send to
+ users when they register on your site),
+ respectively name and create a folder.
+ for example :  templates/welcomeEmail
+
+ Then we Add the following files inside the template's folder:
+ html.{{ext}} (required) - for html format of email
+ text.{{ext}} (optional) - for text format of email
+ style.{{ext}}(optional) - styles for html format
+ subject.{{ext}}(optional) - for subject of email
+
+ Because we use ejs view engine we put html.ejs,text.ejs etc
+ Finally we add a path to where template is
+ */
+var emailTemplate=path.join(__dirname,'../views/templates','welcomeEmail');
+var welcomeEmail=new EmailTemplate(emailTemplate);
 
 /*
  It loads the router with its routes and defines a prefix for all the
  routes loaded inside.The prefix part is optional.
  */
-
 router.use('/users', require('./users'));
 
 //Home page
@@ -65,7 +85,7 @@ router.post('/signup',function(req,res){
                 username:req.body.username,
                 password:req.body.pwd
             })
-
+            //save to database users
             newUser.save(function(err){
                 if (err) console.log(err);
                 else console.log('User saved successfully');
@@ -73,8 +93,26 @@ router.post('/signup',function(req,res){
             //console.log(newUser);
             res.redirect('/users/profile');
 
+            //email send
+    welcomeEmail.render({name: req.body.name,username:req.body.username, password:req.body.pwd},function(err,results){
+            if(err) return console.log(err);
 
-        }
+            var mailOptions = {
+               from: 'dionisis.ef@gmail.com',
+               to: newUser.username,
+               subject: 'Welcome',
+               html: results.html
+           };
+
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            })
+          })
+        }//end of else
     })
 })
 

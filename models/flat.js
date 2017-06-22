@@ -6,6 +6,7 @@ var flatSchema= new Schema({
     lastname:     String,
     phone:        Number,
     mobile:       Number,
+    email:        String,
     flatNum:      String,
     koinratio:    Number,
     liftratio:    Number,

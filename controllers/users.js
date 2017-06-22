@@ -95,7 +95,6 @@ router.get('/flat',requireLogin,function(req,res){
     });
 })
 
-
 module.exports = router;
 
 function requireLogin (req, res, next) {

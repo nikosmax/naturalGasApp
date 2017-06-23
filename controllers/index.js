@@ -4,7 +4,7 @@ var path=require('path');
 var User=require('../models/user');
 var transporter=require('../middlewares/nodemailer');
 var EmailTemplate = require('email-templates').EmailTemplate;
-
+var crypto = require('crypto');
 /*
  For each of your email templates (e.g. a welcome email to send to
  users when they register on your site),
@@ -19,9 +19,9 @@ var EmailTemplate = require('email-templates').EmailTemplate;
 
  Because we use ejs view engine we put html.ejs,text.ejs etc
  Finally we add a path to where template is
+ var emailTemplate=path.join(__dirname,'../views/templates','welcomeEmail');
+ var welcomeEmail=new EmailTemplate(emailTemplate);
  */
-var emailTemplate=path.join(__dirname,'../views/templates','welcomeEmail');
-var welcomeEmail=new EmailTemplate(emailTemplate);
 
 /*
  It loads the router with its routes and defines a prefix for all the
@@ -37,6 +37,16 @@ router.get('/',function(req,res){
 //Login page
 router.get('/login',function(req,res){
     res.render('login');
+})
+
+//Forgot password
+router.get('/forgot',function(req,res){
+    res.render('forgot');
+})
+
+//Reset password
+router.get('/reset/:token',function(req,res){
+    res.render('reset');
 })
 
 //Logout page
@@ -57,6 +67,9 @@ router.get('/about',function(req,res){
 })
 
 router.post('/signup',function(req,res){
+    var emailTemplate=path.join(__dirname,'../views/templates','welcomeEmail');
+    var welcomeEmail=new EmailTemplate(emailTemplate);
+
     User.findOne({username: req.body.username},function(err,user){
         if(err) throw err;
     var messages=[];
@@ -159,6 +172,56 @@ router.post('/login',function(req,res){
             }
         })
     }
+})
+
+router.post('/forgot',function(req,res){
+    var emailTemplate=path.join(__dirname,'../views/templates','resetPassword');
+    var resetPassword=new EmailTemplate(emailTemplate);
+
+    User.findOne({username: req.body.username},function(err,user){
+        if (err) console.log(err);
+        if(!user){
+            console.log('User not exist');
+            res.render('forgot',{
+                errors:'No account with that email address exists.'
+            })
+        }else{
+            //create token
+            crypto.randomBytes(20, function(err, buf) {
+                var token = buf.toString('hex');
+                var passExpires=Date.now() + 3600000; // 1 hour
+            //put token and expire in database users
+                user.resetPasswordToken = token;
+                user.resetPasswordExpires = passExpires;
+            //save to database
+                user.save(function(err){
+                    if (err) console.log(err);
+                })
+                //email send
+                resetPassword.render({host: req.headers.host, token: token , passExpires: passExpires},function(err,results){
+                    if(err) return console.log(err);
+
+                    var mailOptions = {
+                        from: 'dionisis.ef@gmail.com',
+                        to: req.body.username,
+                        subject: 'Reset Password',
+                        html: results.html
+                    };
+
+                    transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                            console.log(error);
+                        } else {
+                            console.log('Email sent: ' + info.response);
+                        }
+                    })
+                })
+            })//end of crypto
+            res.render('forgot',{
+                errors: 'An e-mail has been sent to '+ req.body.username
+            })
+        }//end of else
+    })
 })
 
 module.exports = router;

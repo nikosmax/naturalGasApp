@@ -7,7 +7,9 @@ var userSchema=new Schema({
     name: String,
     username:{type:String,required: true,unique:true},
     password:{type:String,required:true},
-    created_date:{type:Date,default:Date.now}
+    created_date:{type:Date,default:Date.now},
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 userSchema.pre('save',function(next){

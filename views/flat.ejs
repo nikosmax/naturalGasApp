@@ -6,8 +6,8 @@
     <div class="row content">
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
-            <h4>Στοιχεία Διαμερισμάτων</h4>
-            <form method="post" action="/users/block">
+            <h4>Στοιχεία Διαμερισμάτων   <%= count %> Διαμερίσματα Καταχωρημένα</h4>
+            <form method="post" action="/users/flat">
                 <div class="form-group">
                     <label for="name">Όνομα:</label>
                     <input type="text" class="form-control" name="firstname" value="">
@@ -46,8 +46,8 @@
                 </div>
                 <div class="form-group">
                     <label for="name">Ιδιοκτήτης:</label>
-                    <label class="radio-inline"><input type="radio" name="Owner">Ναι</label>
-                    <label class="radio-inline"><input type="radio" name="Owner">Όχι</label>
+                    <label class="radio-inline"><input type="radio" name="owner" value="true">Ναι</label>
+                    <label class="radio-inline"><input type="radio" name="owner" value="false">Όχι</label>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Καταχώρηση</button>

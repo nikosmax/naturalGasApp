@@ -3,7 +3,7 @@
 
 <div class="container">
     <% include templates/body.ejs %>
-    <form method="post" action="/reset/">
+    <form id='reset' method="post" action="/reset/<%= token%>">
         <div class="form-group">
             <label for="pwd">New Password:</label>
             <input type="password" class="form-control" name="pwd">
@@ -15,9 +15,18 @@
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
     <br>
+
     <% if(errors){%>
+    <script>
+        document.getElementById("reset").style.display='none';
+    </script>
     <p class="list-group-item list-group-item-danger"><%= errors %></p>
     <%}%>
+
+    <% if(message){%>
+    <p class="list-group-item list-group-item-danger"><%= message %></p>
+    <%}%>
+
 </div>
 
 <% include templates/footer.ejs %>

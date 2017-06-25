@@ -1,0 +1,192 @@
+<% include templates/header.ejs %>
+<body>
+
+<div class="container">
+    <% include templates/body.ejs %>
+    <div class="row content">
+        <% include templates/navbar.ejs %>
+        <div class="col-sm-9">
+            <h4>Έξοδα Μήνα</h4>
+            <form  method="post" action="/users/expenses">
+                <div class="form-group">
+                    <label for="year">Έτος:</label>
+                    <select class="form-control" name="year">
+                        <option>2017</option>
+                        <option>2018</option>
+                        <option>2019</option>
+                        <option>2020</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="month">Μήνας:</label>
+                    <select class="form-control" name="month">
+                        <option>Ιανουάριος</option>
+                        <option>Φεβρουάριος</option>
+                        <option>Μάρτιος</option>
+                        <option>Απρίλιος</option>
+                        <option>Μάιος</option>
+                        <option>Ιούνιος</option>
+                        <option>Ιούλιος</option>
+                        <option>Αύγουστος</option>
+                        <option>Σεπτέμβριος</option>
+                        <option>Οκτώβριος</option>
+                        <option>Νοέμβριος</option>
+                        <option>Δεκέμβριος</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="month">Επιλογή Εξόδων:</label>
+                    <select id="selectExpenses"  onchange="expensesFunction()" class="form-control" name="month">
+                        <option>Επιλέξτε τα έξοδα του μήνα..</option>
+                        <option value="salary">Μισθός</option>
+                        <option value="ika">Εργοδοτική Εισ. ΙΚΑ ΤΕΑΜ</option>
+                        <option value="water">ΕΥΔΑΠ</option>
+                        <option value="energy">ΔΕΗ</option>
+                        <option value="cleaning">Καθαριότητα</option>
+                        <option value="light">Λαμπτήρες</option>
+                        <option value="drains">Αποχέτευση</option>
+                        <option value="garden">Συντήρηση Κήπου</option>
+                        <option value="liftUpKeep">Ασανσέρ Συντήρηση</option>
+                        <option value="liftRepair">Ασανσέρ Ανταλ. Επισκευή</option>
+                        <option value="heat">Πετρέλαιο/Αέριο</option>
+                        <option value="reserve">Αποθεματικό</option>
+                        <option value="shared">Αμοιβή εκδ. Κοινοχρήστων</option>
+                        <option value="otherExpenses">Λοιπά έξοδα</option>
+                    </select>
+                </div>
+
+                <div id="salary" class="form-group">
+                    <label for="name">Μισθός:</label>
+                    <input type="text" class="form-control" name="salary" value="">
+                    <button onclick="delFunction('salary')" type="button" class="btn" >delete</button>
+                </div>
+                <div id="ika" class="form-group">
+                    <label for="name">Εργοδοτική Εισ. ΙΚΑ ΤΕΑΜ:</label>
+                    <input type="text" class="form-control" name="ika" value="">
+                    <button onclick="delFunction('ika')" type="button" class="btn">delete</button>
+                </div>
+                <div id="water" class="form-group">
+                    <label for="name">ΕΥΔΑΠ:</label>
+                    <input type="text" class="form-control" name="water" value="">
+                    <button onclick="delFunction('water')" type="button" class="btn">delete</button>
+                </div>
+                <div id="energy" class="form-group">
+                    <label for="name">ΔΕΗ:</label>
+                    <input type="text" class="form-control" name="energy" value="">
+                    <button onclick="delFunction('energy')" type="button" class="btn">delete</button>
+                </div>
+                <div id="cleaning" class="form-group">
+                    <label for="name">Καθαριότητα:</label>
+                    <input type="text" class="form-control" name="cleaning" value="">
+                    <button onclick="delFunction('cleaning')" type="button" class="btn">delete</button>
+                </div>
+                <div id="light" class="form-group">
+                    <label for="name">Λαμπτήρες:</label>
+                    <input type="text" class="form-control" name="light" value="">
+                    <button onclick="delFunction('light')" type="button" class="btn">delete</button>
+                </div>
+                <div id="drains" class="form-group">
+                    <label for="name">Αποχέτευση:</label>
+                    <input type="text" class="form-control" name="drains" value="">
+                    <button onclick="delFunction('drains')" type="button" class="btn">delete</button>
+                </div>
+                <div id="garden" class="form-group">
+                    <label for="name">Συντήρηση Κήπου:</label>
+                    <input type="text" class="form-control" name="garden" value="">
+                    <button onclick="delFunction('garden')" type="button" class="btn">delete</button>
+                </div>
+                <div id="liftUpKeep" class="form-group">
+                    <label for="name">Ασανσέρ Συντήρηση:</label>
+                    <input type="text" class="form-control" name="liftUpKeep" value="">
+                    <button onclick="delFunction('liftUpKeep')" type="button" class="btn">delete</button>
+                </div>
+                <div id="liftRepair" class="form-group">
+                    <label for="name">Ασανσέρ Ανταλ. Επισκευή:</label>
+                    <input type="text" class="form-control" name="liftRepair" value="">
+                    <button onclick="delFunction('liftRepair')" type="button" class="btn">delete</button>
+                </div>
+                <div id="heat" class="form-group">
+                    <label for="name">Πετρέλαιο/Αέριο:</label>
+                    <input type="text" class="form-control" name="heat" value="">
+                    <button onclick="delFunction('heat')" type="button" class="btn">delete</button>
+                </div>
+                <div id="reserve" class="form-group">
+                    <label for="name">Αποθεματικό:</label>
+                    <input type="text" class="form-control" name="reserve" value="">
+                    <button onclick="delFunction('reserve')" type="button" class="btn">delete</button>
+                </div>
+                <div id="shared" class="form-group">
+                    <label for="name">Αμοιβή εκδ. Κοινοχρήστων:</label>
+                    <input  type="text" class="form-control" name="shared" value="">
+                    <button onclick="delFunction('shared')" type="button" class="btn">delete</button>
+                </div>
+                <div id="otherExpenses" class="form-group">
+                    <label for="name">Λοιπά έξοδα:</label>
+                    <input type="text" class="form-control" name="otherExpenses" value="">
+                    <button onclick="delFunction('otherExpenses')" type="button" class="btn">delete</button>
+                </div>
+                <button type="submit" class="btn btn-primary">Καταχώρηση</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('salary').style.display='none';
+    document.getElementById('ika').style.display='none';
+    document.getElementById('water').style.display='none';
+    document.getElementById('energy').style.display='none';
+    document.getElementById('cleaning').style.display='none';
+    document.getElementById('light').style.display='none';
+    document.getElementById('drains').style.display='none';
+    document.getElementById('garden').style.display='none';
+    document.getElementById('liftUpKeep').style.display='none';
+    document.getElementById('liftRepair').style.display='none';
+    document.getElementById('heat').style.display='none';
+    document.getElementById('reserve').style.display='none';
+    document.getElementById('shared').style.display='none';
+    document.getElementById('otherExpenses').style.display='none';
+
+    function expensesFunction() {
+        var x = document.getElementById("selectExpenses").value;
+        if(x==='salary')
+        document.getElementById("salary").style.display='block';
+        if(x==='ika')
+            document.getElementById("ika").style.display='block';
+        if(x==='water')
+            document.getElementById("water").style.display='block';
+        if(x==='energy')
+            document.getElementById("energy").style.display='block';
+        if(x==='cleaning')
+            document.getElementById("cleaning").style.display='block';
+        if(x==='light')
+            document.getElementById("light").style.display='block';
+        if(x==='drains')
+            document.getElementById("drains").style.display='block';
+        if(x==='garden')
+            document.getElementById("garden").style.display='block';
+        if(x==='liftUpKeep')
+            document.getElementById("liftUpKeep").style.display='block';
+        if(x==='liftRepair')
+            document.getElementById("liftRepair").style.display='block';
+        if(x==='heat')
+            document.getElementById("heat").style.display='block';
+        if(x==='reserve')
+            document.getElementById("reserve").style.display='block';
+        if(x==='shared')
+            document.getElementById("shared").style.display='block';
+        if(x==='otherExpenses')
+            document.getElementById("otherExpenses").style.display='block';
+    }
+
+    function delFunction(id){
+        document.getElementById(id).style.display='none';
+    }
+
+</script>
+
+<% include templates/footer.ejs %>
+</body>
+
+</html>

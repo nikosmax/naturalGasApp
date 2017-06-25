@@ -35,10 +35,10 @@
                 <div class="form-group">
                     <label for="sel1">Είδος Θέρμανσης:</label>
                     <select class="form-control" name="heatType">
-                        <option>Κεντρική θέρμανση</option>
-                        <option>Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης</option>
-                        <option>Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες</option>
-                        <option>Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες</option>
+                        <option value="Κεντρική θέρμανση">Κεντρική θέρμανση</option>
+                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης">Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης</option>
+                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες</option>
+                        <option value="Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες</option>
                     </select>
                 </div>
 
@@ -70,12 +70,16 @@
                     <input type="text" class="form-control" name="mobile" value="<%= mobile %>">
                 </div>
                 <div class="form-group">
+                    <label for="name">Σύνολο Διαμερισμάτων:</label>
+                    <input type="text" class="form-control" name="totalFlats" value="<%= totalFlats %>">
+                </div>
+                <div class="form-group">
                     <label for="sel1">Είδος Θέρμανσης:</label>
-                    <select class="form-control" name="heatType">
-                        <option>Κεντρική θέρμανση</option>
-                        <option>Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης</option>
-                        <option>Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες</option>
-                        <option>Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες</option>
+                    <select id='heatType' class="form-control" name="heatType">
+                        <option value="Κεντρική θέρμανση">Κεντρική θέρμανση</option>
+                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης">Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης</option>
+                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες</option>
+                        <option value="Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες</option>
                     </select>
                 </div>
 
@@ -95,6 +99,31 @@
     document.getElementById("blockUpdate").style.display='none';
 </script>
 <%}%>
+
+<% if(heatType=='Κεντρική θέρμανση'){%>
+<script>
+    document.getElementById("heatType").value='Κεντρική θέρμανση';
+</script>
+<%}%>
+
+<% if(heatType=='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης'){%>
+<script>
+    document.getElementById("heatType").value='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης';
+</script>
+<%}%>
+
+<% if(heatType=='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες'){%>
+<script>
+    document.getElementById("heatType").value='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες';
+</script>
+<%}%>
+
+<% if(heatType=='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες'){%>
+<script>
+    document.getElementById("heatType").value='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες';
+</script>
+<%}%>
+
 <% include templates/footer.ejs %>
 </body>
 

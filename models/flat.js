@@ -7,11 +7,11 @@ var flatSchema= new Schema({
     phone:        Number,
     mobile:       Number,
     email:        String,
-    flatNum:      String,
+    flatNum:      {type:String,required: true,unique:true},
     koinratio:    Number,
     liftratio:    Number,
     flatxil:      Number,
-    owner:        String,
+    owner:        Boolean,
     block :      [{ type: Schema.Types.ObjectId, ref: 'Block' }]
 })
 

@@ -7,8 +7,7 @@ var EmailTemplate = require('email-templates').EmailTemplate;
 var crypto = require('crypto');
 /*
  For each of your email templates (e.g. a welcome email to send to
- users when they register on your site),
- respectively name and create a folder.
+ users when they register on your site),respectively name and create a folder.
  for example :  templates/welcomeEmail
 
  Then we Add the following files inside the template's folder:
@@ -46,7 +45,37 @@ router.get('/forgot',function(req,res){
 
 //Reset password
 router.get('/reset/:token',function(req,res){
-    res.render('reset');
+    console.log(req.params.token);
+    User.findOne({resetPasswordToken: req.params.token},function(err,user){
+        if (err) console.log(err);
+        if(!user){
+            console.log('Password reset token is invalid or has expired.');
+            res.render('reset',{
+                errors: 'Password reset token is invalid or has expired.',
+                message:'',
+                token:''
+            })
+        }
+        if(user){
+            var timeSet=user.resetPasswordExpires.getTime();
+            var timeNow=Date.now();
+            if(timeNow > timeSet){
+                console.log('Password expired');
+                res.render('reset',{
+                    errors: 'Password reset token is invalid or has expired.',
+                    message: '',
+                    token:''
+                })
+            }else{
+                console.log('User reset ok');
+                res.render('reset',{
+                    errors:'',
+                    message:'',
+                    token: req.params.token
+,                });
+            }
+        }
+    })
 })
 
 //Logout page
@@ -186,7 +215,11 @@ router.post('/forgot',function(req,res){
                 errors:'No account with that email address exists.'
             })
         }else{
-            //create token
+            /*
+             create token
+             crypto library  it is part of Node.js.
+             We will be using it for generating random token during a password reset.
+             */
             crypto.randomBytes(20, function(err, buf) {
                 var token = buf.toString('hex');
                 var passExpires=Date.now() + 3600000; // 1 hour
@@ -222,6 +255,37 @@ router.post('/forgot',function(req,res){
             })
         }//end of else
     })
+})
+
+router.post('/reset/:token',function(req,res){
+User.findOne({resetPasswordToken: req.params.token},function(err,user){
+    if(err) console.log(err);
+    if(!user){
+        console.log('Password reset token is invalid or has expired.');
+        res.render('reset',{
+            errors: 'Password reset token is invalid or has expired.',
+            message:''
+        })
+    }else {
+        if (req.body.pwd != req.body.pwd1) {
+            res.render('reset', {
+                message: 'Passwords dont match',
+                token:req.params.token
+            })
+        } else {
+            user.password = req.body.pwd;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpires = undefined;
+
+            //save to database
+            user.save(function (err) {
+                if (err) console.log(err);
+                console.log('user saved');
+                res.redirect('/login');
+            })
+        }//end of else
+    }//end of else
+  })
 })
 
 module.exports = router;

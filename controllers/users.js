@@ -18,7 +18,7 @@ router.get('/profile',requireLogin,function(req,res){
 //Update profile
 router.post('/updateProfile',requireLogin,function(req,res){
     User.findById(req.user._id,function(err,user){
-        if(err) throw err;
+        if(err) console.log(err);
         user.name=req.body.name;
         user.username=req.body.username;
 
@@ -33,7 +33,7 @@ router.post('/updateProfile',requireLogin,function(req,res){
 //Block page
 router.get('/block',requireLogin,function(req,res){
 Block.find({'user': req.user._id},function(err,block) {
-    if (err) throw err;
+    if (err) console.log(err);
     if (block[0] != null) {
         res.render('block', {
         name: req.user.name,
@@ -99,7 +99,7 @@ router.post('/block',requireLogin,function(req,res){
 //block update contents
 router.post('/blockUpdate',requireLogin,function(req,res){
     Block.findOne({user: req.user._id},function(err,block){
-        if(err) throw err;
+        if(err) console.log(err);
             block.address=req.body.address;
             block.location=req.body.location;
             block.postal=req.body.postal;
@@ -110,7 +110,7 @@ router.post('/blockUpdate',requireLogin,function(req,res){
             block.totalFlats=req.body.totalFlats;
 
         block.save(function(err,update){
-            if(err) throw err;
+            if(err) console.log(err);
             console.log('block updated');
             res.redirect('block');
         })
@@ -120,8 +120,10 @@ router.post('/blockUpdate',requireLogin,function(req,res){
 //Flat page
 router.get('/flat',requireLogin,function(req,res){
     Flat.count({},function(err,count){
+        if (err) console.log(err);
         res.render('flat',{
             name: req.user.name,
+            flatsCount:req.blockData.totalFlats,
             count:count
         });
     })
@@ -156,6 +158,7 @@ router.post('/flat',requireLogin,function(req,res){
             Flat.count({},function(err,count) {
                 res.render('flat', {
                     name: req.user.name,
+                    flatsCount:req.blockData.totalFlats,
                     count:count,
                     errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία'
                 })

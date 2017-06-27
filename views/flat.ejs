@@ -6,7 +6,7 @@
     <div class="row content">
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
-            <h4>Στοιχεία Διαμερισμάτων   <%= count %> Διαμερίσματα Καταχωρημένα</h4>
+            <h4>Στοιχεία Διαμερισμάτων   <%= count %> από <%= flatsCount%> έχουν Διαμερίσματα Καταχωρηθεί</h4>
             <form method="post" action="/users/flat">
                 <div class="form-group">
                     <label for="name">Όνομα:</label>

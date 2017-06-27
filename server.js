@@ -6,7 +6,7 @@ mongoose.Promise = global.Promise;
 var session = require('client-sessions');
 
 var User=require('./models/user');//database for user configutation
-
+var Block=require('./models/block');//database for block configutation
 //var router=express.Router();
 var server=express();
 
@@ -54,10 +54,20 @@ server.use(function(req, res, next) {
                 delete req.user.password; // delete the password from the session
                 req.session.user = user;  //refresh the session value
                 res.locals.user = user;
+                    console.log('user exist');
             }
             // finishing processing the middleware and run the route
             next();
         });
+        Block.findOne({user: req.session.user._id},function(err,block){
+            if(err) console.log(err);
+            if(block){
+                req.blockData=block;
+                req.session.blockData=block;
+                res.locals.blockData = block;
+                console.log('block exist');
+            }
+        })
     } else {
         next();
     }

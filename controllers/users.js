@@ -5,9 +5,10 @@ var Block=require('../models/block');
 var Flat=require('../models/flat');
 
 //User profile page
-router.get('/profile',requireLogin,function(req,res){
+router.get('/profile',requireLogin,flatsShowNav,function(req,res){
     var d=new Date(req.user.created_date);
     var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
+    //console.log(req.flatsShow);
     res.render('profile',{
         name: req.user.name,
         username:req.user.username,
@@ -185,5 +186,21 @@ function requireLogin (req, res, next) {
     {
         next();
     }
+}
+
+function flatsShowNav(req,res,next){
+ Block.findOne({user:req.user._id},function(err,block) {
+     if (block){
+         Flat.find({}, function (err, flats) {
+             if (flats) {
+                 req.flatsShow = flats;
+                 res.locals.flatsShow = flats;
+                 next();
+             } else {
+                 next();
+             }
+         })
+     }else next();
+ })
 }
 

@@ -6,7 +6,8 @@
     <div class="row content">
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
-            <h4>Στοιχεία Διαμερισμάτων   <%= count %> από <%= flatsCount%> έχουν Διαμερίσματα Καταχωρηθεί</h4>
+            <h4>Στοιχεία Διαμερισμάτων</h4>
+           <h5 id="check" class="text-info"></h5>
             <form method="post" action="/users/flat">
                 <div class="form-group">
                     <label for="name">Όνομα:</label>
@@ -55,7 +56,11 @@
         </div>
     </div>
 </div>
-
+<%if(flatsCount){%>
+<script>
+    document.getElementById("check").innerHTML=' <%= count %> από σύνολο <%= flatsCount%> Διαμερίσματων έχουν Καταχωρηθεί';
+</script>
+<%}%>
 <% include templates/footer.ejs %>
 </body>
 

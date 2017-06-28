@@ -54,7 +54,6 @@ server.use(function(req, res, next) {
                 delete req.user.password; // delete the password from the session
                 req.session.user = user;  //refresh the session value
                 res.locals.user = user;
-                    console.log('user exist');
             }
             // finishing processing the middleware and run the route
             next();
@@ -65,7 +64,9 @@ server.use(function(req, res, next) {
                 req.blockData=block;
                 req.session.blockData=block;
                 res.locals.blockData = block;
-                console.log('block exist');
+            }else{
+                req.blockData={};
+                res.locals.blockData = {};
             }
         })
     } else {

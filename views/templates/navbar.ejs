@@ -4,6 +4,13 @@
         <li class="active"><a href="./profile">Edit profile</a></li>
         <li><a href="./block">1.Πολυκατοικία</a></li>
         <li><a href="./flat">2.Διαμερίσματα</a></li>
+        <% if(typeof flatsShownNav !== undefined){ %>
+        <ul class="list-group">
+            <%  flatsShownNav.forEach(function( flatsShownNav){ %>
+            <li class="list-group-item list-group-item-info"><a href="#"><%=  flatsShownNav.flatNum %></a></li>
+            <% }) %>
+        </ul>
+        <%}%>
         <li><a href="./monthExpenses">3.Έξοδα Μήνα</a></li>
         <li><a href="#section3">4.Εκτύπωση</a></li>
     </ul><br>

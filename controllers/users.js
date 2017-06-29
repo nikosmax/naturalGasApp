@@ -4,20 +4,48 @@ var User=require('../models/user');
 var Block=require('../models/block');
 var Flat=require('../models/flat');
 
+router.use(function requireLogin (req, res, next) {
+    if (!req.user)
+    {
+        res.redirect('/login');
+    }
+    else
+    {
+        next();
+    }
+})
+
+router.use(function flatsShowNav(req,res,next){
+    Block.findOne({user:req.user._id},function(err,block) {
+        if (block){
+            Flat.find({}, function (err, flats) {
+                if (flats) {
+                    req.flatsShow = flats;
+                    res.locals.flatsShow = flats;
+                    next();
+                } else {
+                    next();
+                }
+            })
+        }else next();
+    })
+})
+
 //User profile page
-router.get('/profile',requireLogin,flatsShowNav,function(req,res){
+router.get('/profile',function(req,res){
     var d=new Date(req.user.created_date);
     var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
     //console.log(req.flatsShow);
     res.render('profile',{
         name: req.user.name,
         username:req.user.username,
-        date:mydate
+        date:mydate,
+        flatsShownNav:req.flatsShow
     });
 })
 
 //Update profile
-router.post('/updateProfile',requireLogin,function(req,res){
+router.post('/updateProfile',function(req,res){
     User.findById(req.user._id,function(err,user){
         if(err) console.log(err);
         user.name=req.body.name;
@@ -32,20 +60,21 @@ router.post('/updateProfile',requireLogin,function(req,res){
 })
 
 //Block page
-router.get('/block',requireLogin,function(req,res){
-Block.find({'user': req.user._id},function(err,block) {
+router.get('/block',function(req,res){
+Block.findOne({'user': req.user._id},function(err,block) {
     if (err) console.log(err);
-    if (block[0] != null) {
+    if (block!= null) {
         res.render('block', {
         name: req.user.name,
-        address: block[0].address,
-        location: block[0].location,
-        postal: block[0].postal,
-        nameRes: block[0].nameRes,
-        phone: block[0].phone,
-        mobile: block[0].mobile,
-        heatType: block[0].heatType,
-        totalFlats:block[0].totalFlats,
+        address: block.address,
+        location: block.location,
+        postal: block.postal,
+        nameRes: block.nameRes,
+        phone: block.phone,
+        mobile: block.mobile,
+        heatType: block.heatType,
+        totalFlats:block.totalFlats,
+        flatsShownNav:req.flatsShow,
         flag: 1
     });
     }else{
@@ -59,6 +88,7 @@ Block.find({'user': req.user._id},function(err,block) {
             mobile: '',
             heatType: '',
             totalFlats:'',
+            flatsShownNav:req.flatsShow,
             flag: 0
         });
     }
@@ -66,7 +96,7 @@ Block.find({'user': req.user._id},function(err,block) {
 })
 
 //block post first time contents
-router.post('/block',requireLogin,function(req,res){
+router.post('/block',function(req,res){
     var newBlock= new Block({
         address:    req.body.address,
         location:   req.body.location,
@@ -92,13 +122,14 @@ router.post('/block',requireLogin,function(req,res){
             mobile:     newBlock.mobile,
             heatType:   newBlock.heatType,
             totalFlats: newBlock.totalFlats,
+            flatsShownNav:req.flatsShow,
             flag:       1
         });
     })
 })
 
 //block update contents
-router.post('/blockUpdate',requireLogin,function(req,res){
+router.post('/blockUpdate',function(req,res){
     Block.findOne({user: req.user._id},function(err,block){
         if(err) console.log(err);
             block.address=req.body.address;
@@ -119,19 +150,20 @@ router.post('/blockUpdate',requireLogin,function(req,res){
 })
 
 //Flat page
-router.get('/flat',requireLogin,function(req,res){
+router.get('/flat',function(req,res){
     Flat.count({},function(err,count){
         if (err) console.log(err);
         res.render('flat',{
             name: req.user.name,
             flatsCount:req.blockData.totalFlats,
-            count:count
+            count:count,
+            flatsShownNav:req.flatsShow
         });
     })
 })
 
 //block post first time contents
-router.post('/flat',requireLogin,function(req,res){
+router.post('/flat',function(req,res){
     Block.findOne({user: req.user._id},function(err,block) {
             if (err) conslole.log(err);
             if(block) {
@@ -161,6 +193,7 @@ router.post('/flat',requireLogin,function(req,res){
                     name: req.user.name,
                     flatsCount:req.blockData.totalFlats,
                     count:count,
+                    flatsShownNav:req.flatsShow,
                     errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία'
                 })
             })
@@ -169,38 +202,13 @@ router.post('/flat',requireLogin,function(req,res){
 })
 
 //Month expenses
-router.get('/monthexpenses',requireLogin,function(req,res){
+router.get('/monthexpenses',function(req,res){
     res.render('monthExpenses',{
-        name: req.user.name
+        name: req.user.name,
+        flatsShownNav:req.flatsShow
     });
 })
 
 module.exports = router;
 
-function requireLogin (req, res, next) {
-    if (!req.user)
-    {
-        res.redirect('/login');
-    }
-    else
-    {
-        next();
-    }
-}
-
-function flatsShowNav(req,res,next){
- Block.findOne({user:req.user._id},function(err,block) {
-     if (block){
-         Flat.find({}, function (err, flats) {
-             if (flats) {
-                 req.flatsShow = flats;
-                 res.locals.flatsShow = flats;
-                 next();
-             } else {
-                 next();
-             }
-         })
-     }else next();
- })
-}
 

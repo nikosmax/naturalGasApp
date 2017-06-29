@@ -1,17 +1,17 @@
 <div class="col-sm-3 sidenav">
     <h4><%= name %> page</h4>
     <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="./profile">Edit profile</a></li>
-        <li><a href="./block">1.Πολυκατοικία</a></li>
-        <li><a href="./flat">2.Διαμερίσματα</a></li>
+        <li class="active"><a href="/users/profile">Edit profile</a></li>
+        <li><a href="/users/block">1.Πολυκατοικία</a></li>
+        <li><a href="/users/flat">2.Διαμερίσματα</a></li>
         <% if(typeof flatsShownNav !== undefined){ %>
         <ul class="list-group">
             <%  flatsShownNav.forEach(function( flatsShownNav){ %>
-            <li class="list-group-item list-group-item-info"><a href="#"><%=  flatsShownNav.flatNum %></a></li>
+            <li class="list-group-item list-group-item-info"><a href="/users/flat/<%=flatsShownNav._id %>"><%=  flatsShownNav.flatNum %></a></li>
             <% }) %>
         </ul>
         <%}%>
-        <li><a href="./monthExpenses">3.Έξοδα Μήνα</a></li>
+        <li><a href="/users/monthExpenses">3.Έξοδα Μήνα</a></li>
         <li><a href="#section3">4.Εκτύπωση</a></li>
     </ul><br>
     <div class="input-group">

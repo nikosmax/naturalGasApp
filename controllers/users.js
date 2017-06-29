@@ -157,7 +157,8 @@ router.get('/flat',function(req,res){
             name: req.user.name,
             flatsCount:req.blockData.totalFlats,
             count:count,
-            flatsShownNav:req.flatsShow
+            flatsShownNav:req.flatsShow,
+            flat: 'undefined'
         });
     })
 })
@@ -198,6 +199,19 @@ router.post('/flat',function(req,res){
                 })
             })
         }
+    })
+})
+
+router.get('/flat/:flatId',function(req,res){
+    Flat.findOne({_id: req.params.flatId},function(err,flat){
+        if(err) console.log(err);
+        res.render('flat',{
+            name: req.user.name,
+            flatsCount:req.blockData.totalFlats,
+            flatsShownNav:req.flatsShow,
+            count:'',
+            flat:flat
+        })
     })
 })
 

@@ -8,7 +8,7 @@
         <div class="col-sm-9">
             <h4>Στοιχεία Διαμερισμάτων</h4>
            <h5 id="check" class="text-info"></h5>
-            <form method="post" action="/users/flat">
+            <form method="post" action="/users/flat" id="flatPost">
                 <div class="form-group">
                     <label for="name">Όνομα:</label>
                     <input type="text" class="form-control" name="firstname" value="">
@@ -53,14 +53,69 @@
 
                 <button type="submit" class="btn btn-primary">Καταχώρηση</button>
             </form>
+
+            <form method="post" action="/users/flat" id="flatShow">
+            <div class="form-group">
+                <label for="name">Όνομα:</label>
+                <input type="text" class="form-control" name="firstname" value="<%= flat.firstname%>">
+            </div>
+            <div class="form-group">
+                <label for="name">Επίθετο:</label>
+                <input type="text" class="form-control" name="lastname" value="<%= flat.lastname%>">
+            </div>
+            <div class="form-group">
+                <label for="name">Τηλέφωνο:</label>
+                <input type="text" class="form-control" name="phone" value="<%= flat.phone%>">
+            </div>
+            <div class="form-group">
+                <label for="name">Κινητό:</label>
+                <input type="text" class="form-control" name="mobile" value="<%= flat.mobile%>">
+            </div>
+            <div class="form-group">
+                <label for="name">Email:</label>
+                <input type="text" class="form-control" name="email" value="<%= flat.email%>">
+            </div>
+            <div class="form-group">
+                <label for="name">Αριθμός Διαμερίσματος:</label>
+                <input type="text" class="form-control" name="flatNum" value="<%= flat.flatNum%>">
+            </div>
+            <div class="form-group">
+                <label for="name">Αναλογία Δαπανών Κοινοχρήστων:</label>
+                <input type="text" class="form-control" name="koinratio" value="<%= flat.koinratio%>">
+            </div>
+            <div class="form-group">
+                <label for="name">Αναλογία Δαπανών Ανελκυστήρα:</label>
+                <input type="text" class="form-control" name="liftratio" value="<%= flat.liftratio%>">
+            </div>
+            <div class="form-group">
+                <label for="name">Χιλιοστά Διαμερίσματος:</label>
+                <input type="text" class="form-control" name="flatxil" value="<%= flat.flatxil%>">
+            </div>
+            <div class="form-group">
+                <label for="name">Ιδιοκτήτης:</label>
+                <label class="radio-inline"><input type="radio" name="owner" value="true">Ναι</label>
+                <label class="radio-inline"><input type="radio" name="owner" value="false">Όχι</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Διόρθωση</button>
+            </form>
         </div>
     </div>
 </div>
-<%if(flatsCount){%>
+
+<%if(flatsCount && count!=''){%>
 <script>
     document.getElementById("check").innerHTML=' <%= count %> από σύνολο <%= flatsCount%> Διαμερίσματων έχουν Καταχωρηθεί';
 </script>
 <%}%>
+
+<%if(typeof flat!==undefined){%>
+<script>
+    document.getElementById('flatShow').style.display='block';
+    document.getElementById('flatPost').style.display='none';
+</script>
+<%}%>
+
 <% include templates/footer.ejs %>
 </body>
 

@@ -46,6 +46,7 @@ server.use(session({
     duration: 30 * 60 * 1000,
     activeDuration: 5 * 60 * 1000
 }))
+//set cookie with user info
 server.use(function(req, res, next) {
     if (req.session && req.session.user) {
         User.findOne({ username: req.session.user.username }, function(err, user) {
@@ -58,21 +59,28 @@ server.use(function(req, res, next) {
             // finishing processing the middleware and run the route
             next();
         });
-        Block.findOne({user: req.session.user._id},function(err,block){
-            if(err) console.log(err);
-            if(block){
-                req.blockData=block;
-                req.session.blockData=block;
-                res.locals.blockData = block;
-            }else{
-                req.blockData={};
-                res.locals.blockData = {};
-            }
-        })
     } else {
         next();
     }
-});
+})
+//set cookie with block info
+server.use(function(req,res,next){
+    if (req.session && req.session.user) {
+        Block.findOne({user: req.session.user._id}, function (err, block) {
+            if (err) console.log(err);
+            if (block) {
+                req.blockData = block;
+                req.session.blockData = block;
+                res.locals.blockData = block;
+            } else {
+                req.blockData = {};
+                res.locals.blockData = {};
+            }
+            next();
+        })
+    }else next();
+})
+
 server.use(require('./middlewares/users'));
 server.use(require('./controllers'));
 /*We load the controllers/index.js file.

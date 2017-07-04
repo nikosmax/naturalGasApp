@@ -7,7 +7,7 @@ var flatSchema= new Schema({
     phone:        Number,
     mobile:       Number,
     email:        String,
-    flatNum:      {type:String,required: true,unique:true},
+    flatNum:      {type:String,required: true},
     koinratio:    Number,
     liftratio:    Number,
     flatxil:      Number,

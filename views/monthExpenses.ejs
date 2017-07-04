@@ -7,18 +7,27 @@
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
             <h4>Έξοδα Μήνα</h4>
-            <form  method="post" action="/users/expenses">
+            <% if(errorMessage){%>
+            <script>
+                alert('<%= errorMessage %>');
+            </script>
+            <br>
+            <%}%>
+            <form class="form-horizontal" method="post" action="/users/monthexpenses">
                 <div class="form-group">
-                    <label for="year">Έτος:</label>
+                    <label class="control-label col-sm-2" for="year">Έτος:</label>
+                    <div class="col-sm-7">
                     <select class="form-control" name="year">
                         <option>2017</option>
                         <option>2018</option>
                         <option>2019</option>
                         <option>2020</option>
                     </select>
+                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="month">Μήνας:</label>
+                    <label class="control-label col-sm-2" for="month">Μήνας:</label>
+                    <div class="col-sm-7">
                     <select class="form-control" name="month">
                         <option>Ιανουάριος</option>
                         <option>Φεβρουάριος</option>
@@ -33,19 +42,22 @@
                         <option>Νοέμβριος</option>
                         <option>Δεκέμβριος</option>
                     </select>
+                        </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="month">Επιλογή Εξόδων:</label>
-                    <select id="selectExpenses"  onchange="expensesFunction()" class="form-control" name="month">
+                    <label class="control-label col-sm-2" for="month">Έξοδα:</label>
+                    <div class="col-sm-7">
+                    <select id="selectExpenses"  onchange="expensesFunction()" class="form-control" name="expenses">
                         <option>Επιλέξτε τα έξοδα του μήνα..</option>
-                        <option value="salary">Μισθός</option>
+                        <option value="salary">Βοηθός Διαχειριστή</option>
                         <option value="ika">Εργοδοτική Εισ. ΙΚΑ ΤΕΑΜ</option>
                         <option value="water">ΕΥΔΑΠ</option>
                         <option value="energy">ΔΕΗ</option>
                         <option value="cleaning">Καθαριότητα</option>
                         <option value="light">Λαμπτήρες</option>
                         <option value="drains">Αποχέτευση</option>
+                        <option value="disinsectisation">Απεντόμωση</option>
                         <option value="garden">Συντήρηση Κήπου</option>
                         <option value="liftUpKeep">Ασανσέρ Συντήρηση</option>
                         <option value="liftRepair">Ασανσέρ Ανταλ. Επισκευή</option>
@@ -54,84 +66,136 @@
                         <option value="shared">Αμοιβή εκδ. Κοινοχρήστων</option>
                         <option value="otherExpenses">Λοιπά έξοδα</option>
                     </select>
+                        </div>
                 </div>
 
                 <div id="salary" class="form-group">
-                    <label for="name">Μισθός:</label>
+                    <label class="control-label col-sm-4" for="salary">Βοηθός Διαχειριστή:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="salary" value="">
-                    <button onclick="delFunction('salary')" type="button" class="btn" >delete</button>
+                    <button onclick="delFunction('salary')" type="button" class="btn-md" >delete</button>
+                    </div>
                 </div>
                 <div id="ika" class="form-group">
-                    <label for="name">Εργοδοτική Εισ. ΙΚΑ ΤΕΑΜ:</label>
+                    <label class="control-label col-sm-4" for="ika">Εργοδοτική Εισ. ΙΚΑ ΤΕΑΜ:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="ika" value="">
-                    <button onclick="delFunction('ika')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('ika')" type="button" class="btn-md">delete</button>
+                        </div>
                 </div>
                 <div id="water" class="form-group">
-                    <label for="name">ΕΥΔΑΠ:</label>
+                    <label class="control-label col-sm-4" for="water">ΕΥΔΑΠ:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="water" value="">
-                    <button onclick="delFunction('water')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('water')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
                 <div id="energy" class="form-group">
-                    <label for="name">ΔΕΗ:</label>
+                    <label class="control-label col-sm-4" for="energy">ΔΕΗ:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="energy" value="">
-                    <button onclick="delFunction('energy')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('energy')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
                 <div id="cleaning" class="form-group">
-                    <label for="name">Καθαριότητα:</label>
+                    <label class="control-label col-sm-4" for="cleaning">Καθαριότητα:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="cleaning" value="">
-                    <button onclick="delFunction('cleaning')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('cleaning')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
                 <div id="light" class="form-group">
-                    <label for="name">Λαμπτήρες:</label>
+                    <label class="control-label col-sm-4" for="light">Λαμπτήρες:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="light" value="">
-                    <button onclick="delFunction('light')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('light')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
                 <div id="drains" class="form-group">
-                    <label for="name">Αποχέτευση:</label>
+                    <label class="control-label col-sm-4" for="drains">Αποχέτευση:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="drains" value="">
-                    <button onclick="delFunction('drains')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('drains')" type="button" class="btn-md">delete</button>
+                    </div>
+                </div>
+                <div id="disinsectisation" class="form-group">
+                    <label class="control-label col-sm-4" for="disinsectisation">Απεντόμωση:</label>
+                    <div class="col-sm-5">
+                    <input type="text" class="form-control" name="disinsectisation" value="">
+                    <button onclick="delFunction('disinsectisation')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
                 <div id="garden" class="form-group">
-                    <label for="name">Συντήρηση Κήπου:</label>
+                    <label class="control-label col-sm-4" for="garden">Συντήρηση Κήπου:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="garden" value="">
-                    <button onclick="delFunction('garden')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('garden')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
                 <div id="liftUpKeep" class="form-group">
-                    <label for="name">Ασανσέρ Συντήρηση:</label>
+                    <label class="control-label col-sm-4" for="liftUpKeep">Ασανσέρ Συντήρηση:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="liftUpKeep" value="">
-                    <button onclick="delFunction('liftUpKeep')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('liftUpKeep')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
                 <div id="liftRepair" class="form-group">
-                    <label for="name">Ασανσέρ Ανταλ. Επισκευή:</label>
+                    <label class="control-label col-sm-4" for="liftRepair">Ασανσέρ Ανταλ. Επισκευή:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="liftRepair" value="">
-                    <button onclick="delFunction('liftRepair')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('liftRepair')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
                 <div id="heat" class="form-group">
-                    <label for="name">Πετρέλαιο/Αέριο:</label>
+                    <label class="control-label col-sm-4" for="heat">Πετρέλαιο/Αέριο:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="heat" value="">
-                    <button onclick="delFunction('heat')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('heat')" type="button" class="btn-md">delete</button>
+                     </div>
                 </div>
                 <div id="reserve" class="form-group">
-                    <label for="name">Αποθεματικό:</label>
+                    <label class="control-label col-sm-4" for="reserve">Αποθεματικό:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="reserve" value="">
-                    <button onclick="delFunction('reserve')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('reserve')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
                 <div id="shared" class="form-group">
-                    <label for="name">Αμοιβή εκδ. Κοινοχρήστων:</label>
+                    <label class="control-label col-sm-4" for="shared">Αμοιβή εκδ. Κοινοχρήστων:</label>
+                    <div class="col-sm-5">
                     <input  type="text" class="form-control" name="shared" value="">
-                    <button onclick="delFunction('shared')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('shared')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
                 <div id="otherExpenses" class="form-group">
-                    <label for="name">Λοιπά έξοδα:</label>
+                    <label class="control-label col-sm-4" for="otherExpenses">Λοιπά έξοδα:</label>
+                    <div class="col-sm-5">
                     <input type="text" class="form-control" name="otherExpenses" value="">
-                    <button onclick="delFunction('otherExpenses')" type="button" class="btn">delete</button>
+                    <button onclick="delFunction('otherExpenses')" type="button" class="btn-md">delete</button>
+                    </div>
                 </div>
+                <br>
+                <div class="text-center">
+                    <label>Μονάδες Θέρμανσης για κάθε Διαμέρισμα</label>
+                </div>
+                <br>
+                     <% if(typeof flatsShownNav !== 'undefined'){ %>
+                       <%  flatsShownNav.forEach(function( flatsShownNav){ %>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email"><%=flatsShownNav.flatNum%>:</label>
+                        <div class="col-sm-7">
+                            <input class=form-control" type="text" name="flatheatcount" value="">
+                            <input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav._id%>">
+                        </div>
+                    </div>
+                           <% }) %>
+                     <%}%>
+
                 <button type="submit" class="btn btn-primary">Καταχώρηση</button>
             </form>
         </div>
     </div>
 </div>
-
 <script>
     document.getElementById('salary').style.display='none';
     document.getElementById('ika').style.display='none';
@@ -140,6 +204,7 @@
     document.getElementById('cleaning').style.display='none';
     document.getElementById('light').style.display='none';
     document.getElementById('drains').style.display='none';
+    document.getElementById('disinsectisation').style.display='none';
     document.getElementById('garden').style.display='none';
     document.getElementById('liftUpKeep').style.display='none';
     document.getElementById('liftRepair').style.display='none';
@@ -164,6 +229,8 @@
             document.getElementById("light").style.display='block';
         if(x==='drains')
             document.getElementById("drains").style.display='block';
+        if(x==='disinsectisation')
+            document.getElementById("disinsectisation").style.display='block';
         if(x==='garden')
             document.getElementById("garden").style.display='block';
         if(x==='liftUpKeep')

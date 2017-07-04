@@ -10,31 +10,31 @@
             <form method="post" action="/users/block" id="blockPost">
                 <div class="form-group">
                     <label for="name">Διεύθυνση:</label>
-                    <input type="text" class="form-control" name="address" value="<%= address %>">
+                    <input type="text" class="form-control" name="address" value="<%= block.address %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Περιοχή:</label>
-                    <input type="text" class="form-control" name="location" value="<%= location %>">
+                    <input type="text" class="form-control" name="location" value="<%= block.location %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Τ.Κ:</label>
-                    <input type="text" class="form-control" name="postal" value="<%= postal %>">
+                    <input type="text" class="form-control" name="postal" value="<%= block.postal %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Όνομα Διαχειριστή:</label>
-                    <input type="text" class="form-control" name="nameRes" value="<%= nameRes %>">
+                    <input type="text" class="form-control" name="nameRes" value="<%= block.nameRes %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Τηλέφωνο:</label>
-                    <input type="text" class="form-control" name="phone" value="<%= phone %>">
+                    <input type="text" class="form-control" name="phone" value="<%= block.phone %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Κινητό:</label>
-                    <input type="text" class="form-control" name="mobile" value="<%= mobile %>">
+                    <input type="text" class="form-control" name="mobile" value="<%= block.mobile %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Σύνολο Διαμερισμάτων:</label>
-                    <input type="text" class="form-control" name="totalFlats" value="<%= totalFlats %>">
+                    <input type="text" class="form-control" name="totalFlats" value="<%= block.totalFlats %>">
                 </div>
                 <div class="form-group">
                     <label for="sel1">Είδος Θέρμανσης:</label>
@@ -50,35 +50,35 @@
             </form>
             <form method="post" action="/users/blockUpdate" id="blockUpdate">
                 <div class="form-group">
-                    <label for="name">Διεύθυνση:</label>
-                    <input type="text" class="form-control" name="address" value="<%= address %>">
+                    <label for="address">Διεύθυνση:</label>
+                    <input type="text" class="form-control" name="address" value="<%= block.address %>">
                 </div>
                 <div class="form-group">
-                    <label for="name">Περιοχή:</label>
-                    <input type="text" class="form-control" name="location" value="<%= location %>">
+                    <label for="location">Περιοχή:</label>
+                    <input type="text" class="form-control" name="location" value="<%= block.location %>">
                 </div>
                 <div class="form-group">
-                    <label for="name">Τ.Κ:</label>
-                    <input type="text" class="form-control" name="postal" value="<%= postal %>">
+                    <label for="postal">Τ.Κ:</label>
+                    <input type="text" class="form-control" name="postal" value="<%= block.postal %>">
                 </div>
                 <div class="form-group">
-                    <label for="name">Όνομα Διαχειριστή:</label>
-                    <input type="text" class="form-control" name="nameRes" value="<%= nameRes %>">
+                    <label for="nameRes">Όνομα Διαχειριστή:</label>
+                    <input type="text" class="form-control" name="nameRes" value="<%= block.nameRes %>">
                 </div>
                 <div class="form-group">
-                    <label for="name">Τηλέφωνο:</label>
-                    <input type="text" class="form-control" name="phone" value="<%= phone %>">
+                    <label for="phone">Τηλέφωνο:</label>
+                    <input type="text" class="form-control" name="phone" value="<%= block.phone %>">
                 </div>
                 <div class="form-group">
-                    <label for="name">Κινητό:</label>
-                    <input type="text" class="form-control" name="mobile" value="<%= mobile %>">
+                    <label for="mobile">Κινητό:</label>
+                    <input type="text" class="form-control" name="mobile" value="<%= block.mobile %>">
                 </div>
                 <div class="form-group">
-                    <label for="name">Σύνολο Διαμερισμάτων:</label>
-                    <input type="text" class="form-control" name="totalFlats" value="<%= totalFlats %>">
+                    <label for="totalFlats">Σύνολο Διαμερισμάτων:</label>
+                    <input type="text" class="form-control" name="totalFlats" value="<%= block.totalFlats %>">
                 </div>
                 <div class="form-group">
-                    <label for="sel1">Είδος Θέρμανσης:</label>
+                    <label for="heatType">Είδος Θέρμανσης:</label>
                     <select id='heatType' class="form-control" name="heatType">
                         <option value="Κεντρική θέρμανση">Κεντρική θέρμανση</option>
                         <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης">Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης</option>
@@ -89,6 +89,14 @@
 
                 <button type="submit" class="btn btn-primary">Διόρθωση Στοιχείων</button>
             </form>
+            <br>
+            <% if(errors != undefined){ %>
+            <ul class="list-group">
+                <% errors.forEach(function(error){ %>
+                <li class="list-group-item list-group-item-danger"><%= error.msg %></li>
+                <% }) %>
+            </ul>
+            <%}%>
         </div>
     </div>
 </div>
@@ -104,25 +112,25 @@
 </script>
 <%}%>
 
-<% if(heatType=='Κεντρική θέρμανση'){%>
+<% if(block.heatType=='Κεντρική θέρμανση'){%>
 <script>
     document.getElementById("heatType").value='Κεντρική θέρμανση';
 </script>
 <%}%>
 
-<% if(heatType=='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης'){%>
+<% if(block.heatType=='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης'){%>
 <script>
     document.getElementById("heatType").value='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης';
 </script>
 <%}%>
 
-<% if(heatType=='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες'){%>
+<% if(block.heatType=='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες'){%>
 <script>
     document.getElementById("heatType").value='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες';
 </script>
 <%}%>
 
-<% if(heatType=='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες'){%>
+<% if(block.heatType=='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες'){%>
 <script>
     document.getElementById("heatType").value='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες';
 </script>

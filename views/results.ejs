@@ -99,6 +99,7 @@
                 <tbody>
             <% if(typeof flatsShownNav !== 'undefined'){ %>
             <% var totalExpKoin=0 %>
+            <% var totalExpLift=0 %>
                 <%  flatsShownNav.forEach(function( flatsShownNav){ %>
                 <tr>
                     <td><%=  flatsShownNav.flatNum %></td>
@@ -107,13 +108,14 @@
                     <td class="text-center"><%=  flatsShownNav.liftratio %></td>
                     <td class="text-center"><%=  flatsShownNav.flatxil %></td>
                     <td class="text-center"><%=  ((flatsShownNav.koinratio*totalExpenses)/1000).toFixed(2) %></td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><%=  ((flatsShownNav.liftratio*totalExpenses)/1000).toFixed(2) %></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
             <% totalExpKoin+=((flatsShownNav.koinratio*totalExpenses)/1000)%>
+            <% totalExpLift+=((flatsShownNav.liftratio*totalExpenses)/1000)%>
 
                 <% }) %>
             <%var totalKin= 0%>
@@ -132,7 +134,7 @@
                 <th class="text-center"><%= totalLift%></th>
                 <th class="text-center"><%= totalXil%></th>
                 <th class="text-center"><%= totalExpKoin%></th>
-                <th></th>
+                <th class="text-center"><%= totalExpLift%></th>
                 <th></th>
                 <th></th>
                 <th></th>

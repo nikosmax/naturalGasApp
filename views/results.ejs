@@ -41,8 +41,9 @@
                 <button type="submit" class="btn btn-primary">Αναζήτηση</button>
                 </form>
             <br>
+            <h4 class="text-center">ΣΥΓΚΕΝΤΡΩΤΙΚΗ ΚΑΤΑΣΤΑΣΗ ΚΟΙΝΟΧΡΗΣΤΩΝ ΔΑΠΑΝΩΝ</h4>
             <%if(totalExpenses){%>
-                    <h4 class="text-center">Έξοδα έτους <%= expenses['Έτος']%> Μήνας <%= expenses['Μήνας']%></h4>
+                    <h4 class="text-center">Μήνας: <%= expenses['Μήνας']%> - Έτος: <%= expenses['Έτος']%></h4>
             <%}%>
 
             <%if(totalExpenses){%>
@@ -76,17 +77,9 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>Ασανσέρ</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>Θέρμαση</th>
-                    <th>Πάγιο Θέρμασνης</th>
-                    <th></th>
-                    <th></th>
+                    <th class="text-center" colspan="2"></th>
+                    <th class="text-center" colspan="3">ΧΙΛΙΙΟΣΤΑ ΕΠΙΒΑΡΥΝΣΕΙΣ</th>
+                    <th class="text-center" colspan="6">ΕΠΙΒΑΡΥΝΣΕΙΣ ΣΕ ΕΥΡΩ</th>
                 </tr>
 
                 <tr>
@@ -97,29 +90,57 @@
                     <th>Θέρμανσης</th>
                     <th>Κοινόχρηστα</th>
                     <th>Ασανσέρ</th>
-                    <th>Θέρμαση</th>
+                    <th>Θέρμανση</th>
                     <th>Πάγιο Θέρμασνης</th>
                     <th>Ιδιοκτητών</th>
-                    <th>Σύνολο Διαμερίσματος</th>
+                    <th>Σύνολο</th>
                 </tr>
                 </thead>
                 <tbody>
+            <% if(typeof flatsShownNav !== 'undefined'){ %>
+            <% var totalExpKoin=0 %>
+                <%  flatsShownNav.forEach(function( flatsShownNav){ %>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%=  flatsShownNav.flatNum %></td>
+                    <td><%=  flatsShownNav.lastname %></td>
+                    <td class="text-center"><%=  flatsShownNav.koinratio %></td>
+                    <td class="text-center"><%=  flatsShownNav.liftratio %></td>
+                    <td class="text-center"><%=  flatsShownNav.flatxil %></td>
+                    <td class="text-center"><%=  ((flatsShownNav.koinratio*totalExpenses)/1000).toFixed(2) %></td>
+                    <td class="text-center"></td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
+            <% totalExpKoin+=((flatsShownNav.koinratio*totalExpenses)/1000)%>
+
+                <% }) %>
+            <%var totalKin= 0%>
+            <%var totalLift= 0%>
+            <%var totalXil= 0%>
+            <%  flatsShownNav.forEach(function( flatsShownNav){ %>
+            <% totalKin+=flatsShownNav.koinratio%>
+            <% totalLift+=flatsShownNav.liftratio%>
+            <% totalXil+=flatsShownNav.flatxil%>
+
+            <%})%>
+
+            <tr>
+                <th class="text-center" colspan="2">Σύνολα</th>
+                <th class="text-center"><%= totalKin%></th>
+                <th class="text-center"><%= totalLift%></th>
+                <th class="text-center"><%= totalXil%></th>
+                <th class="text-center"><%= totalExpKoin%></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <%}%>
                 </tbody>
             </table>
-
         </div>
     </div>
 </div>

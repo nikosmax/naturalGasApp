@@ -110,6 +110,7 @@ router.post('/block',function(req,res){
             phone:      req.body.phone,
             mobile:     req.body.mobile,
             heatType:   req.body.heatType,
+            heatFixed:  req.body.heatFixed,
             totalFlats: req.body.totalFlats,
             user :      req.user._id
         })
@@ -138,6 +139,7 @@ router.post('/blockUpdate',function(req,res){
             block.phone=req.body.phone;
             block.mobile=req.body.mobile;
             block.heatType=req.body.heatType;
+            block.heatFixed=req.body.heatFixed;
             block.totalFlats=req.body.totalFlats;
 
         block.save(function(err,update){
@@ -387,12 +389,16 @@ router.post('/results',function(req,res){
             for(var key in objTotal){
                 totalExpenses+=objTotal[key];
             }
+    FlatHeatCount.find({expenses:expenses._id}, null, {sort: {_id: 1}}, function(err,flatHeatCount){
+        if(err) console.log(err);
             res.render('results',{
                 name: req.user.name,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
                 expenses:greekExpenses,
+                flatHeatCount:flatHeatCount,
                 totalExpenses:totalExpenses
             })
+          })
         }
     })
 })

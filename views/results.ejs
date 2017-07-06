@@ -41,12 +41,10 @@
                 <button type="submit" class="btn btn-primary">Αναζήτηση</button>
                 </form>
             <br>
-            <h4 class="text-center">ΣΥΓΚΕΝΤΡΩΤΙΚΗ ΚΑΤΑΣΤΑΣΗ ΚΟΙΝΟΧΡΗΣΤΩΝ ΔΑΠΑΝΩΝ</h4>
-            <%if(totalExpenses){%>
-                    <h4 class="text-center">Μήνας: <%= expenses['Μήνας']%> - Έτος: <%= expenses['Έτος']%></h4>
-            <%}%>
 
-            <%if(totalExpenses){%>
+        <%if(totalExpenses){%><!-- Αν έχουμε έξοδα τότε εμφανίζονται όλοι οι πίνακες) -->
+            <h4 class="text-center">ΣΥΓΚΕΝΤΡΩΤΙΚΗ ΚΑΤΑΣΤΑΣΗ ΚΟΙΝΟΧΡΗΣΤΩΝ ΔΑΠΑΝΩΝ</h4>
+            <h4 class="text-center">Μήνας: <%= expenses['Μήνας']%> - Έτος: <%= expenses['Έτος']%></h4>
             <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -59,8 +57,17 @@
                 <% if(expenses.hasOwnProperty(key)){%>
                 <% if(expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας'){%>
                 <tr>
-                    <td><%=key%></td>
-                    <td><%=expenses[key]%></td>
+                    <%if(key==='Πετρέλαιο/Αέριο'){%>
+                         <td><%=key%></td>
+                         <td><%= 80*expenses[key]/100%></td>
+                         <tr>
+                         <td>Πάγιο Θέρμανσης</td>
+                         <td><%=20*expenses[key]/100%></td>
+                </tr>
+                    <%}else {%>
+                        <td><%=key%></td>
+                        <td><%= expenses[key]%></td>
+                    <%}%>
                 </tr>
                 <%}%>
                 <%}%>
@@ -72,7 +79,6 @@
 
                 </tbody>
             </table>
-            <%}%>
 
             <table class="table table-bordered">
                 <thead>
@@ -81,66 +87,94 @@
                     <th class="text-center" colspan="3">ΧΙΛΙΙΟΣΤΑ ΕΠΙΒΑΡΥΝΣΕΙΣ</th>
                     <th class="text-center" colspan="6">ΕΠΙΒΑΡΥΝΣΕΙΣ ΣΕ ΕΥΡΩ</th>
                 </tr>
-
                 <tr>
                     <th>ΑΑ</th>
                     <th>Επώνυμο</th>
                     <th>Κοινοχρήστων</th>
                     <th>Ασανσέρ</th>
-                    <th>Θέρμανσης</th>
+                    <th class="text-center">Μονάδες Θέρμανσης</th>
                     <th>Κοινόχρηστα</th>
                     <th>Ασανσέρ</th>
                     <th>Θέρμανση</th>
-                    <th>Πάγιο Θέρμασνης</th>
+                    <th>Πάγιο</th>
                     <th>Ιδιοκτητών</th>
                     <th>Σύνολο</th>
                 </tr>
                 </thead>
                 <tbody>
+
             <% if(typeof flatsShownNav !== 'undefined'){ %>
-            <% var totalExpKoin=0 %>
-            <% var totalExpLift=0 %>
-                <%  flatsShownNav.forEach(function( flatsShownNav){ %>
+                <% var totalExpKoin=0 %>
+                <% var totalExpLift=expenses['Ασανσέρ Συντήρηση']+expenses['Ασανσέρ Ανταλ. Επισκευή']%> <!-- Συνολικά έξοδα ασανσερ συντήρηση συν επισκευη ανταλλακτικά -->
+                <% var count=0%>
+                <% var sumΩixXil=0%>
+
+            <!-- Υπολογισμός του sumOf(Ωi x Χιλιοστά θέρμανσης) -->
+            <%  flatsShownNav.forEach(function( flatsShownNav){ %>
+                <% sumΩixXil+= flatHeatCount[count].flatheatcount*flatsShownNav.koinratio %>
+                <%count+=1%>
+            <%})%>
+            <% count=0%> <!-- Μηδενισμός του count για συνέχεια στον επόμενο υπολογισμό -->
+
+            <!-- Υπολογισμός εξόδων για κάθε διαμέρισμα -->
+            <%  flatsShownNav.forEach(function( flatsShownNav){ %>
                 <tr>
                     <td><%=  flatsShownNav.flatNum %></td>
                     <td><%=  flatsShownNav.lastname %></td>
-                    <td class="text-center"><%=  flatsShownNav.koinratio %></td>
-                    <td class="text-center"><%=  flatsShownNav.liftratio %></td>
-                    <td class="text-center"><%=  flatsShownNav.flatxil %></td>
-                    <td class="text-center"><%=  ((flatsShownNav.koinratio*totalExpenses)/1000).toFixed(2) %></td>
-                    <td class="text-center"><%=  ((flatsShownNav.liftratio*totalExpenses)/1000).toFixed(2) %></td>
+                    <td class="text-center"><%= flatsShownNav.koinratio %></td>
+                    <td class="text-center"><%= flatsShownNav.liftratio %></td>
+                    <td class="text-center"><%= flatHeatCount[count].flatheatcount%></td>
+                    <td class="text-center"><%= ((flatsShownNav.koinratio*(totalExpenses-totalExpLift-expenses['Πετρέλαιο/Αέριο']))/1000).toFixed(2) %></td>
+                    <td class="text-center"><%= ((flatsShownNav.liftratio*totalExpLift)/1000).toFixed(2) %></td>
+                    <td class="text-center"><%= ((flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*80*expenses['Πετρέλαιο/Αέριο']/100)/sumΩixXil).toFixed(2) %></td>
+                    <td class="text-center"><%= ((flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*20*expenses['Πετρέλαιο/Αέριο']/100)/sumΩixXil).toFixed(2) %></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td class="text-center"><%=(((flatsShownNav.koinratio*(totalExpenses-totalExpLift))/1000)+((flatsShownNav.liftratio*totalExpLift)/1000)+((flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*expenses['Πετρέλαιο/Αέριο'])/sumΩixXil)).toFixed(2)%></td>
                 </tr>
-            <% totalExpKoin+=((flatsShownNav.koinratio*totalExpenses)/1000)%>
-            <% totalExpLift+=((flatsShownNav.liftratio*totalExpenses)/1000)%>
+                    <%count+=1%>
+            <% }) %>
 
-                <% }) %>
-            <%var totalKin= 0%>
-            <%var totalLift= 0%>
-            <%var totalXil= 0%>
+            <!-- Υπολογισμός σύνολων τελευταίας γραμμής για έλεγχο -->
+            <% var totalKin= 0%> <!-- Σύνολο χιλιοστά κοινοχρήστων-->
+            <% var totalLift= 0%> <!-- Σύνολο χιλιοστά ασανερ -->
+            <% var totalXil= 0%>
+            <% var totalHeat=0%> <!-- Σύνολο εξοδα θέρμανσης -->
+            <% var totalHeatFixed=0%> <!-- Σύνολο εξοδα πάγιο θέρμανσης -->
+            <% var checkTotal=0%> <!-- Σύνολο εξόδων -->
+            <% count=0%>
+
             <%  flatsShownNav.forEach(function( flatsShownNav){ %>
-            <% totalKin+=flatsShownNav.koinratio%>
-            <% totalLift+=flatsShownNav.liftratio%>
-            <% totalXil+=flatsShownNav.flatxil%>
-
+                <% totalKin+=flatsShownNav.koinratio%>
+                <% totalLift+=flatsShownNav.liftratio%>
+                <% totalXil+=flatsShownNav.flatxil%>
+                <% totalExpKoin+=((flatsShownNav.koinratio*(totalExpenses-totalExpLift-expenses['Πετρέλαιο/Αέριο']))/1000)%>
+                <% totalHeat+=(flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*80*expenses['Πετρέλαιο/Αέριο']/100)/sumΩixXil%>
+                <% totalHeatFixed+=(flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*20*expenses['Πετρέλαιο/Αέριο']/100)/sumΩixXil%>
+                <% checkTotal+=((flatsShownNav.koinratio*(totalExpenses-totalExpLift-expenses['Πετρέλαιο/Αέριο']))/1000)+((flatsShownNav.liftratio*totalExpLift)/1000)+((flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*expenses['Πετρέλαιο/Αέριο'])/sumΩixXil)%>
+                <%count+=1%>
             <%})%>
 
+            <!-- Υπολογισμός σύνολο μονάδων θέρμανσης -->
+            <%var totalCounts=0%> <!-- Σύνολο μονάδες Θέρμανσης-->
+            <% for( var i=0; i<flatHeatCount.length; i++){%>
+                <% totalCounts+=flatHeatCount[i].flatheatcount%>
+            <%}%>
+
+            <!-- Totals last row -->
             <tr>
                 <th class="text-center" colspan="2">Σύνολα</th>
-                <th class="text-center"><%= totalKin%></th>
-                <th class="text-center"><%= totalLift%></th>
-                <th class="text-center"><%= totalXil%></th>
-                <th class="text-center"><%= totalExpKoin%></th>
-                <th class="text-center"><%= totalExpLift%></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th class="text-center"><%= totalKin%></th> <!-- Σύνολο χιλιοστά κοινοχρήστων-->
+                <th class="text-center"><%= totalLift%></th> <!-- Σύνολο χιλιοστά ασανερ -->
+                <th class="text-center"><%= totalCounts%></th> <!-- Σύνολο μονάδες Θέρμανσης-->
+                <th class="text-center"><%= totalExpKoin.toFixed(2)%></th> <!-- Σύνολο εξοδα κοινοχρήστων -->
+                <th class="text-center"><%= totalExpLift.toFixed(2)%></th> <!-- Σύνολο εξοδα ασανσερ -->
+                <th class="text-center"><%= totalHeat.toFixed(2)%></th> <!-- Σύνολο εξοδα θέρμανσης -->
+                <th class="text-center"><%= totalHeatFixed.toFixed(2)%></th> <!-- Σύνολο εξοδα πάγιο θέρμανσης -->
+                <th class="text-center"></th>
+                <th class="text-center"><%= checkTotal.toFixed(2)%></th> <!-- Σύνολο εξόδων -->
             </tr>
             <%}%>
+        <%}%><!-- end of if totalExpenses -->
                 </tbody>
             </table>
         </div>

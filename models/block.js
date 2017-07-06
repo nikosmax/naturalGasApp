@@ -9,6 +9,7 @@ var blockSchema= new Schema({
     phone:      Number,
     mobile:     Number,
     heatType:   String,
+    heatFixed:  Number,
     totalFlats: {type:Number,required: true},
     user :      [{ type: Schema.Types.ObjectId, ref: 'User' }]
 })

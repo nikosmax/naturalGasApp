@@ -1,0 +1,114 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th id='calYear' class="text-center" colspan="3"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td id='Jan' class="text-center" >Jan</td>
+      <td id='Feb' class="text-center" >Feb</td>
+      <td id='Mar' class="text-center" >Mar</td>
+    </tr>
+    <tr>
+        <td id='Apr' class="text-center" >Apr</td>
+        <td id='May' class="text-center" >May</td>
+        <td id='Jun' class="text-center" >Jun</td>
+    </tr>
+    <tr>
+        <td id='Jul' class="text-center" >Jul</td>
+        <td id='Aug' class="text-center" >Aug</td>
+        <td id='Sep' class="text-center" >Sep</td>
+    </tr>
+    <tr>
+        <td id='Oct' class="text-center" >Oct</td>
+        <td id='Nov' class="text-center" >Nov</td>
+        <td id='Dec' class="text-center" >Dec</td>
+    </tr>
+
+    </tbody>
+</table>
+
+<script>
+    var d= new Date();
+    document.getElementById("calYear").innerHTML = d.getFullYear();
+    var tdTable=0;
+
+    <%for (var i=0; i<calendar.length; i++){%>
+
+    <%if(calendar[i].month==='Ιανουάριος'){%>
+    tdTable=document.getElementById("Jan");
+    tdTable.style.backgroundColor  = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Jan</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Φεβρουάριος'){%>
+    tdTable=document.getElementById("Feb")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Feb</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Μάρτιος'){%>
+    tdTable=document.getElementById("Mar")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Mar</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Απρίλιος'){%>
+    tdTable=document.getElementById("Apr")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Apr</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Μάιος'){%>
+    tdTable=document.getElementById("May")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">May</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Ιούνιος'){%>
+    tdTable=document.getElementById("Jun")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Jun</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Ιούλιος'){%>
+    tdTable=document.getElementById("Jul")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Jul</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Αύγουστος'){%>
+    tdTable=document.getElementById("Aug")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Aug</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Σεπτέμβριος'){%>
+    tdTable=document.getElementById("Sep")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Sep</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Οκτώβριος'){%>
+    tdTable=document.getElementById("Oct")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Oct</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Νοέμβριος'){%>
+    tdTable=document.getElementById("Nov")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Nov</a>';
+    <%}%>
+
+    <%if(calendar[i].month==='Δεκέμβριος'){%>
+    tdTable=document.getElementById("Dec")
+    tdTable.style.backgroundColor = "lightgreen";
+    tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">Dec</a>';
+    <%}%>
+    <%}%>
+
+</script>
+
+

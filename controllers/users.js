@@ -17,6 +17,7 @@ router.use(function requireLogin (req, res, next) {
     }
 })
 
+//Εμφάνιση της λίστας διαμερισματων στην αριστερή navigation bar
 router.use(function flatsShowNav(req,res,next){
     Block.findOne({user:req.user._id},function(err,block) {
         if (block){
@@ -35,6 +36,23 @@ router.use(function flatsShowNav(req,res,next){
     })
 })
 
+//Δημιουργία του Calendar  σε όλες τις σελίδες
+router.use(function flatsShowCalendar(req,res,next){
+    Expenses.find({block:req.blockData._id},function(err,expenses) {
+        if(err) console.log(err);
+        //console.log(expenses);
+        if (expenses){
+            req.calendarShow = expenses;
+            res.locals.calendarShow = expenses;
+            next();
+        } else{
+            req.calendarShow = 'undefined';
+            res.locals.calendarShow = 'undefined';
+            next();
+        }
+    })
+})
+
 //User profile page
 router.get('/profile',function(req,res){
     var d=new Date(req.user.created_date);
@@ -44,7 +62,8 @@ router.get('/profile',function(req,res){
         name: req.user.name,
         username:req.user.username,
         date:mydate,
-        flatsShownNav:req.flatsShow
+        flatsShownNav:req.flatsShow,
+        calendar:req.calendarShow
     });
 })
 
@@ -71,6 +90,7 @@ Block.findOne({'user': req.user._id},function(err,block) {
         res.render('block', {
         name: req.user.name,
         flatsShownNav:req.flatsShow,
+        calendar:req.calendarShow,
         block:block,
         flag: 1
     });
@@ -79,6 +99,7 @@ Block.findOne({'user': req.user._id},function(err,block) {
             name: req.user.name,
             block:{},
             flatsShownNav:req.flatsShow,
+            calendar:req.calendarShow,
             flag: 0
         });
     }
@@ -97,6 +118,7 @@ router.post('/block',function(req,res){
         res.render('block',{
             name: req.user.name,
             flatsShownNav:req.flatsShow,
+            calendar:req.calendarShow,
             block:{},
             flag:0,
             errors:errors
@@ -122,6 +144,7 @@ router.post('/block',function(req,res){
                 name:req.user.name,
                 block:newBlock,
                 flatsShownNav:req.flatsShow,
+                calendar:req.calendarShow,
                 flag:       1
             });
         })
@@ -159,6 +182,7 @@ router.get('/flat',function(req,res){
             flatsCount:req.blockData.totalFlats,
             count:count,
             flatsShownNav:req.flatsShow,
+            calendar:req.calendarShow,
             flat: 'undefined'
         });
     })
@@ -196,6 +220,7 @@ router.post('/flat',function(req,res){
                     flatsCount:req.blockData.totalFlats,
                     count:count,
                     flatsShownNav:req.flatsShow,//show flats in left navigation menu
+                    calendar:req.calendarShow,
                     errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία'
                 })
             })
@@ -211,6 +236,7 @@ router.get('/flat/:flatId',function(req,res){
             name: req.user.name,
             flatsCount:req.blockData.totalFlats,
             flatsShownNav:req.flatsShow,//show flats in left navigation menu
+            calendar:req.calendarShow,
             count:null,
             flat:flat
         })
@@ -239,6 +265,7 @@ router.post('/flat/:flatId',function(req,res){
                 name: req.user.name,
                 flatsCount:req.blockData.totalFlats,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
+                calendar:req.calendarShow,
                 count:null,
                 flat:flat
             })
@@ -251,7 +278,11 @@ router.get('/monthexpenses',function(req,res){
     res.render('monthExpenses',{
         name: req.user.name,
         flatsShownNav:req.flatsShow,//show flats in left navigation menu
-        errorMessage:false
+        calendar:req.calendarShow,
+        errorMessage:false,
+        expenses: 'undefined',
+        flatHeatCount:'undefined',//μονάδες θέρμανσης
+        id:''
     });
 })
 
@@ -263,7 +294,11 @@ router.post('/monthexpenses',function(req,res){
             res.render('monthExpenses',{
                 name: req.user.name,
                 flatsShownNav: req.flatsShow,//show flats in left navigation menu,
-                errorMessage:'Έχει γίνει υπολογισμός για την συγκεκριμένη επιλογή έτους και μήνα'
+                calendar:req.calendarShow,
+                errorMessage:'Έχει γίνει υπολογισμός για την συγκεκριμένη επιλογή έτους και μήνα',
+                expenses: 'undefined',
+                flatHeatCount:'undefined',//μονάδες θέρμανσης
+                id:''
             })
         }else {
             var newExpenses = new Expenses({
@@ -326,11 +361,75 @@ router.post('/monthexpenses',function(req,res){
     })
 })
 
+//Get month expenses for correction
+router.get('/monthexpenses/:monthexpensesId',function(req,res){
+    Expenses.findOne({_id: req.params.monthexpensesId},function(err,expenses){
+        if(err) console.log(err);
+
+        var filterExpenses = {
+            year:'',
+            month:'',
+            salary:'',
+            ika:'',
+            water:'',
+            energy:'',
+            cleaning:'',
+            light:'',
+            drains:'',
+            disinsectisation:'',
+            garden:'',
+            liftUpKeep:'',
+            liftRepair:'',
+            heat:'',
+            reserve:'',
+            shared:'',
+            otherExpenses:''
+        };
+        filterExpenses['year']=expenses.year;
+        filterExpenses['month']=expenses.month;
+        filterExpenses['salary']=expenses.salary;
+        filterExpenses['ika']=expenses.ika;
+        filterExpenses['water']=expenses.water;
+        filterExpenses['energy']=expenses.energy;
+        filterExpenses['cleaning']=expenses.cleaning;
+        filterExpenses['light']=expenses.light;
+        filterExpenses['drains']=expenses.drains;
+        filterExpenses['disinsectisation']=expenses.disinsectisation;
+        filterExpenses['garden']=expenses.garden;
+        filterExpenses['liftUpKeep']=expenses.liftUpKeep;
+        filterExpenses['liftRepair']=expenses.liftRepair;
+        filterExpenses['heat']=expenses.heat;
+        filterExpenses['reserve']=expenses.reserve;
+        filterExpenses['shared']=expenses.shared;
+        filterExpenses['otherExpenses']=expenses.otherExpenses;
+
+    FlatHeatCount.find({expenses:expenses._id}, null, {sort: {_id: 1}}, function(err,flatHeatCount) {
+        if (err) console.log(err);
+        res.render('monthExpenses', {
+            name: req.user.name,//show user name in left navigation menu
+            flatsShownNav: req.flatsShow,//show flats in left navigation menu
+            calendar: req.calendarShow,//show calendar in left navigation menu
+            expenses: filterExpenses,
+            id: expenses._id,
+            flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
+            errorMessage: false
+        })
+      })
+    })
+})
+
+//Post expenses data for correction
+router.post('/monthexpenses/:monthexpensesId',function(req,res){
+
+           console.log('saved');
+})
+
 //Results page
 router.get('/results',function(req,res){
     res.render('results',{
         name: req.user.name,
         flatsShownNav:req.flatsShow,//show flats in left navigation menu
+        calendar:req.calendarShow,
         expenses:'',
         totalExpenses:''
     });
@@ -394,9 +493,11 @@ router.post('/results',function(req,res){
             res.render('results',{
                 name: req.user.name,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
-                expenses:greekExpenses,
-                flatHeatCount:flatHeatCount,
-                totalExpenses:totalExpenses
+                calendar:req.calendarShow,
+                expenses:greekExpenses,//Τα έξοδα με ελληνικούς τίτλους
+                flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
+                blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies
+                totalExpenses:totalExpenses//Το σύνολο όλων των εξόδων
             })
           })
         }

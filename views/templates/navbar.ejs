@@ -1,26 +1,22 @@
 <div class="col-sm-3 sidenav">
     <h4><%= name %> page</h4>
+    <div>
+        <% include calendar.ejs %>
+    </div>
     <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="/users/profile">Edit profile</a></li>
-        <li><a href="/users/block">1.Πολυκατοικία</a></li>
-        <li><a href="/users/flat">2.Διαμερίσματα</a></li>
+        <li class="active"><a href="/users/block">1.Πολυκατοικία</a></li>
+        <li class="active"><a href="/users/flat">2.Διαμερίσματα</a></li>
+        <br>
         <% if(typeof flatsShownNav !== 'undefined'){ %>
         <ul class="list-group">
             <%  flatsShownNav.forEach(function( flatsShownNav){ %>
-            <li class="list-group-item list-group-item-info"><a href="/users/flat/<%=flatsShownNav._id %>"><%=  flatsShownNav.flatNum %></a></li>
+            <li class="list-group-item list-group-item-info"><a href="/users/flat/<%=flatsShownNav._id %>"><%=  flatsShownNav.flatNum %>:  <%=  flatsShownNav.lastname %> </a></li>
             <% }) %>
         </ul>
         <%}%>
-        <li><a href="/users/monthExpenses">3.Έξοδα Μήνα</a></li>
-        <li><a href="/users/results">4.Αποτελέσματα</a></li>
-        <li><a href="#section3">5.Εκτύπωση</a></li>
+        <li class="active"><a href="/users/monthExpenses">3.Έξοδα Μήνα</a></li>
+        <li class="active"><a href="/users/results">4.Αποτελέσματα</a></li>
+        <li class="active"><a href="#section3">5.Εκτύπωση</a></li>
     </ul><br>
-    <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search Blog..">
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="button">
-              <span class="glyphicon glyphicon-search"></span>
-          </button>
-        </span>
-    </div>
 </div>

@@ -345,16 +345,16 @@ router.post('/monthexpenses',function(req,res){
                              flatCountsArray.push(flatCounts) ;
                              */
                             flatCounts.save(function (err) {
-                                if (err) console.log(err);
-                                else {
-                                    console.log('Flat counts saved successfully');
-                                }
-                            })
-                        }
-                        res.redirect('monthExpenses');
-                    }
-                })
-            }, function (err) {
+                if (err) console.log(err);
+                else {
+                    console.log('Flat counts saved successfully');
+                }
+            })
+            }
+            res.redirect('monthExpenses');
+        }
+    })
+}, function (err) {
                 if (err) console.log(err);
             })
         }
@@ -420,8 +420,41 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
 
 //Post expenses data for correction
 router.post('/monthexpenses/:monthexpensesId',function(req,res){
+    Expenses.findOne({_id: req.params.monthexpensesId},function(err,expenses) {
+        if(err) console.log(err);
 
-           console.log('saved');
+            expenses.year= req.body.year;
+            expenses.month= req.body.month;
+            expenses.salary= req.body.salary;
+            expenses.ika=req.body.ika;
+            expenses.water= req.body.water;
+            expenses.energy= req.body.energy;//ΔΕΗ
+            expenses.cleaning= req.body.cleaning;
+            expenses.light= req.body.light;
+            expenses.drains= req.body.drains;//Αποχέτευση
+            expenses.disinsectisation= req.body.disinsectisation;//Απεντόμωση
+            expenses.garden= req.body.garden;
+            expenses.liftUpKeep= req.body.liftUpKeep;
+            expenses.liftRepair= req.body.liftRepair;
+            expenses.heat= req.body.heat;//Θέρμανση
+            expenses.reserve= req.body.reserve;//Αποθεματικό
+            expenses.shared= req.body.shared;//Έκδοση κοινοχρήστων
+            expenses.otherExpenses= req.body.otherExpenses;
+
+        expenses.save(function(err){
+            if(err) console.log(err);
+            console.log('expenses saved');
+            res.render('monthExpenses',{
+                name: req.user.name,
+                flatsShownNav:req.flatsShow,//show flats in left navigation menu
+                calendar:req.calendarShow,
+                errorMessage:false,
+                expenses: 'undefined',
+                flatHeatCount:'undefined',//μονάδες θέρμανσης
+                id:''
+            });
+        })
+    })
 })
 
 //Results page
@@ -440,7 +473,7 @@ router.post('/results',function(req,res){
     Expenses.findOne({year:req.body.year,month:req.body.month},function(err,expenses){
         if(err) console.log(err);
         if(expenses){
-            var greekExpenses = {
+            var greekExpenses = {//object for display form labels in greeks
              Έτος:'',
              Μήνας:'',
              'Βοηθός Διαχειριστή':'',
@@ -493,7 +526,7 @@ router.post('/results',function(req,res){
             res.render('results',{
                 name: req.user.name,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
-                calendar:req.calendarShow,
+                calendar:req.calendarShow,// calendar with months
                 expenses:greekExpenses,//Τα έξοδα με ελληνικούς τίτλους
                 flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
                 blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies

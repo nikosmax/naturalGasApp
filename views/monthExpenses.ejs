@@ -462,7 +462,7 @@
 
     function expensesCorrectionFunction() {
         var x = document.getElementById("selectCorrectionExpenses").value;
-        if(x==='salary'){}
+        if(x==='salary')
         document.getElementById("salary2").style.display='block';
         if(x==='ika')
             document.getElementById("ika2").style.display='block';
@@ -496,6 +496,13 @@
 
     function delFunction(id){
         document.getElementById(id).style.display='none';
+        <!-- βρίσκουμε το child του div (με το id που έχουμε καθορίσει)
+         με όνομα  input για να θέσουμε την τιμή του
+         div μέσα σε div πρέπει να περάσουμε στο δεύτερο div για να πάρουμε
+         τα childs -->
+        var textChild= document.getElementById(id).childNodes;
+        var secDiv=textChild[3].childNodes;
+        secDiv[1].value=null;
     }
 
 </script>

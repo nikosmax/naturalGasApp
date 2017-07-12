@@ -288,7 +288,7 @@ router.get('/monthexpenses',function(req,res){
 
 //Put Month expenses
 router.post('/monthexpenses',function(req,res){
-    Expenses.findOne({year:req.body.year,month:req.body.month},function(err,expenses){
+    Expenses.findOne({year:req.body.year,month:req.body.month,block: req.blockData._id},function(err,expenses){
         if(err) console.log(err);
         if(expenses){
             res.render('monthExpenses',{
@@ -454,6 +454,7 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                 id:''
             });
         })
+
     })
 })
 
@@ -470,7 +471,7 @@ router.get('/results',function(req,res){
 
 //Results post page find
 router.post('/results',function(req,res){
-    Expenses.findOne({year:req.body.year,month:req.body.month},function(err,expenses){
+    Expenses.findOne({year:req.body.year,month:req.body.month,block: req.blockData._id},function(err,expenses){
         if(err) console.log(err);
         if(expenses){
             var greekExpenses = {//object for display form labels in greeks

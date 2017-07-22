@@ -62,6 +62,8 @@
                         <option value="liftUpKeep">Ασανσέρ Συντήρηση</option>
                         <option value="liftRepair">Ασανσέρ Ανταλ. Επισκευή</option>
                         <option value="heat">Πετρέλαιο/Αέριο</option>
+                        <option value="heatUpKeep">Συντήρηση Καυστήρα/Λέβητα</option>
+                        <option value="heatRepair">Επισκευή Καυστήρα/Λέβητα</option>
                         <option value="reserve">Αποθεματικό</option>
                         <option value="shared">Αμοιβή εκδ. Κοινοχρήστων</option>
                         <option value="otherExpenses">Λοιπά έξοδα</option>
@@ -153,6 +155,21 @@
                     <button onclick="delFunction('heat')" type="button" class="btn-md">delete</button>
                      </div>
                 </div>
+                <div id="heatUpKeep" class="form-group">
+                    <label class="control-label col-sm-4" for="heat">Συντήρηση Καυστήρα/Λέβητα:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="heatUpKeep" value="<%=expenses.heatUpKeep%>">
+                        <button onclick="delFunction('heatUpKeep')" type="button" class="btn-md">delete</button>
+                    </div>
+                </div>
+                <div id="heatRepair" class="form-group">
+                    <label class="control-label col-sm-4" for="heatRepair">Επισκευή Καυστήρα/Λέβητα:</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="heatRepair" value="<%=expenses.heatRepair%>">
+                        <button onclick="delFunction('heatRepair')" type="button" class="btn-md">delete</button>
+                    </div>
+                </div>
+
                 <div id="reserve" class="form-group">
                     <label class="control-label col-sm-4" for="reserve">Αποθεματικό:</label>
                     <div class="col-sm-5">
@@ -179,7 +196,8 @@
                     <label>Μονάδες Θέρμανσης για κάθε Διαμέρισμα</label>
                 </div>
                 <br>
-                <div id="firstPost">
+
+                <div id="removeFromPost">
                      <% if(typeof flatsShownNav !== 'undefined'){ %>
                        <%  flatsShownNav.forEach(function( flatsShownNav){ %>
                     <div class="form-group">
@@ -208,10 +226,13 @@
                     <% }) %>
                     <%}%>
                 </div>
+
                 <div class="text-center">
                     <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>
+                    <button id="btnDelete" type="button" onclick="window.location='/users/delete/<%=id%>';" class="btn btn-primary">Delete</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
@@ -219,10 +240,10 @@
 <!-- Ελέγχουμε αν υπάρχουν έξοδα για να εμφανίσουμε την φόρμα της διόρθωσης -->
 <%if(expenses!='undefined'){%>
 <script>
-    document.getElementById('monthexpensesPost').action="/users/monthexpenses/<%=id%>";
-    var divRmv=document.getElementById('firstPost');
+    var divRmv=document.getElementById('removeFromPost');
     divRmv.parentNode.removeChild(divRmv);
-    document.getElementById('btnSubmit').innerHTML='Διόρθωση'
+    document.getElementById('monthexpensesPost').action="/users/monthexpenses/<%=id%>";
+    document.getElementById('btnSubmit').innerHTML='Διόρθωση';
     document.getElementById("selectYear").value='<%=expenses.year%>';
     document.getElementById("selectMonth").value='<%=expenses.month%>';
 </script>
@@ -245,6 +266,7 @@
     var divRmvCor=document.getElementById('correctionPost');
     divRmvCor.parentNode.removeChild(divRmvCor);
     document.getElementById('monthexpensesPost').action="/users/monthexpenses";
+    document.getElementById('btnDelete').style.display='none';
     document.getElementById('salary').style.display='none';
     document.getElementById('ika').style.display='none';
     document.getElementById('water').style.display='none';
@@ -257,6 +279,8 @@
     document.getElementById('liftUpKeep').style.display='none';
     document.getElementById('liftRepair').style.display='none';
     document.getElementById('heat').style.display='none';
+    document.getElementById('heatUpKeep').style.display='none';
+    document.getElementById('heatRepair').style.display='none';
     document.getElementById('reserve').style.display='none';
     document.getElementById('shared').style.display='none';
     document.getElementById('otherExpenses').style.display='none';
@@ -266,36 +290,7 @@
 <script>
     function expensesFunction() {
         var x = document.getElementById("selectExpenses").value;
-        if(x==='salary')
-        document.getElementById("salary").style.display='block';
-        if(x==='ika')
-            document.getElementById("ika").style.display='block';
-        if(x==='water')
-            document.getElementById("water").style.display='block';
-        if(x==='energy')
-            document.getElementById("energy").style.display='block';
-        if(x==='cleaning')
-            document.getElementById("cleaning").style.display='block';
-        if(x==='light')
-            document.getElementById("light").style.display='block';
-        if(x==='drains')
-            document.getElementById("drains").style.display='block';
-        if(x==='disinsectisation')
-            document.getElementById("disinsectisation").style.display='block';
-        if(x==='garden')
-            document.getElementById("garden").style.display='block';
-        if(x==='liftUpKeep')
-            document.getElementById("liftUpKeep").style.display='block';
-        if(x==='liftRepair')
-            document.getElementById("liftRepair").style.display='block';
-        if(x==='heat')
-            document.getElementById("heat").style.display='block';
-        if(x==='reserve')
-            document.getElementById("reserve").style.display='block';
-        if(x==='shared')
-            document.getElementById("shared").style.display='block';
-        if(x==='otherExpenses')
-            document.getElementById("otherExpenses").style.display='block';
+        document.getElementById(x).style.display='block';
     }
 
     function delFunction(id){
@@ -304,7 +299,6 @@
         var secDiv=textChild[3].childNodes;
         secDiv[1].value=null;
     }
-
 </script>
 
 <% include templates/footer.ejs %>

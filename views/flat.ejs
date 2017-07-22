@@ -50,6 +50,10 @@
                     <label class="radio-inline"><input type="radio" name="owner" value="true">Ναι</label>
                     <label class="radio-inline"><input type="radio" name="owner" value="false">Όχι</label>
                 </div>
+                <div class="form-group">
+                    <label for="name">Υπόλοιπο Διαμερίσματος:</label>
+                    <input type="text" class="form-control" name="balance" value="">
+                </div>
 
                 <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>
             </form>
@@ -96,6 +100,11 @@
                 <label class="radio-inline"><input id="ownerYes" type="radio" name="owner" value="true">Ναι</label>
                 <label class="radio-inline"><input id="ownerNo" type="radio" name="owner" value="false">Όχι</label>
             </div>
+            <div class="form-group">
+                <label for="name">Υπόλοιπο Διαμερίσματος:</label>
+                <input type="text" class="form-control" name="balance" value="<%=flat.balance%>">
+            </div>
+
 
             <button type="submit" class="btn btn-primary">Διόρθωση</button>
             </form>

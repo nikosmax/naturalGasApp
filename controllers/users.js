@@ -204,6 +204,7 @@ router.post('/flat',function(req,res){
                 liftratio: req.body.liftratio,
                 flatxil: req.body.flatxil,
                 owner: req.body.owner,
+                balance:req.body.balance,
                 block: block._id
             })
 
@@ -257,6 +258,8 @@ router.post('/flat/:flatId',function(req,res){
             flat.liftratio= req.body.liftratio;
             flat.flatxil= req.body.flatxil;
             flat.owner= req.body.owner;
+            flat.balance=req.body.balance;
+
 
         flat.save(function (err) {
             if (err) console.log(err);
@@ -316,6 +319,8 @@ router.post('/monthexpenses',function(req,res){
                 liftUpKeep: req.body.liftUpKeep,
                 liftRepair: req.body.liftRepair,
                 heat: req.body.heat,//Θέρμανση
+                heatUpKeep: req.body.heatUpKeep,//Θέρμανση
+                heatRepair: req.body.heatRepair,//Θέρμανση
                 reserve: req.body.reserve,//Αποθεματικό
                 shared: req.body.shared,//Έκδοση κοινοχρήστων
                 otherExpenses: req.body.otherExpenses,
@@ -381,6 +386,8 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
             liftUpKeep:'',
             liftRepair:'',
             heat:'',
+            heatUpKeep:'',
+            heatRepair:'',
             reserve:'',
             shared:'',
             otherExpenses:''
@@ -399,6 +406,8 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
         filterExpenses['liftUpKeep']=expenses.liftUpKeep;
         filterExpenses['liftRepair']=expenses.liftRepair;
         filterExpenses['heat']=expenses.heat;
+        filterExpenses['heatUpKeep']=expenses.heatUpKeep;
+        filterExpenses['heatRepair']=expenses.heatRepair;
         filterExpenses['reserve']=expenses.reserve;
         filterExpenses['shared']=expenses.shared;
         filterExpenses['otherExpenses']=expenses.otherExpenses;
@@ -437,6 +446,8 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
             expenses.liftUpKeep= req.body.liftUpKeep;
             expenses.liftRepair= req.body.liftRepair;
             expenses.heat= req.body.heat;//Θέρμανση
+            expenses.heatUpKeep= req.body.heatUpKeep;//Θέρμανση
+            expenses.heatRepair= req.body.heatRepair;//Θέρμανση
             expenses.reserve= req.body.reserve;//Αποθεματικό
             expenses.shared= req.body.shared;//Έκδοση κοινοχρήστων
             expenses.otherExpenses= req.body.otherExpenses;
@@ -444,6 +455,36 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
         expenses.save(function(err){
             if(err) console.log(err);
             console.log('expenses saved');
+            console.log(req.body.flatheatcount);
+            var fhc=req.body.flatheatcount;
+            var count=0;
+            var i=-1;
+
+            var loop=function() {
+                i++;
+                if (i === req.body.flat.length){
+                    done();
+                    return;
+                }
+                     FlatHeatCount.findOne({expenses: req.params.monthexpensesId, flat: req.body.flat[i]}).exec().then(function(flatheatcount) {
+                          if (err) console.log(err);
+                          console.log(fhc[i] + ' ' + flatheatcount.flat);
+                         flatheatcount.flatheatcount=fhc[i];
+
+                         return flatheatcount.save(function(err){
+                             if(err) console.log(err);
+                             console.log('count saved..');
+                             loop();
+                         })
+                      })
+            };
+
+            loop();
+
+            function done() {
+                console.log('All data has been loaded :).');
+            }
+
             res.render('monthExpenses',{
                 name: req.user.name,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
@@ -454,8 +495,24 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                 id:''
             });
         })
-
     })
+})
+
+router.get('/delete/:deleteId',function(req,res) {
+    Expenses.remove({_id: req.params.deleteId}).exec();
+    FlatHeatCount.remove({expenses: req.params.deleteId}).exec();
+
+    res.redirect('/users/monthExpenses');
+
+ /*
+    res.render('delete', {
+        name: req.user.name,//show user name in left navigation menu
+        flatsShownNav: req.flatsShow,//show flats in left navigation menu
+        calendar: req.calendarShow,//show calendar in left navigation menu
+    })
+ */
+    console.log('deleted');
+
 })
 
 //Results page

@@ -15,7 +15,9 @@ var expenseSchema=new Schema({
     garden:             Number,
     liftUpKeep:         Number,
     liftRepair:         Number,
-    heat:               Number,//Θέρμανση
+    heat:               Number,//Θέρμανση πετρέλαιο/αέριο
+    heatUpKeep:         Number,//Θέρμανση συντήρηση καυστήρα/λέβητα
+    heatRepair:         Number,//Θέρμανση επισκευή καυστήρα/λέβητα
     reserve:            Number,//Αποθεματικό
     shared:             Number,//Έκδοση κοινοχρήστων
     otherExpenses:      Number,

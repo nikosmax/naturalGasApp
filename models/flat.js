@@ -11,6 +11,8 @@ var flatSchema= new Schema({
     koinratio:    Number,
     liftratio:    Number,
     flatxil:      Number,
+    ei:           Number,
+    fi:           Number,
     owner:        Boolean,
     balance:      Number,
     block :      [{ type: Schema.Types.ObjectId, ref: 'Block' }]

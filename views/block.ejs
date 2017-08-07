@@ -6,8 +6,33 @@
     <div class="row content">
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
-            <h4>Στοιχεία Πολυκατοικίας</h4>
-            <form method="post" action="/users/block" id="blockPost">
+            <h3 align="right">
+                <a data-toggle="modal" href="#helpModal">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+            </h3>
+            <!-- Modal -->
+            <div class="modal fade" id="helpModal" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Some text in the modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <h4 align="center">Στοιχεία Πολυκατοικίας</h4>
+            <form method="post" action="" id="blockPost">
                 <div class="form-group">
                     <label for="name">Διεύθυνση:</label>
                     <input type="text" class="form-control" name="address" value="<%= block.address %>">
@@ -37,65 +62,20 @@
                     <input type="text" class="form-control" name="totalFlats" value="<%= block.totalFlats %>">
                 </div>
                 <div class="form-group">
+                    <label for="sel1">Είδος Θέρμανσης:</label>
+                    <select id='heatType' onchange="heatFixedFunction()" class="form-control" name="heatType">
+                        <option value="Κεντρική θέρμανση">Κεντρική θέρμανση</option>
+                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης">Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης</option>
+                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες</option>
+                        <option value="Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες</option>
+                    </select>
+                </div>
+                <div id="heatFixedId" class="form-group">
                     <label for="name">Πάγιο Θέρμανσης %:</label>
                     <input type="text" class="form-control" name="heatFixed" value="<%= block.heatFixed %>">
                 </div>
-                <div class="form-group">
-                    <label for="sel1">Είδος Θέρμανσης:</label>
-                    <select class="form-control" name="heatType">
-                        <option value="Κεντρική θέρμανση">Κεντρική θέρμανση</option>
-                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης">Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης</option>
-                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες</option>
-                        <option value="Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες</option>
-                    </select>
-                </div>
 
-                <button type="submit" class="btn btn-primary">Καταχώρηση</button>
-            </form>
-            <form method="post" action="/users/blockUpdate" id="blockUpdate">
-                <div class="form-group">
-                    <label for="address">Διεύθυνση:</label>
-                    <input type="text" class="form-control" name="address" value="<%= block.address %>">
-                </div>
-                <div class="form-group">
-                    <label for="location">Περιοχή:</label>
-                    <input type="text" class="form-control" name="location" value="<%= block.location %>">
-                </div>
-                <div class="form-group">
-                    <label for="postal">Τ.Κ:</label>
-                    <input type="text" class="form-control" name="postal" value="<%= block.postal %>">
-                </div>
-                <div class="form-group">
-                    <label for="nameRes">Όνομα Διαχειριστή:</label>
-                    <input type="text" class="form-control" name="nameRes" value="<%= block.nameRes %>">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Τηλέφωνο:</label>
-                    <input type="text" class="form-control" name="phone" value="<%= block.phone %>">
-                </div>
-                <div class="form-group">
-                    <label for="mobile">Κινητό:</label>
-                    <input type="text" class="form-control" name="mobile" value="<%= block.mobile %>">
-                </div>
-                <div class="form-group">
-                    <label for="totalFlats">Σύνολο Διαμερισμάτων:</label>
-                    <input type="text" class="form-control" name="totalFlats" value="<%= block.totalFlats %>">
-                </div>
-                <div class="form-group">
-                    <label for="heatFixed">Πάγιο Θέρμανσης %:</label>
-                    <input type="text" class="form-control" name="heatFixed" value="<%= block.heatFixed %>">
-                </div>
-                <div class="form-group">
-                    <label for="heatType">Είδος Θέρμανσης:</label>
-                    <select id='heatType' class="form-control" name="heatType">
-                        <option value="Κεντρική θέρμανση">Κεντρική θέρμανση</option>
-                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης">Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης</option>
-                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες</option>
-                        <option value="Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Διόρθωση Στοιχείων</button>
+                <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>
             </form>
             <br>
             <% if(errors != undefined){ %>
@@ -108,41 +88,35 @@
         </div>
     </div>
 </div>
+
+<script>
 <% if(flag) {%>
-<script>
-    document.getElementById("blockPost").style.display='none';
-    document.getElementById("blockUpdate").style.display='block';
-</script>
+    document.getElementById('blockPost').action="/users/blockUpdate";
+    document.getElementById("heatType").value= '<%=block.heatType%>';
+    document.getElementById('btnSubmit').innerHTML='Διόρθωση Στοιχείων';
+    var typeOfHeat=document.getElementById("heatType").value;
+    if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες' ||
+       typeOfHeat==='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες'){
+         document.getElementById('heatFixedId').style.display='none';
+    }else{
+        document.getElementById('heatFixedId').style.display='block';
+    }
 <%} else if(!flag){%>
-<script>
-    document.getElementById("blockPost").style.display='block';
-    document.getElementById("blockUpdate").style.display='none';
-</script>
+    document.getElementById('blockPost').action="/users/block";
 <%}%>
 
-<% if(block.heatType=='Κεντρική θέρμανση'){%>
-<script>
-    document.getElementById("heatType").value='Κεντρική θέρμανση';
+// Πότε θα φένεται η εισαγωγή παγιου θέρμανσης και πότε όχι -->
+    function heatFixedFunction() {
+        var optionText=document.getElementById('heatType').value;
+        if(optionText==='Κεντρική θέρμανση'||
+           optionText==='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες'||
+           optionText==='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες'){
+            document.getElementById('heatFixedId').style.display='none';
+        }else{
+            document.getElementById('heatFixedId').style.display='block';
+        }
+    }
 </script>
-<%}%>
-
-<% if(block.heatType=='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης'){%>
-<script>
-    document.getElementById("heatType").value='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης';
-</script>
-<%}%>
-
-<% if(block.heatType=='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες'){%>
-<script>
-    document.getElementById("heatType").value='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες';
-</script>
-<%}%>
-
-<% if(block.heatType=='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες'){%>
-<script>
-    document.getElementById("heatType").value='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες';
-</script>
-<%}%>
 
 <% include templates/footer.ejs %>
 </body>

@@ -180,6 +180,7 @@ router.get('/flat',function(req,res){
         res.render('flat',{
             name: req.user.name,
             flatsCount:req.blockData.totalFlats,
+            typeOfHeat:req.blockData.heatType,
             count:count,
             flatsShownNav:req.flatsShow,
             calendar:req.calendarShow,
@@ -203,6 +204,8 @@ router.post('/flat',function(req,res){
                 koinratio: req.body.koinratio,
                 liftratio: req.body.liftratio,
                 flatxil: req.body.flatxil,
+                ei:req.body.ei,
+                fi:req.body.fi,
                 owner: req.body.owner,
                 balance:req.body.balance,
                 block: block._id
@@ -219,6 +222,7 @@ router.post('/flat',function(req,res){
                 res.render('flat', {
                     name: req.user.name,
                     flatsCount:req.blockData.totalFlats,
+                    typeOfHeat:req.blockData.heatType,
                     count:count,
                     flatsShownNav:req.flatsShow,//show flats in left navigation menu
                     calendar:req.calendarShow,
@@ -235,7 +239,8 @@ router.get('/flat/:flatId',function(req,res){
         if(err) console.log(err);
         res.render('flat',{
             name: req.user.name,
-            flatsCount:req.blockData.totalFlats,
+            flatsCount:req.blockData.totalFlats,//from session cookie blockData
+            typeOfHeat:req.blockData.heatType,
             flatsShownNav:req.flatsShow,//show flats in left navigation menu
             calendar:req.calendarShow,
             count:null,
@@ -267,6 +272,7 @@ router.post('/flat/:flatId',function(req,res){
             res.render('flat',{
                 name: req.user.name,
                 flatsCount:req.blockData.totalFlats,
+                typeOfHeat:req.blockData.heatType,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
                 calendar:req.calendarShow,
                 count:null,
@@ -334,7 +340,6 @@ router.post('/monthexpenses',function(req,res){
                     if (!expenses)
                         console.log('no expenses');
                     else {
-                        var flatCountsArray = [];
                         for (var i = 0; i < req.body.flat.length; i++) {
 
                             var flatCounts = new FlatHeatCount({
@@ -342,13 +347,6 @@ router.post('/monthexpenses',function(req,res){
                                 flat: req.body.flat[i],
                                 expenses: expenses._id
                             })
-                            //console.log(flatCounts);
-                            /*
-                             flatCounts.flatheatcount= req.body.flatheatcount[i];
-                             flatCounts.flat= req.body.flat[i];
-                             flatCounts.expenses= expenses._id;
-                             flatCountsArray.push(flatCounts) ;
-                             */
                             flatCounts.save(function (err) {
                 if (err) console.log(err);
                 else {

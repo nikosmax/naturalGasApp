@@ -6,7 +6,32 @@
     <div class="row content">
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
-            <h4>Έξοδα Μήνα</h4>
+            <h3 align="right">
+                <a data-toggle="modal" href="#helpModal">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+            </h3>
+            <!-- Modal -->
+            <div class="modal fade" id="helpModal" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Some text in the modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <h4 align="center">Έξοδα Μήνα</h4>
             <% if(errorMessage){%>
             <script>
                 alert('<%= errorMessage %>');

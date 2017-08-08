@@ -119,20 +119,20 @@
                 <!-- Υπολογισμός εξόδων για κάθε διαμέρισμα -->
                 <%  flatsShownNav.forEach(function( flatsShownNav){ %>
                 <tr>
-                    <td><%=  flatsShownNav.flatNum %></td>
-                    <td><%=  flatsShownNav.lastname %></td>
-                    <td class="text-center"><%= flatsShownNav.koinratio %></td>
-                    <td class="text-center"><%= flatsShownNav.liftratio %></td>
-                    <td class="text-center"><%= flatHeatCount[count].flatheatcount%></td>
-                    <td class="text-center"><%= ((flatsShownNav.koinratio*(totalExpenses-totalExpLift-expenses['Πετρέλαιο/Αέριο']))/1000).toFixed(2) %></td>
-                    <td class="text-center"><%= ((flatsShownNav.liftratio*totalExpLift)/1000).toFixed(2) %></td>
-                    <td class="text-center"><%= ((flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*(100-blockHeatFixed)*expenses['Πετρέλαιο/Αέριο']/100)/sumΩixXil).toFixed(2) %></td>
-                    <td class="text-center"><%= ((flatsShownNav.koinratio*blockHeatFixed*expenses['Πετρέλαιο/Αέριο']/100)/1000).toFixed(2) %></td>
+                    <td><%=  flatsShownNav.flatNum %></td><!-- Αριθμός διαμερίσματος -->
+                    <td><%=  flatsShownNav.lastname %></td><!-- Επώνυμο κατόχου διαμερίσματος -->
+                    <td class="text-center"><%= flatsShownNav.koinratio %></td><!-- Χιλιοστά κοινοχρήστων -->
+                    <td class="text-center"><%= flatsShownNav.liftratio %></td><!-- Χιλιοστά ασανσερ -->
+                    <td class="text-center"><%= flatHeatCount[count].flatheatcount%></td><!-- Μονάδες θέρμανσης -->
+                    <td class="text-center"><%= ((flatsShownNav.koinratio*(totalExpenses-totalExpLift-expenses['Πετρέλαιο/Αέριο']))/1000).toFixed(2) %></td><!-- Επιβάρυνση κοινοχρήστων -->
+                    <td class="text-center"><%= ((flatsShownNav.liftratio*totalExpLift)/1000).toFixed(2) %></td><!-- Επιβάρυνση ασανσερ -->
+                    <td class="text-center"><%= ((flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*(100-blockHeatFixed)*expenses['Πετρέλαιο/Αέριο']/100)/sumΩixXil).toFixed(2) %></td><!-- Επιβάρυνση θέρμανσης -->
+                    <td class="text-center"><%= ((flatsShownNav.koinratio*blockHeatFixed*expenses['Πετρέλαιο/Αέριο']/100)/1000).toFixed(2) %></td><!-- Επιβάρυνση παγίου θέρμανσης -->
                     <td></td>
                     <td class="text-center"><%=(((flatsShownNav.koinratio*(totalExpenses-totalExpLift-expenses['Πετρέλαιο/Αέριο']))/1000)+
                         ((flatsShownNav.liftratio*totalExpLift)/1000)+
                         ((flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*(100-blockHeatFixed)*expenses['Πετρέλαιο/Αέριο']/100)/sumΩixXil)+
-                        ((flatsShownNav.koinratio*blockHeatFixed*expenses['Πετρέλαιο/Αέριο']/100)/1000)).toFixed(2)%></td>
+                        ((flatsShownNav.koinratio*blockHeatFixed*expenses['Πετρέλαιο/Αέριο']/100)/1000)).toFixed(2)%></td><!-- Σύνολο εξόδων διαμερίσματος -->
                 </tr>
                 <%count+=1%>
                 <% }) %>

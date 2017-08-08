@@ -30,10 +30,12 @@
                     </div>
 
                 </div>
-            </div>
+            </div><!--End of modal -->
+
             <h4 id="h4" align="center">Καταχώρηση Διαμερισμάτων</h4>
-            <h5>Τύπος Θέρμανσης: <%=typeOfHeat%></h5>
-           <h5 id="check" class="bg-info"></h5>
+            <h5 id="h5" align="center">Τύπος Θέρμανσης: <%=typeOfHeat%></h5>
+            <h5 id="check" class="list-group-item list-group-item-info"></h5>
+            <br>
             <form method="post" action="" id="flatPost">
                 <div class="form-group">
                     <label for="name">Όνομα:</label>
@@ -105,13 +107,15 @@
 // Εαν έχουν συμπληρωθεί όλα τα διαμερίσματα πλέον δεν μπορούν να καταχωρηθούν άλλα  -->
 <%if(count===flatsCount){%>
     document.getElementById("btnSubmit").disabled = true;
-    document.getElementById("check").className = "bg-danger";
+    document.getElementById("check").className = "list-group-item list-group-item-danger";
 <%}%>
 //Εαν έχουμε διαμερίσματα η φόρμα αλάζει σε φόρμα διόρθωσης -->
 <%if(flat!='undefined'){%>
     document.getElementById('h4').innerHTML='Διαμέρισμα <%=flat.flatNum%>';
     document.getElementById('flatPost').action="/users/flat/<%=flat._id%>";
     document.getElementById('btnSubmit').innerHTML='Διόρθωση';
+    document.getElementById('check').style.display='none';
+    document.getElementById('h5').style.display='none';
     <%if(flat.owner){%>
         document.getElementById("ownerYes").checked = true;
     <%}else {%>

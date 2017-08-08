@@ -520,7 +520,8 @@ router.get('/results',function(req,res){
         flatsShownNav:req.flatsShow,//show flats in left navigation menu
         calendar:req.calendarShow,
         expenses:'',
-        totalExpenses:''
+        totalExpenses:'',
+        results:''
     });
 })
 
@@ -586,9 +587,19 @@ router.post('/results',function(req,res){
                 expenses:greekExpenses,//Τα έξοδα με ελληνικούς τίτλους
                 flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
                 blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies
-                totalExpenses:totalExpenses//Το σύνολο όλων των εξόδων
+                totalExpenses:totalExpenses,//Το σύνολο όλων των εξόδων
+                results:''
             })
           })
+        }else{
+            res.render('results',{
+                name: req.user.name,
+                flatsShownNav:req.flatsShow,//show flats in left navigation menu
+                calendar:req.calendarShow,
+                expenses:'',
+                totalExpenses:'',
+                results:'Δεν βρέθηκε Καταχώρηση για την επιλογή μήνα: '+ req.body.month
+            })
         }
     })
 })

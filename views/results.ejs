@@ -41,7 +41,7 @@
                 <button type="submit" class="btn btn-primary">Αναζήτηση</button>
             </form>
             <br>
-
+         <div id="printableArea">
             <%if(totalExpenses){%><!-- Αν έχουμε έξοδα τότε εμφανίζονται όλοι οι πίνακες) -->
             <h4 class="text-center">ΣΥΓΚΕΝΤΡΩΤΙΚΗ ΚΑΤΑΣΤΑΣΗ ΚΟΙΝΟΧΡΗΣΤΩΝ ΔΑΠΑΝΩΝ</h4>
             <h4 class="text-center">Μήνας: <%= expenses['Μήνας']%> - Έτος: <%= expenses['Έτος']%></h4>
@@ -90,7 +90,7 @@
                 <tr>
                     <th>ΑΑ</th>
                     <th>Επώνυμο</th>
-                    <th style="white-space:nowrap;">Κοιν/στων</th>
+                    <th style="white-space:nowrap;">Κοιν/στων</th><!-- βάζω style για να να μπει η παύλα -->
                     <th>Ασανσέρ</th>
                     <th class="text-center">Μονάδες Θέρμανσης</th>
                     <th style="white-space:nowrap;">Κοιν/στα</th>
@@ -110,10 +110,15 @@
                 <% var sumΩixXil=0%>
 
                 <!-- Υπολογισμός του sumOf(Ωi x Χιλιοστά θέρμανσης) -->
+                <%if(expenses['Πετρέλαιο/Αέριο']){%> <!-- Εαν έχουμε έξοδα θέρμανσης υπολόγισε sumΩixXil -->
                 <%  flatsShownNav.forEach(function( flatsShownNav){ %>
                 <% sumΩixXil+= flatHeatCount[count].flatheatcount*flatsShownNav.koinratio %>
                 <%count+=1%>
                 <%})%>
+                <%}else {%><!-- Αλλιώς εαν δεν έχουμε έξοδα θέρμανσης το sumΩixXil ίσον με ένα -->
+                <% sumΩixXil=1%>
+                <%}%>
+
                 <% count=0%> <!-- Μηδενισμός του count για συνέχεια στον επόμενο υπολογισμό -->
 
                 <!-- Υπολογισμός εξόδων για κάθε διαμέρισμα -->
@@ -185,6 +190,12 @@
 
                 </tbody>
             </table>
+         </div><!--End of printable Area -->
+            <h3 align="right">
+                <a onclick="printDiv('printableArea')" href="#print">
+                    <span class="glyphicon glyphicon-print"></span>
+                </a>
+            </h3>
         </div>
     </div>
 </div>

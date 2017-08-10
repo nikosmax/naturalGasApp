@@ -288,6 +288,7 @@ router.get('/monthexpenses',function(req,res){
         name: req.user.name,
         flatsShownNav:req.flatsShow,//show flats in left navigation menu
         calendar:req.calendarShow,
+        typeOfHeat:req.blockData.heatType,
         errorMessage:false,
         expenses: 'undefined',
         flatHeatCount:'undefined',//μονάδες θέρμανσης
@@ -304,6 +305,7 @@ router.post('/monthexpenses',function(req,res){
                 name: req.user.name,
                 flatsShownNav: req.flatsShow,//show flats in left navigation menu,
                 calendar:req.calendarShow,
+                typeOfHeat:req.blockData.heatType,
                 errorMessage:'Έχει γίνει υπολογισμός για την συγκεκριμένη επιλογή έτους και μήνα',
                 expenses: 'undefined',
                 flatHeatCount:'undefined',//μονάδες θέρμανσης
@@ -416,6 +418,7 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
             name: req.user.name,//show user name in left navigation menu
             flatsShownNav: req.flatsShow,//show flats in left navigation menu
             calendar: req.calendarShow,//show calendar in left navigation menu
+            typeOfHeat:req.blockData.heatType,
             expenses: filterExpenses,
             id: expenses._id,
             flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
@@ -487,6 +490,7 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                 name: req.user.name,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
                 calendar:req.calendarShow,
+                typeOfHeat:req.blockData.heatType,
                 errorMessage:false,
                 expenses: 'undefined',
                 flatHeatCount:'undefined',//μονάδες θέρμανσης

@@ -96,7 +96,8 @@
     document.getElementById('btnSubmit').innerHTML='Διόρθωση Στοιχείων';
     var typeOfHeat=document.getElementById("heatType").value;
     if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες' ||
-       typeOfHeat==='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες'){
+       typeOfHeat==='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες' ||
+       typeOfHeat==='Κεντρική θέρμανση'){
          document.getElementById('heatFixedId').style.display='none';
     }else{
         document.getElementById('heatFixedId').style.display='block';

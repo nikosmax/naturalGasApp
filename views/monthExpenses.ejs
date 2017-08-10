@@ -299,6 +299,7 @@
         var divRmvCor=document.getElementById('correctionPost');
         divRmvCor.parentNode.removeChild(divRmvCor);
     <%}%>
+    //Δεν εμφανίζουμε τα έξοδα μεχρι να τα επιλέξουμε απο το μενού
     document.getElementById('monthexpensesPost').action="/users/monthexpenses";
     document.getElementById('btnDelete').style.display='none';
     document.getElementById('salary').style.display='none';
@@ -322,12 +323,12 @@
 <%}%>
 
 <script>
-    function expensesFunction() {
+    function expensesFunction() {//Εμφάνιση των εξόδων που επιλέγουμε από το μενού
         var x = document.getElementById("selectExpenses").value;
         document.getElementById(x).style.display='block';
     }
 
-    function delFunction(id){
+    function delFunction(id){//Διαγραφή ενός εξόδου και θέτουμε την τιμή του σε null
         document.getElementById(id).style.display='none';
         var textChild= document.getElementById(id).childNodes;
         var secDiv=textChild[3].childNodes;

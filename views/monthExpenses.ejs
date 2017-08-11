@@ -217,7 +217,7 @@
                     </div>
                 </div>
                 <br>
-                <div class="text-center">
+                <div id="labelHeatCountId" class="text-center">
                     <label>Μονάδες Θέρμανσης για κάθε Διαμέρισμα</label>
                 </div>
                 <br>
@@ -273,8 +273,8 @@
     document.getElementById("selectMonth").value='<%=expenses.month%>';
 </script>
 
-  <% for(var key in expenses){%>
-<% if(expenses.hasOwnProperty(key)){%>
+<% for(var key in expenses){%>
+    <% if(expenses.hasOwnProperty(key)){%>
         <% if(expenses[key]!=null && key!='year'){%>
             <script>
                 document.getElementById('<%=key %>').style.display='block';
@@ -284,12 +284,22 @@
                 document.getElementById('<%=key %>').style.display='none';
             </script>
         <%}%>
+    <%}%>
 <%}%>
-  <%}%>
-<%}else {%>
+<%}else {%><!--Εφόσον δεν υπάρχουν έξοδα εμφανίζουμε τη φόρμα της πρώτης καταχώρησης -->
+
 <script>
-    var divRmvCor=document.getElementById('correctionPost');
-    divRmvCor.parentNode.removeChild(divRmvCor);
+    <%if(typeOfHeat==='Κεντρική θέρμανση'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
+       document.getElementById('labelHeatCountId').style.display='none';
+        var divRmvCor=document.getElementById('correctionPost');
+        divRmvCor.parentNode.removeChild(divRmvCor);
+        var divRmv=document.getElementById('removeFromPost');
+        divRmv.parentNode.removeChild(divRmv);
+    <%}else{%>//Εαν δεν είναι κεντρική εμφανίζουμε τις μοναδες θέρμανσης
+        var divRmvCor=document.getElementById('correctionPost');
+        divRmvCor.parentNode.removeChild(divRmvCor);
+    <%}%>
+    //Δεν εμφανίζουμε τα έξοδα μεχρι να τα επιλέξουμε απο το μενού
     document.getElementById('monthexpensesPost').action="/users/monthexpenses";
     document.getElementById('btnDelete').style.display='none';
     document.getElementById('salary').style.display='none';
@@ -313,12 +323,12 @@
 <%}%>
 
 <script>
-    function expensesFunction() {
+    function expensesFunction() {//Εμφάνιση των εξόδων που επιλέγουμε από το μενού
         var x = document.getElementById("selectExpenses").value;
         document.getElementById(x).style.display='block';
     }
 
-    function delFunction(id){
+    function delFunction(id){//Διαγραφή ενός εξόδου και θέτουμε την τιμή του σε null
         document.getElementById(id).style.display='none';
         var textChild= document.getElementById(id).childNodes;
         var secDiv=textChild[3].childNodes;

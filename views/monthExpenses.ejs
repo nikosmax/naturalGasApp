@@ -265,8 +265,16 @@
 <!-- Ελέγχουμε αν υπάρχουν έξοδα για να εμφανίσουμε την φόρμα της διόρθωσης -->
 <%if(expenses!='undefined'){%>
 <script>
+    <%if(typeOfHeat==='Κεντρική θέρμανση'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
+    document.getElementById('labelHeatCountId').style.display='none';
+    var divRmvCor=document.getElementById('correctionPost');
+    divRmvCor.parentNode.removeChild(divRmvCor);
     var divRmv=document.getElementById('removeFromPost');
     divRmv.parentNode.removeChild(divRmv);
+    <%}else{%>//Εαν δεν είναι κεντρική εμφανίζουμε τις μοναδες θέρμανσης
+    var divRmv=document.getElementById('removeFromPost');
+    divRmv.parentNode.removeChild(divRmv);
+    <%}%>
     document.getElementById('monthexpensesPost').action="/users/monthexpenses/<%=id%>";
     document.getElementById('btnSubmit').innerHTML='Διόρθωση';
     document.getElementById("selectYear").value='<%=expenses.year%>';

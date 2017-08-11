@@ -480,7 +480,9 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                       })
             };
 
-            loop();
+            if(req.blockData.heatType!=='Κεντρική θέρμανση'){
+                loop();
+            }
 
             function done() {
                 console.log('All data has been loaded :).');
@@ -489,8 +491,8 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
             res.render('monthExpenses',{
                 name: req.user.name,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
-                calendar:req.calendarShow,
-                typeOfHeat:req.blockData.heatType,
+                calendar:req.calendarShow,//Calendar in left navigation menu to see if we have set expenses for a month
+                typeOfHeat:req.blockData.heatType,//Type of heat
                 errorMessage:false,
                 expenses: 'undefined',
                 flatHeatCount:'undefined',//μονάδες θέρμανσης
@@ -505,16 +507,7 @@ router.get('/delete/:deleteId',function(req,res) {
     FlatHeatCount.remove({expenses: req.params.deleteId}).exec();
 
     res.redirect('/users/monthExpenses');
-
- /*
-    res.render('delete', {
-        name: req.user.name,//show user name in left navigation menu
-        flatsShownNav: req.flatsShow,//show flats in left navigation menu
-        calendar: req.calendarShow,//show calendar in left navigation menu
-    })
- */
     console.log('deleted');
-
 })
 
 //Results page
@@ -523,6 +516,7 @@ router.get('/results',function(req,res){
         name: req.user.name,
         flatsShownNav:req.flatsShow,//show flats in left navigation menu
         calendar:req.calendarShow,
+        typeOfHeat:req.blockData.heatType,
         expenses:'',
         totalExpenses:'',
         results:''
@@ -588,6 +582,7 @@ router.post('/results',function(req,res){
                 name: req.user.name,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
                 calendar:req.calendarShow,// calendar with months
+                typeOfHeat:req.blockData.heatType,
                 expenses:greekExpenses,//Τα έξοδα με ελληνικούς τίτλους
                 flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
                 blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies
@@ -600,6 +595,7 @@ router.post('/results',function(req,res){
                 name: req.user.name,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
                 calendar:req.calendarShow,
+                typeOfHeat:req.blockData.heatType,
                 expenses:'',
                 totalExpenses:'',
                 results:'Δεν βρέθηκε Καταχώρηση για την επιλογή μήνα: '+ req.body.month

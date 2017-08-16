@@ -1,0 +1,147 @@
+<% include templates/header.ejs %>
+<body>
+
+<div class="container">
+    <% include templates/body.ejs %>
+    <div class="row content">
+        <% include templates/navbar.ejs %>
+        <div class="col-sm-9">
+            <h4 id="h4">Αποτελέσματα</h4>
+            <form class="form-horizontal" method="post" action="/users/resultsPerFlat">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="year">Έτος:</label>
+                    <div class="col-sm-7">
+                        <select class="form-control" name="year">
+                            <option>2017</option>
+                            <option>2018</option>
+                            <option>2019</option>
+                            <option>2020</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="month">Μήνας:</label>
+                    <div class="col-sm-7">
+                        <select class="form-control" name="month">
+                            <option>Ιανουάριος</option>
+                            <option>Φεβρουάριος</option>
+                            <option>Μάρτιος</option>
+                            <option>Απρίλιος</option>
+                            <option>Μάιος</option>
+                            <option>Ιούνιος</option>
+                            <option>Ιούλιος</option>
+                            <option>Αύγουστος</option>
+                            <option>Σεπτέμβριος</option>
+                            <option>Οκτώβριος</option>
+                            <option>Νοέμβριος</option>
+                            <option>Δεκέμβριος</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Αναζήτηση</button>
+            </form>
+            <br>
+<div id="printableArea">
+    <%if(totalExpenses){%><!-- Αν έχουμε έξοδα τότε εμφανίζονται όλοι οι πίνακες) -->
+        <%  flatsShownNav.forEach(function( flatsShownNav){ %>
+    <div style="page-break-after:always; background-color: AliceBlue; border:solid; margin-bottom: 10px;">
+            <h4 class="text-center">ΕΙΔΟΠΟΙΗΤΗΡΙΟ ΕΞΟΦΛΗΣΗΣ ΚΟΙΝΟΧΡΗΣΤΩΝ</h4>
+    <br>
+                <h4 style="white-space: pre-wrap; margin-bottom: 0px;">Διαμέρισμα: <%=flatsShownNav.flatNum%>       <%=flatsShownNav.lastname%>          Μήνας: <%= expenses['Μήνας']%>      Έτος: <%= expenses['Έτος']%></h4>
+                <hr style="border-width: 1px; margin-top: 0px; border-color:black;">
+                <table class="table table-bordered" style="width:50%;">
+                    <thead bgcolor="#ffba66 ">
+                        <tr>
+                            <th>'Εξοδα</th>
+                            <th>Ποσό</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var key in expenses) {%>
+                            <% if(expenses.hasOwnProperty(key)){%>
+                                <% if(expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας'){%>
+                                    <tr>
+                                    <%if(key==='Πετρέλαιο/Αέριο' && typeOfHeat!=='Κεντρική θέρμανση'){%>
+                                        <td><%=key%></td>
+                                        <td><%= ((100-blockHeatFixed)*expenses[key]/100).toFixed(2)%></td>
+                                    <tr>
+                                        <td>Πάγιο Θέρμανσης</td>
+                                        <td><%= (blockHeatFixed*expenses[key]/100).toFixed(2)%></td>
+                                    </tr>
+                                    <%}else {%>
+                                        <td><%=key%></td>
+                                        <td><%= expenses[key].toFixed(2)%></td>
+                                    <%}%>
+                                    </tr>
+                                <%}%>
+                            <%}%>
+                        <%}%>
+                    <tr bgcolor="#ffba66">
+                        <th>Σύνολο Εξόδων</th>
+                        <th><%= totalExpenses.toFixed(2)%></th>
+                    </tr>
+                    </tbody>
+                </table>
+<br>
+
+<table class="table table-bordered">
+    <thead bgcolor="#ffba66">
+    <tr>
+        <th>Ονομα Διαχειρστή</th>
+        <th>Συνολικά Έξοδα πολυκατοικίας</th>
+        <th>Έξοδα Ιδιοκτήτη</th>
+        <th>Έξοδα Ενοικιαστή</th>
+    </tr>
+    </thead>
+    <tbody>
+    <td></td>
+    <td><%=totalExpenses.toFixed(2)%></td>
+    <td></td>
+    <td></td>
+    </tbody>
+</table>
+
+    <hr style="border-top: 3px dotted black; margin-top: 0px;">
+    <h4 class="text-center">ΑΠΟΔΕΙΞΗ ΕΞΟΦΛΗΣΗΣ ΚΟΙΝΟΧΡΗΣΤΩΝ</h4>
+    <br>
+    <h4 style="white-space: pre-wrap; margin-bottom: 0px;">Διαμέρισμα: <%=flatsShownNav.flatNum%>       <%=flatsShownNav.lastname%>          Μήνας: <%= expenses['Μήνας']%>      Έτος: <%= expenses['Έτος']%></h4>
+    <hr style="border-width: 1px; margin-top: 0px; border-color:black;">
+<table class="table table-bordered">
+    <thead bgcolor="#ffba66">
+    <tr>
+        <th>Ονομα Διαχειρστή</th>
+        <th>Συνολικά Έξοδα πολυκατοικίας</th>
+        <th>Έξοδα Ιδιοκτήτη</th>
+        <th>Έξοδα Ενοικιαστή</th>
+    </tr>
+    </thead>
+    <tbody>
+        <td></td>
+        <td><%=totalExpenses.toFixed(2)%></td>
+        <td></td>
+        <td></td>
+    </tbody>
+</table>
+    </div>
+        <%})%><!-- end of loop on flats -->
+    <%}%><!-- end of if totalExpenses -->
+</div><!--End of printable Area -->
+
+<%if(results!==''){%>
+    <p class="list-group-item list-group-item-danger"><%=results%></p>
+<%}%>
+
+
+<h3 align="right">
+    <a onclick="printDiv('printableArea')" href="#print">
+        <span class="glyphicon glyphicon-print"></span>
+    </a>
+</h3>
+        </div>
+    </div>
+</div>
+
+<% include templates/footer.ejs %>
+</body>
+
+</html>

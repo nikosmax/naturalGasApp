@@ -332,6 +332,7 @@ router.post('/monthexpenses',function(req,res){
                 reserve: req.body.reserve,//Αποθεματικό
                 shared: req.body.shared,//Έκδοση κοινοχρήστων
                 otherExpenses: req.body.otherExpenses,
+                comments:req.body.comments,
                 block: req.blockData._id
             })
 
@@ -390,7 +391,8 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
             heatRepair:'',
             reserve:'',
             shared:'',
-            otherExpenses:''
+            otherExpenses:'',
+            comments:''
         };
         filterExpenses['year']=expenses.year;
         filterExpenses['month']=expenses.month;
@@ -411,6 +413,7 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
         filterExpenses['reserve']=expenses.reserve;
         filterExpenses['shared']=expenses.shared;
         filterExpenses['otherExpenses']=expenses.otherExpenses;
+        filterExpenses['comments']=expenses.comments;
 
     FlatHeatCount.find({expenses:expenses._id}, null, {sort: {_id: 1}}, function(err,flatHeatCount) {
         if (err) console.log(err);
@@ -452,6 +455,7 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
             expenses.reserve= req.body.reserve;//Αποθεματικό
             expenses.shared= req.body.shared;//Έκδοση κοινοχρήστων
             expenses.otherExpenses= req.body.otherExpenses;
+            expenses.comments= req.body.comments;
 
         expenses.save(function(err){
             if(err) console.log(err);
@@ -570,6 +574,7 @@ router.post('/results',function(req,res){
             delete objTotal.year;
             delete objTotal.month;
             delete objTotal.block;
+            delete objTotal.comments;
 
            //total sum of the month expenses
             var totalExpenses=0;
@@ -587,6 +592,7 @@ router.post('/results',function(req,res){
                 flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
                 blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies
                 totalExpenses:totalExpenses,//Το σύνολο όλων των εξόδων
+                comments:expenses.comments,
                 results:''
             })
           })
@@ -598,6 +604,104 @@ router.post('/results',function(req,res){
                 typeOfHeat:req.blockData.heatType,
                 expenses:'',
                 totalExpenses:'',
+                comments:'',
+                results:'Δεν βρέθηκε Καταχώρηση για την επιλογή μήνα: '+ req.body.month
+            })
+        }
+    })
+})
+
+//Results page per flat
+router.get('/resultsPerFlat',function(req,res){
+    res.render('resultsPerFlat',{
+        name: req.user.name,
+        flatsShownNav:req.flatsShow,//show flats in left navigation menu
+        calendar:req.calendarShow,
+        typeOfHeat:req.blockData.heatType,
+        expenses:'',
+        totalExpenses:'',
+        results:''
+    });
+})
+
+//Results post page per flat find
+router.post('/resultsPerFlat',function(req,res){
+    Expenses.findOne({year:req.body.year,month:req.body.month,block: req.blockData._id},function(err,expenses){
+        if(err) console.log(err);
+        if(expenses){
+            var greekExpenses = {//object for display form labels in greeks
+                Έτος:'',
+                Μήνας:'',
+                'Βοηθός Διαχειριστή':'',
+                'Εργοδοτική Εισ':'',
+                ΕΥΔΑΠ:'',
+                ΔΕΗ:'',
+                Καθαριότητα:'',
+                Λαμπτήρες:'',
+                Αποχέτευση:'',
+                Απεντόμωση:'',
+                'Συντήρηση Κήπου':'',
+                'Ασανσέρ Συντήρηση':'',
+                'Ασανσέρ Ανταλ. Επισκευή':'',
+                'Πετρέλαιο/Αέριο':'',
+                Αποθεματικό:'',
+                'Αμοιβή εκδ. Κοινοχρήστωνv':'',
+                'Λοιπά έξοδα':''
+            };
+            greekExpenses['Έτος']=expenses.year;
+            greekExpenses['Μήνας']=expenses.month;
+            greekExpenses['Βοηθός Διαχειριστή']=expenses.salary;
+            greekExpenses['Εργοδοτική Εισ']=expenses.ika;
+            greekExpenses['ΕΥΔΑΠ']=expenses.water;
+            greekExpenses['ΔΕΗ']=expenses.energy;
+            greekExpenses['Καθαριότητα']=expenses.cleaning;
+            greekExpenses['Λαμπτήρες']=expenses.light;
+            greekExpenses['Αποχέτευση']=expenses.drains;
+            greekExpenses['Απεντόμωση']=expenses.disinsectisation;
+            greekExpenses['Συντήρηση Κήπου']=expenses.garden;
+            greekExpenses['Ασανσέρ Συντήρηση']=expenses.liftUpKeep;
+            greekExpenses['Ασανσέρ Ανταλ. Επισκευή']=expenses.liftRepair;
+            greekExpenses['Πετρέλαιο/Αέριο']=expenses.heat;
+            greekExpenses['Αποθεματικό']=expenses.reserve;
+            greekExpenses['Αμοιβή εκδ. Κοινοχρήστωνv']=expenses.shared;
+            greekExpenses['Λοιπά έξοδα']=expenses.otherExpenses;
+
+            var objTotal=expenses.toObject();
+            delete objTotal._id;
+            delete objTotal.year;
+            delete objTotal.month;
+            delete objTotal.block;
+            delete objTotal.comments;
+
+            //total sum of the month expenses
+            var totalExpenses=0;
+            for(var key in objTotal){
+                totalExpenses+=objTotal[key];
+            }
+            FlatHeatCount.find({expenses:expenses._id}, null, {sort: {_id: 1}}, function(err,flatHeatCount){
+                if(err) console.log(err);
+                res.render('resultsPerFlat',{
+                    name: req.user.name,
+                    flatsShownNav:req.flatsShow,//show flats in left navigation menu
+                    calendar:req.calendarShow,// calendar with months
+                    typeOfHeat:req.blockData.heatType,
+                    expenses:greekExpenses,//Τα έξοδα με ελληνικούς τίτλους
+                    flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
+                    blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies
+                    totalExpenses:totalExpenses,//Το σύνολο όλων των εξόδων
+                    comments:expenses.comments,
+                    results:''
+                })
+            })
+        }else{
+            res.render('resultsPerFlat',{
+                name: req.user.name,
+                flatsShownNav:req.flatsShow,//show flats in left navigation menu
+                calendar:req.calendarShow,
+                typeOfHeat:req.blockData.heatType,
+                expenses:'',
+                totalExpenses:'',
+                comments:'',
                 results:'Δεν βρέθηκε Καταχώρηση για την επιλογή μήνα: '+ req.body.month
             })
         }

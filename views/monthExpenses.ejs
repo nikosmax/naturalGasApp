@@ -252,6 +252,15 @@
                     <%}%>
                 </div>
 
+                <br>
+
+                <div id="comments" class="form-group">
+                     <label class="control-label col-sm-2" for="email">Διευκρινίσεις:</label>
+                <div class="col-sm-7">
+                    <input style="width:80%;" class=form-control" type="text" placeholder="Π.χ Περιλαμβάνει και τον Ιούλιο" name="comments" value="<%=expenses.comments%>">
+                </div>
+                </div>
+
                 <div class="text-center">
                     <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>
                     <button id="btnDelete" type="button" onclick="window.location='/users/delete/<%=id%>';" class="btn btn-primary">Delete</button>

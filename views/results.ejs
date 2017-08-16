@@ -45,7 +45,9 @@
          <%if(totalExpenses){%><!-- Αν έχουμε έξοδα τότε εμφανίζονται όλοι οι πίνακες) -->
             <h4 class="text-center">ΣΥΓΚΕΝΤΡΩΤΙΚΗ ΚΑΤΑΣΤΑΣΗ ΚΟΙΝΟΧΡΗΣΤΩΝ ΔΑΠΑΝΩΝ</h4>
             <h4 class="text-center">Μήνας: <%= expenses['Μήνας']%> - Έτος: <%= expenses['Έτος']%></h4>
-
+             <%if(comments){%>
+             <h4 class="text-center">Διευκρινίσεις : <%= comments%></h4>
+             <%}%>
             <table class="table table-bordered" style="width:50%;">
                 <thead bgcolor="LightGray">
                 <tr>
@@ -113,9 +115,6 @@
                         document.getElementById('thFixedHeatId').style.display='none';
                         document.getElementById('thXilId').colSpan='2';
                         document.getElementById('thExpensesId').colSpan='5';
-                    <%}else {%>
-                        document.getElementById('thHeatCountId').style.display='block';
-                        document.getElementById('thFixedHeatId').style.display='block';
                     <%}%>
                 </script>
 

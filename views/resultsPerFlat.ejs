@@ -46,80 +46,144 @@
         <%  flatsShownNav.forEach(function( flatsShownNav){ %>
     <div style="page-break-after:always; background-color: AliceBlue; border:solid; margin-bottom: 10px;">
             <h4 class="text-center">ΕΙΔΟΠΟΙΗΤΗΡΙΟ ΕΞΟΦΛΗΣΗΣ ΚΟΙΝΟΧΡΗΣΤΩΝ</h4>
-    <br>
-                <h4 style="white-space: pre-wrap; margin-bottom: 0px;">Διαμέρισμα: <%=flatsShownNav.flatNum%>       <%=flatsShownNav.lastname%>          Μήνας: <%= expenses['Μήνας']%>      Έτος: <%= expenses['Έτος']%></h4>
+                <h4 class="text-center" style="white-space: pre-wrap; margin-bottom: 0px;">Διαμέρισμα: <%=flatsShownNav.flatNum%>       <%=flatsShownNav.lastname%>     Μήνας: <%= expenses['Μήνας']%>      Έτος: <%= expenses['Έτος']%></h4>
                 <hr style="border-width: 1px; margin-top: 0px; border-color:black;">
-                <table class="table table-bordered" style="width:50%;">
+                <table class="table table-bordered" style="width:80%;">
                     <thead bgcolor="#ffba66 ">
                         <tr>
                             <th>'Εξοδα</th>
                             <th>Ποσό</th>
+                            <th>Συντελεστής Επιβάρυνσης</th>
+                            <th>Επιβάρυνση Διαμερίσματος</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <%var ownerSharedExpenses=0%><!-- Έξοδα ιδιοκτήτη αποθεματικο -->
+                    <%var ownerHeatExpenses=0%><!-- Έξοδα ιδιοκτήτη επισκευη θέρμανσης -->
+                    <%var ownerliftExpenses=0%><!-- Έξοδα ιδιοκτήτη επισκευή ασανσερ -->
+
+                    <% var koinExpenses=0%>
+                    <tbody><!-- Έξοδα σχετικά με τα κοινόχρηστα -->
                         <% for(var key in expenses) {%>
                             <% if(expenses.hasOwnProperty(key)){%>
-                                <% if(expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας'){%>
+                                <% if(expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας' &&
+                                        key!=='Ασανσέρ Συντήρηση' &&
+                                        key!=='Ασανσέρ Ανταλ. Επισκευή' &&
+                                        key!=='Πετρέλαιο/Αέριο' &&
+                                        key!=='Συντήρηση Καυστήρα/Λέβητα' &&
+                                        key!=='Επισκευή Καυστήρα/Λέβητα'){%>
                                     <tr>
-                                    <%if(key==='Πετρέλαιο/Αέριο' && typeOfHeat!=='Κεντρική θέρμανση'){%>
-                                        <td><%=key%></td>
-                                        <td><%= ((100-blockHeatFixed)*expenses[key]/100).toFixed(2)%></td>
-                                    <tr>
-                                        <td>Πάγιο Θέρμανσης</td>
-                                        <td><%= (blockHeatFixed*expenses[key]/100).toFixed(2)%></td>
-                                    </tr>
-                                    <%}else {%>
                                         <td><%=key%></td>
                                         <td><%= expenses[key].toFixed(2)%></td>
-                                    <%}%>
                                     </tr>
+                                     <%koinExpenses+=expenses[key]%>
+                                    <%if(key==='Αποθεματικό'){%>
+                                        <%ownerSharedExpenses=expenses[key]%>
+                                    <%}%>
                                 <%}%>
-                            <%}%>
-                        <%}%>
+                            <%}%><!-- End of if expenses unique property key -->
+                        <%}%><!-- End of for loop -->
                     <tr bgcolor="#ffba66">
-                        <th>Σύνολο Εξόδων</th>
-                        <th><%= totalExpenses.toFixed(2)%></th>
+                        <th>Σύνολο Κοινοχρήστων</th>
+                        <th><%= koinExpenses.toFixed(2)%></th>
+                        <th class="text-center"><%=(flatsShownNav.koinratio/1000).toFixed(2)%></th>
+                        <th class="text-center"><%=(flatsShownNav.koinratio/1000 * koinExpenses).toFixed(2)%></th>
                     </tr>
                     </tbody>
+
+                    <% var heatExpenses=0%>
+                    <tbody><!-- Έξοδα σχετικά με την θέρμανση -->
+                    <% for(var key in expenses) {%>
+                        <% if(expenses.hasOwnProperty(key)){%>
+                            <% if((expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας' && key==='Πετρέλαιο/Αέριο') ||
+                                    (expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας' && key==='Συντήρηση Καυστήρα/Λέβητα') ||
+                                    (expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας' && key==='Επισκευή Καυστήρα/Λέβητα')){%>
+                                <tr>
+                                    <td><%=key%></td>
+                                    <td><%= expenses[key].toFixed(2)%></td>
+                                </tr>
+                                <%heatExpenses+=expenses[key]%>
+                                <%if(key==='Επισκευή Καυστήρα/Λέβητα'){%>
+                                    <%ownerHeatExpenses=expenses[key]%>
+                                <%}%>
+                            <%}%>
+                        <%}%><!-- End of if expenses unique property key -->
+                    <%}%><!-- End of for loop -->
+                    <tr bgcolor="#ffba66">
+                        <th>Σύνολο Θέρμανσης</th>
+                        <th><%= heatExpenses.toFixed(2)%></th>
+                        <th class="text-center"><%=(flatsShownNav.flatxil/1000).toFixed(2)%></th>
+                        <th class="text-center"><%=(flatsShownNav.flatxil/1000 *heatExpenses).toFixed(2)%></th>
+                    </tr>
+                    </tbody>
+
+                    <% var liftExpenses=0%>
+                    <tbody><!-- Έξοδα σχετικά με το ασανσερ -->
+                    <% for(var key in expenses) {%>
+                        <% if(expenses.hasOwnProperty(key)){%>
+                            <% if((expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας' && key==='Ασανσέρ Συντήρηση') || (expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας' && key==='Ασανσέρ Ανταλ. Επισκευή')){%>
+                                <tr>
+                                    <td><%=key%></td>
+                                    <td><%= expenses[key].toFixed(2)%></td>
+                                </tr>
+                                <%liftExpenses+=expenses[key]%>
+                                <%if(key==='Ασανσέρ Ανταλ. Επισκευή'){%>
+                                    <%ownerliftExpenses=expenses[key]%>
+                                <%}%>
+                            <%}%>
+                        <%}%><!-- End of if expenses unique property key -->
+                    <%}%><!-- End of for loop -->
+                    <%if(liftExpenses!==0){%>
+                        <tr bgcolor="#ffba66">
+                            <th>Σύνολο Ασανσερ</th>
+                            <th><%= liftExpenses.toFixed(2)%></th>
+                            <th class="text-center"><%=(flatsShownNav.liftratio/1000).toFixed(2)%></th>
+                            <th class="text-center"><%=(flatsShownNav.liftratio/1000 *liftExpenses).toFixed(2) %></th>
+                        </tr>
+                    <%}%>
+                    </tbody>
+
                 </table>
 <br>
 
 <table class="table table-bordered">
     <thead bgcolor="#ffba66">
     <tr>
-        <th>Ονομα Διαχειρστή</th>
+        <th>Ονομα Διαχειριστή</th>
         <th>Συνολικά Έξοδα πολυκατοικίας</th>
         <th>Έξοδα Ιδιοκτήτη</th>
         <th>Έξοδα Ενοικιαστή</th>
+        <th>Σύνολο Διαμερίσματος</th>
     </tr>
     </thead>
     <tbody>
-    <td></td>
+    <td><%=nameRes%></td>
     <td><%=totalExpenses.toFixed(2)%></td>
-    <td></td>
-    <td></td>
+    <td><%=(ownerSharedExpenses*flatsShownNav.koinratio/1000+ownerHeatExpenses*flatsShownNav.flatxil/1000+ownerliftExpenses*flatsShownNav.liftratio/1000).toFixed(2)%></td>
+    <td><%=((koinExpenses*flatsShownNav.koinratio/1000+heatExpenses*flatsShownNav.flatxil/1000+liftExpenses*flatsShownNav.liftratio/1000)-(ownerSharedExpenses*flatsShownNav.koinratio/1000+ownerHeatExpenses*flatsShownNav.flatxil/1000+ownerliftExpenses*flatsShownNav.liftratio/1000)).toFixed(2)%></td>
+    <td><%=(koinExpenses*flatsShownNav.koinratio/1000+heatExpenses*flatsShownNav.flatxil/1000+liftExpenses*flatsShownNav.liftratio/1000).toFixed(2)%></td>
     </tbody>
 </table>
 
     <hr style="border-top: 3px dotted black; margin-top: 0px;">
     <h4 class="text-center">ΑΠΟΔΕΙΞΗ ΕΞΟΦΛΗΣΗΣ ΚΟΙΝΟΧΡΗΣΤΩΝ</h4>
-    <br>
-    <h4 style="white-space: pre-wrap; margin-bottom: 0px;">Διαμέρισμα: <%=flatsShownNav.flatNum%>       <%=flatsShownNav.lastname%>          Μήνας: <%= expenses['Μήνας']%>      Έτος: <%= expenses['Έτος']%></h4>
+    <h4 class="text-center" style="white-space: pre-wrap; margin-bottom: 0px;">Διαμέρισμα: <%=flatsShownNav.flatNum%>       <%=flatsShownNav.lastname%>     Μήνας: <%= expenses['Μήνας']%>      Έτος: <%= expenses['Έτος']%></h4>
     <hr style="border-width: 1px; margin-top: 0px; border-color:black;">
 <table class="table table-bordered">
     <thead bgcolor="#ffba66">
     <tr>
-        <th>Ονομα Διαχειρστή</th>
+        <th>Ονομα Διαχειριστή</th>
         <th>Συνολικά Έξοδα πολυκατοικίας</th>
         <th>Έξοδα Ιδιοκτήτη</th>
         <th>Έξοδα Ενοικιαστή</th>
+        <th>Σύνολο Διαμερίσματος</th>
     </tr>
     </thead>
     <tbody>
-        <td></td>
+        <td><%=nameRes%></td>
         <td><%=totalExpenses.toFixed(2)%></td>
-        <td></td>
-        <td></td>
+        <td><%=(ownerSharedExpenses*flatsShownNav.koinratio/1000+ownerHeatExpenses*flatsShownNav.flatxil/1000+ownerliftExpenses*flatsShownNav.liftratio/1000).toFixed(2)%></td>
+        <td><%=((koinExpenses*flatsShownNav.koinratio/1000+heatExpenses*flatsShownNav.flatxil/1000+liftExpenses*flatsShownNav.liftratio/1000)-(ownerSharedExpenses*flatsShownNav.koinratio/1000+ownerHeatExpenses*flatsShownNav.flatxil/1000+ownerliftExpenses*flatsShownNav.liftratio/1000)).toFixed(2)%></td>
+        <td><%=(koinExpenses*flatsShownNav.koinratio/1000+heatExpenses*flatsShownNav.flatxil/1000+liftExpenses*flatsShownNav.liftratio/1000).toFixed(2)%></td>
     </tbody>
 </table>
     </div>

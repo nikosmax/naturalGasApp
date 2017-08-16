@@ -547,6 +547,8 @@ router.post('/results',function(req,res){
             'Ασανσέρ Συντήρηση':'',
             'Ασανσέρ Ανταλ. Επισκευή':'',
             'Πετρέλαιο/Αέριο':'',
+            'Συντήρηση Καυστήρα/Λέβητα':'',
+            'Επισκευή Καυστήρα/Λέβητα':'',
             Αποθεματικό:'',
             'Αμοιβή εκδ. Κοινοχρήστωνv':'',
             'Λοιπά έξοδα':''
@@ -565,6 +567,8 @@ router.post('/results',function(req,res){
                 greekExpenses['Ασανσέρ Συντήρηση']=expenses.liftUpKeep;
                 greekExpenses['Ασανσέρ Ανταλ. Επισκευή']=expenses.liftRepair;
                 greekExpenses['Πετρέλαιο/Αέριο']=expenses.heat;
+                greekExpenses['Συντήρηση Καυστήρα/Λέβητα']=expenses.heatUpKeep;
+                greekExpenses['Επισκευή Καυστήρα/Λέβητα']=expenses.heatRepair;
                 greekExpenses['Αποθεματικό']=expenses.reserve;
                 greekExpenses['Αμοιβή εκδ. Κοινοχρήστωνv']=expenses.shared;
                 greekExpenses['Λοιπά έξοδα']=expenses.otherExpenses;
@@ -618,6 +622,7 @@ router.get('/resultsPerFlat',function(req,res){
         flatsShownNav:req.flatsShow,//show flats in left navigation menu
         calendar:req.calendarShow,
         typeOfHeat:req.blockData.heatType,
+        nameRes:req.blockData.nameRes,//Όνομα διαχειριστή
         expenses:'',
         totalExpenses:'',
         results:''
@@ -644,6 +649,8 @@ router.post('/resultsPerFlat',function(req,res){
                 'Ασανσέρ Συντήρηση':'',
                 'Ασανσέρ Ανταλ. Επισκευή':'',
                 'Πετρέλαιο/Αέριο':'',
+                'Συντήρηση Καυστήρα/Λέβητα':'',
+                'Επισκευή Καυστήρα/Λέβητα':'',
                 Αποθεματικό:'',
                 'Αμοιβή εκδ. Κοινοχρήστωνv':'',
                 'Λοιπά έξοδα':''
@@ -662,6 +669,8 @@ router.post('/resultsPerFlat',function(req,res){
             greekExpenses['Ασανσέρ Συντήρηση']=expenses.liftUpKeep;
             greekExpenses['Ασανσέρ Ανταλ. Επισκευή']=expenses.liftRepair;
             greekExpenses['Πετρέλαιο/Αέριο']=expenses.heat;
+            greekExpenses['Συντήρηση Καυστήρα/Λέβητα']=expenses.heatUpKeep;
+            greekExpenses['Επισκευή Καυστήρα/Λέβητα']=expenses.heatRepair;
             greekExpenses['Αποθεματικό']=expenses.reserve;
             greekExpenses['Αμοιβή εκδ. Κοινοχρήστωνv']=expenses.shared;
             greekExpenses['Λοιπά έξοδα']=expenses.otherExpenses;
@@ -685,6 +694,7 @@ router.post('/resultsPerFlat',function(req,res){
                     flatsShownNav:req.flatsShow,//show flats in left navigation menu
                     calendar:req.calendarShow,// calendar with months
                     typeOfHeat:req.blockData.heatType,
+                    nameRes:req.blockData.nameRes,//Όνομα διαχειριστή
                     expenses:greekExpenses,//Τα έξοδα με ελληνικούς τίτλους
                     flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
                     blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies
@@ -699,6 +709,7 @@ router.post('/resultsPerFlat',function(req,res){
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
                 calendar:req.calendarShow,
                 typeOfHeat:req.blockData.heatType,
+                nameRes:req.blockData.nameRes,//Όνομα διαχειριστή
                 expenses:'',
                 totalExpenses:'',
                 comments:'',

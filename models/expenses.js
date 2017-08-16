@@ -6,19 +6,19 @@ var expenseSchema=new Schema({
     month:              String,
     salary:             Number,
     ika:                Number,
-    water:              Number,
+    water:              Number,//ΕΥΔΑΠ
     energy:             Number,//ΔΕΗ
-    cleaning:           Number,
-    light:              Number,
+    cleaning:           Number,//Καθαριμός
+    light:              Number,//Φώτα αλλαγή
     drains:             Number,//Αποχέτευση
     disinsectisation:   Number,//Απεντόμωση
-    garden:             Number,
+    garden:             Number,//Κήπος
     liftUpKeep:         Number,//Συντήρηση ανελκυστήρα
-    liftRepair:         Number,//Επισκευή ανελκυστήρα
+    liftRepair:         Number,//Επισκευή ανελκυστήρα - Εξοδο ιδιοκτήτη
     heat:               Number,//Θέρμανση πετρέλαιο/αέριο
     heatUpKeep:         Number,//Θέρμανση συντήρηση καυστήρα/λέβητα
-    heatRepair:         Number,//Θέρμανση επισκευή καυστήρα/λέβητα
-    reserve:            Number,//Αποθεματικό
+    heatRepair:         Number,//Θέρμανση επισκευή καυστήρα/λέβητα - Εξοδο ιδιοκτήτη
+    reserve:            Number,//Αποθεματικό - Εξοδο ιδιοκτήτη
     shared:             Number,//Έκδοση κοινοχρήστων
     otherExpenses:      Number,
     comments:           String,//για να μπει στο πινακα των αποτελεσμάτων

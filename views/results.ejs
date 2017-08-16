@@ -102,7 +102,6 @@
                     <th>Ασανσέρ</th>
                     <th>Θέρμανση</th>
                     <th id="thFixedHeatId">Πάγιο</th>
-                    <th>Ιδιοκτητών</th>
                     <th>Σύνολο</th>
                 </tr>
                 </thead>
@@ -158,7 +157,6 @@
                                     ((flatsShownNav.koinratio*blockHeatFixed*expenses['Πετρέλαιο/Αέριο']/100)/1000)).toFixed(2)%></td>
                             <%}else {%>
                                 <td class="text-center"><%= ((flatsShownNav.koinratio*expenses['Πετρέλαιο/Αέριο'])/1000).toFixed(2) %></td>
-                                <td></td>
                                 <td class="text-center"><%=(((flatsShownNav.koinratio*(totalExpenses-totalExpLift-expenses['Πετρέλαιο/Αέριο']))/1000)+
                                     ((flatsShownNav.liftratio*totalExpLift)/1000)+
                                     ((flatsShownNav.koinratio*expenses['Πετρέλαιο/Αέριο'])/1000)).toFixed(2)%>
@@ -218,7 +216,6 @@
                     <%if(typeOfHeat!='Κεντρική θέρμανση'){%>
                         <th class="text-center"><%= totalHeatFixed.toFixed(2)%></th> <!-- Σύνολο εξοδα πάγιο θέρμανσης -->
                     <%}%>
-                        <th class="text-center"></th>
                         <th class="text-center"><%= checkTotal.toFixed(2)%></th> <!-- Σύνολο εξόδων -->
             </tr>
             <%}%><!-- End of if(typeof flatsShownNav !== 'undefined') -->

@@ -340,9 +340,10 @@ router.post('/monthexpenses',function(req,res){
                 console.log('New expense saved');
                 Expenses.findOne({block: req.blockData._id, year: req.body.year, month: req.body.month}, function (err, expenses) {
                     if (err) console.log(err);
-                    if (!expenses)
+                    if (!expenses){
                         console.log('no expenses');
-                    else {
+                    }
+                    else if(req.blockData.heatType!=='Κεντρική θέρμανση'){//Στην κεντρική δεν έχουμε μονάδες για αυτό και ο έλεγχος
                         for (var i = 0; i < req.body.flat.length; i++) {
 
                             var flatCounts = new FlatHeatCount({
@@ -358,7 +359,9 @@ router.post('/monthexpenses',function(req,res){
             })
             }
             res.redirect('monthExpenses');
-        }
+        }else{
+               res.redirect('monthExpenses');
+             }
     })
 }, function (err) {
                 if (err) console.log(err);

@@ -150,7 +150,6 @@
                             <% if(typeOfHeat!=='Κεντρική θέρμανση'){%>
                                 <td class="text-center"><%= ((flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*(100-blockHeatFixed)*expenses['Πετρέλαιο/Αέριο']/100)/sumΩixXil).toFixed(2) %></td>
                                 <td class="text-center"><%= ((flatsShownNav.koinratio*blockHeatFixed*expenses['Πετρέλαιο/Αέριο']/100)/1000).toFixed(2) %></td>
-                                <td></td>
                                 <td class="text-center"><%=(((flatsShownNav.koinratio*(totalExpenses-totalExpLift-expenses['Πετρέλαιο/Αέριο']))/1000)+
                                     ((flatsShownNav.liftratio*totalExpLift)/1000)+
                                     ((flatsShownNav.koinratio*flatHeatCount[count].flatheatcount*(100-blockHeatFixed)*expenses['Πετρέλαιο/Αέριο']/100)/sumΩixXil)+

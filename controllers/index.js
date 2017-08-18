@@ -27,6 +27,7 @@ var crypto = require('crypto');
  routes loaded inside.The prefix part is optional.
  */
 router.use('/users', require('./users'));
+router.use('/admin', require('./admin'));
 
 //Home page
 router.get('/',function(req,res){
@@ -132,8 +133,11 @@ router.post('/signup',function(req,res){
                 if (err) console.log(err);
                 else console.log('User saved successfully');
             })
-            //console.log(newUser);
-            res.redirect('/users/profile');
+            if(req.body.username==='admin@admin.com'){
+                res.redirect('/admin/adminPage');
+            }else{
+                res.redirect('/users/profile');
+            }
 
             //email send
     welcomeEmail.render({name: req.body.name,username:req.body.username, password:req.body.pwd},function(err,results){
@@ -188,7 +192,11 @@ router.post('/login',function(req,res){
                          //sets a cookie with the user's info
                          req.session.user=user;
                         console.log('Successful login');
-                         res.redirect('/users/profile');
+                        if(req.body.username==='admin@admin.com'){
+                            res.redirect('/admin/adminPage');
+                        }else{
+                            res.redirect('/users/profile');
+                        }
                     }
                     else
                     {

@@ -42,19 +42,10 @@ What you want is: typeof message === "undefined"-->
 <%}%>
 
 <% if(typeof user!=="undefined"){%>
-    <%if(user.username==='admin@admin.com'){%>
-        <script>
-            document.getElementById("signup").style.display='none';
-            document.getElementById("login").style.display='none';
-            //document.getElementById("profile").style.display='block';
-            document.getElementById("logout").style.display='block';
-        </script>
-    <%}else{%>
-        <script>
-            document.getElementById("signup").style.display='none';
-            document.getElementById("login").style.display='none';
-            document.getElementById("profile").style.display='block';
-            document.getElementById("logout").style.display='block';
-        </script>
-    <%}%>
+<script>
+    document.getElementById("signup").style.display='none';
+    document.getElementById("login").style.display='none';
+    document.getElementById("profile").style.display='block';
+    document.getElementById("logout").style.display='block';
+</script>
 <%}%>

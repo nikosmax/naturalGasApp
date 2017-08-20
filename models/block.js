@@ -11,6 +11,7 @@ var blockSchema= new Schema({
     heatType:   String,
     heatFixed:  Number,
     totalFlats: {type:Number,required: true},
+    reserve:    Number,//Αποθεματικό
     user :      [{ type: Schema.Types.ObjectId, ref: 'User' }]
 })
 

@@ -134,6 +134,7 @@ router.post('/block',function(req,res){
             heatType:   req.body.heatType,
             heatFixed:  req.body.heatFixed,
             totalFlats: req.body.totalFlats,
+            reserve:    req.body.reserve,
             user :      req.user._id
         })
 
@@ -164,6 +165,7 @@ router.post('/blockUpdate',function(req,res){
             block.heatType=req.body.heatType;
             block.heatFixed=req.body.heatFixed;
             block.totalFlats=req.body.totalFlats;
+            block.reserve=req.body.reserve;
 
         block.save(function(err,update){
             if(err) console.log(err);

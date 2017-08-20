@@ -8,6 +8,8 @@ var userSchema=new Schema({
     username:{type:String,required: true,unique:true},
     password:{type:String,required:true},
     created_date:{type:Date,default:Date.now},
+    credits: Number,
+    validUntil: Date,
     resetPasswordToken: String,
     resetPasswordExpires: Date
 });

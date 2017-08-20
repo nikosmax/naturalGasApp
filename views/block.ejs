@@ -30,7 +30,8 @@
                     </div>
 
                 </div>
-            </div>
+            </div><!-- End of modal -->
+
             <h4 align="center">Στοιχεία Πολυκατοικίας</h4>
             <form method="post" action="" id="blockPost">
                 <div class="form-group">
@@ -73,6 +74,10 @@
                 <div id="heatFixedId" class="form-group">
                     <label for="name">Πάγιο Θέρμανσης %:</label>
                     <input type="text" class="form-control" name="heatFixed" value="<%= block.heatFixed %>">
+                </div>
+                <div id="reserve" class="form-group">
+                    <label for="reserve">Αποθεματικό:</label>
+                    <input type="text" class="form-control" name="reserve" value="<%= block.reserve %>">
                 </div>
 
                 <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>

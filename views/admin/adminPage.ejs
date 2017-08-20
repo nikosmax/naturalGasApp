@@ -1,13 +1,19 @@
-<% include ../admin/header.ejs %>
+<% include header.ejs %>
 <body>
 
 <div class="container">
-    <% include ../admin/body.ejs %>
-    <h1>Admin Page</h1>
-    <p>This is some text.</p>
+    <% include body.ejs %>
+    <div class="row content">
+        <% include navbarleft.ejs %>
+        <div class="col-sm-9">
+
+            <h1>Admin Page</h1>
+            <p>This is some text.</p>
+        </div>
+    </div>
 </div>
 
-<% include ../admin/footer.ejs %>
+<% include footer.ejs %>
 </body>
 
 </html>

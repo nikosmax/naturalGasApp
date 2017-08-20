@@ -31,7 +31,13 @@ router.use('/admin', require('./admin'));
 
 //Home page
 router.get('/',function(req,res){
-    res.render('index');
+    if(typeof req.user==='undefined'){
+        res.render('index');
+    } else{
+        res.render('index',{
+            usrnm:req.user.username
+        });
+    }
 })
 
 //Login page

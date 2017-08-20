@@ -1,0 +1,39 @@
+<% include header.ejs %>
+<body>
+
+<div class="container">
+    <% include body.ejs %>
+    <div class="row content">
+        <% include navbarleft.ejs %>
+        <div class="col-sm-9">
+            <h1>Users Page</h1>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Date Created</th>
+                    <th>Credits</th>
+                    <th>Valid Until</th>
+                </tr>
+                </thead>
+                <tbody>
+            <% users.forEach(function(users){%>
+                <tr>
+                    <td><%=users.name%></td>
+                    <td><%=users.username%></td>
+                    <td><%=users.created_date.getDate()%>-<%=users.created_date.getMonth()%>-<%=users.created_date.getFullYear()%> </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            <%})%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<% include footer.ejs %>
+</body>
+
+</html>

@@ -46,16 +46,22 @@
 
     <% var count=0%>
     <% var sumΩixXil=0%>
+    <% var sumeixfi=0%>
+    <% var sumeixΩi=0%>
 
     <!-- Υπολογισμός του sumOf(Ωi x Χιλιοστά θέρμανσης) -->
     <!-- Εαν έχουμε έξοδα θέρμανσης και η θέρμανση δεν είναι κεντρική υπολόγισε sumΩixXil -->
     <%if(expenses['Πετρέλαιο/Αέριο'] && typeOfHeat!='Κεντρική θέρμανση'){%>
         <% flatsShownNav.forEach(function( flatsShownNav){ %>
             <% sumΩixXil+= flatHeatCount[count].flatheatcount*flatsShownNav.koinratio %>
+            <% sumeixfi+=flatsShownNav.ei*flatsShownNav.fi%>
+            <% sumeixΩi+= flatsShownNav.ei*flatHeatCount[count].flatheatcount %>
             <%count+=1%>
         <%})%>
     <%}else {%><!-- Αλλιώς εαν δεν έχουμε έξοδα θέρμανσης το sumΩixXil ίσον με ένα γιατι αλλιώς διαιρεση με μηδεν προβλημα-->
         <% sumΩixXil=1%>
+        <% sumeixfi=1%>
+        <% sumeixΩi=1%>
     <%}%>
 
     <% count=0%> <!-- Μηδενισμός του count για συνέχεια στον επόμενο υπολογισμό -->
@@ -115,6 +121,7 @@
                                     (expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας' && key==='Επισκευή Καυστήρα/Λέβητα')){%>
                                 <tr>
                                     <%if(key==='Πετρέλαιο/Αέριο' && typeOfHeat!=='Κεντρική θέρμανση'){%>
+                                        <%if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης'){%>
                                         <td><%=key%></td>
                                         <td class="text-right"><%= ((100-blockHeatFixed)*expenses[key]/100).toFixed(2)%></td>
                                         <td class="text-center"><%= ((flatsShownNav.koinratio*flatHeatCount[count].flatheatcount)/sumΩixXil).toFixed(4) %></td>
@@ -125,18 +132,46 @@
                                             <td class="text-center"><%=blockHeatFixed%>%</td>
                                             <td class="text-center"><%= ((flatsShownNav.koinratio*blockHeatFixed*expenses['Πετρέλαιο/Αέριο']/100)/1000).toFixed(2) %></td>
                                         </tr>
-                                    <%}else if(key==='Συντήρηση Καυστήρα/Λέβητα' && typeOfHeat!=='Κεντρική θέρμανση'){%>
+                                        <%}else {%><!-- αλλιώς είναι Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες -->
                                         <td><%=key%></td>
-                                        <td class="text-right"><%= expenses[key].toFixed(2)%></td>
-                                        <td class="text-center"><%=(flatsShownNav.flatxil/1000).toFixed(3)%></td>
-                                        <td class="text-center"><%= (expenses[key]*flatsShownNav.flatxil/1000).toFixed(2) %></td>
-                                       </tr>
-                                    <%}else if(key==='Επισκευή Καυστήρα/Λέβητα' && typeOfHeat!=='Κεντρική θέρμανση'){%>
-                                        <td><%=key%></td>
-                                        <td class="text-right"><%= expenses[key].toFixed(2)%></td>
-                                        <td class="text-center"><%=(flatsShownNav.flatxil/1000).toFixed(3)%></td>
-                                        <td class="text-center"><%= (expenses[key]*flatsShownNav.flatxil/1000).toFixed(2) %></td>
+                                        <td class="text-right"><%=((1-sumeixfi)*expenses[key]).toFixed(2)%></td>
+                                        <td class="text-center"><%= ((flatsShownNav.ei*flatHeatCount[count].flatheatcount/sumeixΩi)).toFixed(4) %></td>
+                                        <td class="text-center"><%= ((flatsShownNav.ei*flatHeatCount[count].flatheatcount/sumeixΩi)*(1-sumeixfi)*expenses[key]).toFixed(2) %></td>
+                                        <tr>
+                                            <td>Πάγιο Θέρμανσης</td>
+                                            <td class="text-right"><%= (sumeixfi*expenses[key]).toFixed(2)%></td>
+                                            <td class="text-center"><%= (flatsShownNav.ei*flatsShownNav.fi/sumeixfi).toFixed(4)%></td>
+                                            <td class="text-center"><%= ((flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*sumeixfi*expenses[key]).toFixed(2) %></td>
                                         </tr>
+                                        <%}%>
+                                    <%}else if(key==='Συντήρηση Καυστήρα/Λέβητα' && typeOfHeat!=='Κεντρική θέρμανση'){%>
+                                        <%if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης'){%>
+                                            <td><%=key%></td>
+                                            <td class="text-right"><%= expenses[key].toFixed(2)%></td>
+                                            <td class="text-center"><%=(flatsShownNav.flatxil/1000).toFixed(3)%></td>
+                                            <td class="text-center"><%= (expenses[key]*flatsShownNav.flatxil/1000).toFixed(2) %></td>
+                                        </tr>
+                                        <%}else {%><!-- αλλιώς είναι Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες -->
+                                            <td><%=key%></td>
+                                            <td class="text-right"><%= expenses[key].toFixed(2)%></td>
+                                            <td class="text-center"><%=(flatsShownNav.ei*flatsShownNav.fi/sumeixfi).toFixed(4)%></td>
+                                            <td class="text-center"><%= ((flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses[key]).toFixed(2) %></td>
+                                        </tr>
+                                        <%}%>
+                                    <%}else if(key==='Επισκευή Καυστήρα/Λέβητα' && typeOfHeat!=='Κεντρική θέρμανση'){%>
+                                        <%if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης'){%>
+                                            <td><%=key%></td>
+                                            <td class="text-right"><%= expenses[key].toFixed(2)%></td>
+                                            <td class="text-center"><%=(flatsShownNav.flatxil/1000).toFixed(3)%></td>
+                                            <td class="text-center"><%= (expenses[key]*flatsShownNav.flatxil/1000).toFixed(2) %></td>
+                                        </tr>
+                                        <%}else {%><!-- αλλιώς είναι Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες -->
+                                            <td><%=key%></td>
+                                            <td class="text-right"><%= expenses[key].toFixed(2)%></td>
+                                            <td class="text-center"><%=(flatsShownNav.ei*flatsShownNav.fi/sumeixfi).toFixed(4)%></td>
+                                            <td class="text-center"><%= ((flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses[key]).toFixed(2) %></td>
+                                        </tr>
+                                        <%}%>
                                     <%}else {%>
                                         <td><%=key%></td>
                                         <td class="text-right"><%= expenses[key].toFixed(2)%></td>
@@ -164,6 +199,14 @@
                                 ((flatsShownNav.koinratio*blockHeatFixed*expenses['Πετρέλαιο/Αέριο']/100)/1000)+
                                 (expenses['Συντήρηση Καυστήρα/Λέβητα']*flatsShownNav.flatxil/1000)+
                                 (expenses['Επισκευή Καυστήρα/Λέβητα']*flatsShownNav.flatxil/1000)).toFixed(2) %></th>
+                        <%}else if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες'){%>
+                            <th>Σύνολο Θέρμανσης</th>
+                            <th class="text-right"><%= heatExpenses.toFixed(2)%></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"><%=((flatsShownNav.ei*flatHeatCount[count].flatheatcount/sumeixΩi)*(1-sumeixfi)*expenses['Πετρέλαιο/Αέριο']+
+                                (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*sumeixfi*expenses['Πετρέλαιο/Αέριο']+
+                                ((flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses['Συντήρηση Καυστήρα/Λέβητα'])+
+                                ((flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses['Επισκευή Καυστήρα/Λέβητα'])).toFixed(2) %></th>
                         <%}%>
                     <%}%>
                     </tr>
@@ -230,6 +273,21 @@
             (expenses['Συντήρηση Καυστήρα/Λέβητα']*flatsShownNav.flatxil/1000)+
             (expenses['Επισκευή Καυστήρα/Λέβητα']*flatsShownNav.flatxil/1000)+
             liftExpenses*flatsShownNav.liftratio/1000).toFixed(2)%></td>
+    <%}else if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες'){%>
+        <td class="text-right"><%=(ownerSharedExpenses*flatsShownNav.koinratio/1000+ownerHeatExpenses*(flatsShownNav.ei*flatsShownNav.fi/sumeixfi)+ownerliftExpenses*flatsShownNav.liftratio/1000).toFixed(2)%></td>
+        <td class="text-right"><%=((koinExpenses*flatsShownNav.koinratio/1000+
+            (flatsShownNav.ei*flatHeatCount[count].flatheatcount/sumeixΩi)*(1-sumeixfi)*expenses['Πετρέλαιο/Αέριο']+
+            (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*sumeixfi*expenses['Πετρέλαιο/Αέριο']+
+            (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses['Συντήρηση Καυστήρα/Λέβητα']+
+            (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses['Επισκευή Καυστήρα/Λέβητα']+
+            liftExpenses*flatsShownNav.liftratio/1000)-
+            (ownerSharedExpenses*flatsShownNav.koinratio/1000+ownerHeatExpenses*(flatsShownNav.ei*flatsShownNav.fi/sumeixfi)+ownerliftExpenses*flatsShownNav.liftratio/1000)).toFixed(2)%></td>
+        <td class="text-right"><%=(koinExpenses*flatsShownNav.koinratio/1000+
+            (flatsShownNav.ei*flatHeatCount[count].flatheatcount/sumeixΩi)*(1-sumeixfi)*expenses['Πετρέλαιο/Αέριο']+
+            (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*sumeixfi*expenses['Πετρέλαιο/Αέριο']+
+            (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses['Συντήρηση Καυστήρα/Λέβητα']+
+            (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses['Επισκευή Καυστήρα/Λέβητα']+
+            liftExpenses*flatsShownNav.liftratio/1000).toFixed(2)%></td>
     <%}%>
     </tbody>
 </table>
@@ -270,6 +328,21 @@
                 ((flatsShownNav.koinratio*blockHeatFixed*expenses['Πετρέλαιο/Αέριο']/100)/1000)+
                 (expenses['Συντήρηση Καυστήρα/Λέβητα']*flatsShownNav.flatxil/1000)+
                 (expenses['Επισκευή Καυστήρα/Λέβητα']*flatsShownNav.flatxil/1000)+
+                liftExpenses*flatsShownNav.liftratio/1000).toFixed(2)%></td>
+        <%}else if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες'){%>
+            <td class="text-right"><%=(ownerSharedExpenses*flatsShownNav.koinratio/1000+ownerHeatExpenses*(flatsShownNav.ei*flatsShownNav.fi/sumeixfi)+ownerliftExpenses*flatsShownNav.liftratio/1000).toFixed(2)%></td>
+            <td class="text-right"><%=((koinExpenses*flatsShownNav.koinratio/1000+
+                (flatsShownNav.ei*flatHeatCount[count].flatheatcount/sumeixΩi)*(1-sumeixfi)*expenses['Πετρέλαιο/Αέριο']+
+                (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*sumeixfi*expenses['Πετρέλαιο/Αέριο']+
+                (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses['Συντήρηση Καυστήρα/Λέβητα']+
+                (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses['Επισκευή Καυστήρα/Λέβητα']+
+                liftExpenses*flatsShownNav.liftratio/1000)-
+                (ownerSharedExpenses*flatsShownNav.koinratio/1000+ownerHeatExpenses*(flatsShownNav.ei*flatsShownNav.fi/sumeixfi)+ownerliftExpenses*flatsShownNav.liftratio/1000)).toFixed(2)%></td>
+            <td class="text-right"><%=(koinExpenses*flatsShownNav.koinratio/1000+
+                (flatsShownNav.ei*flatHeatCount[count].flatheatcount/sumeixΩi)*(1-sumeixfi)*expenses['Πετρέλαιο/Αέριο']+
+                (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*sumeixfi*expenses['Πετρέλαιο/Αέριο']+
+                (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses['Συντήρηση Καυστήρα/Λέβητα']+
+                (flatsShownNav.ei*flatsShownNav.fi/sumeixfi)*expenses['Επισκευή Καυστήρα/Λέβητα']+
                 liftExpenses*flatsShownNav.liftratio/1000).toFixed(2)%></td>
         <%}%>
     </tbody>

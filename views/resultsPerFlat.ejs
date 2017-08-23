@@ -74,11 +74,13 @@
     <% count=0%> <!-- Μηδενισμός του count για συνέχεια στον επόμενο υπολογισμό -->
         <%  flatsShownNav.forEach(function( flatsShownNav){ %>
     <!--Τσεκάρουμε για την περίπτωση που έχουμε εξοδο θέρμανσης αλλά είναι το καλοκαίρι πάγιο αερίου και δεν έχουμε μονάδες -->
+    <%if(typeOfHeat!=='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>
             <% flatCheck=flatHeatCount[count].flatheatcount%>
             <% if(flag){%>
                 <%flatCheck=1%>
                 <%sumΩixXil=1000%>
             <%}%>
+    <%}%>
     <div style="page-break-after:always; background-color: AliceBlue; border:solid; margin-bottom: 10px;">
             <h4 class="text-center">ΕΙΔΟΠΟΙΗΤΗΡΙΟ ΕΞΟΦΛΗΣΗΣ ΚΟΙΝΟΧΡΗΣΤΩΝ</h4>
         <%if(comments){%>

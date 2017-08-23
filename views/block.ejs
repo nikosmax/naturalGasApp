@@ -65,10 +65,10 @@
                 <div class="form-group">
                     <label for="sel1">Είδος Θέρμανσης:</label>
                     <select id='heatType' onchange="heatFixedFunction()" class="form-control" name="heatType">
-                        <option value="Κεντρική θέρμανση">Κεντρική θέρμανση</option>
-                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης">Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά θέρμανσης</option>
-                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες</option>
-                        <option value="Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες">Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες</option>
+                        <option value="Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά">Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά</option>
+                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά">Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά</option>
+                        <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και συντελεστές ei fi">Αυτόνομη Θέρμανση με ωρομέτρηση και συντελεστές ei fi</option>
+                        <option value="Αυτόνομη Θέρμανση με θερμιδομέτρηση και συντελεστές ei fi">Αυτόνομη Θέρμανση με θερμιδομέτρηση και συντελεστές ei fi</option>
                     </select>
                 </div>
                 <div id="heatFixedId" class="form-group">
@@ -100,9 +100,9 @@
     document.getElementById("heatType").value= '<%=block.heatType%>';
     document.getElementById('btnSubmit').innerHTML='Διόρθωση Στοιχείων';
     var typeOfHeat=document.getElementById("heatType").value;
-    if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες' ||
-       typeOfHeat==='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες' ||
-       typeOfHeat==='Κεντρική θέρμανση'){
+    if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και συντελεστές ei fi' ||
+       typeOfHeat==='Αυτόνομη Θέρμανση με θερμιδομέτρηση και συντελεστές ei fi' ||
+       typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){
          document.getElementById('heatFixedId').style.display='none';
     }else{
         document.getElementById('heatFixedId').style.display='block';
@@ -114,9 +114,9 @@
 // Πότε θα φένεται η εισαγωγή παγιου θέρμανσης και πότε όχι -->
     function heatFixedFunction() {
         var optionText=document.getElementById('heatType').value;
-        if(optionText==='Κεντρική θέρμανση'||
-           optionText==='Αυτόνομη Θέρμανση με ωρομέτρηση και θερμικές απώλειες'||
-           optionText==='Αυτόνομη Θέρμανση με θερμιδομέτρηση και θερμικές απώλειες'){
+        if(optionText==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'||
+           optionText==='Αυτόνομη Θέρμανση με ωρομέτρηση και συντελεστές ei fi'||
+           optionText==='Αυτόνομη Θέρμανση με θερμιδομέτρηση και συντελεστές ei fi'){
             document.getElementById('heatFixedId').style.display='none';
         }else{
             document.getElementById('heatFixedId').style.display='block';

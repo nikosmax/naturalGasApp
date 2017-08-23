@@ -274,7 +274,7 @@
 <!-- Ελέγχουμε αν υπάρχουν έξοδα για να εμφανίσουμε την φόρμα της διόρθωσης -->
 <%if(expenses!='undefined'){%>
 <script>
-    <%if(typeOfHeat==='Κεντρική θέρμανση'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
+    <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
         document.getElementById('labelHeatCountId').style.display='none';
         var divRmvCor=document.getElementById('correctionPost');
         divRmvCor.parentNode.removeChild(divRmvCor);
@@ -306,7 +306,7 @@
 <%}else {%><!--Εφόσον δεν υπάρχουν έξοδα εμφανίζουμε τη φόρμα της πρώτης καταχώρησης -->
 
 <script>
-    <%if(typeOfHeat==='Κεντρική θέρμανση'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
+    <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
        document.getElementById('labelHeatCountId').style.display='none';
         var divRmvCor=document.getElementById('correctionPost');
         divRmvCor.parentNode.removeChild(divRmvCor);

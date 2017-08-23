@@ -345,7 +345,7 @@ router.post('/monthexpenses',function(req,res){
                     if (!expenses){
                         console.log('no expenses');
                     }
-                    else if(req.blockData.heatType!=='Κεντρική θέρμανση'){//Στην κεντρική δεν έχουμε μονάδες για αυτό και ο έλεγχος
+                    else if(req.blockData.heatType!=='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){//Στην κεντρική δεν έχουμε μονάδες για αυτό και ο έλεγχος
                         for (var i = 0; i < req.body.flat.length; i++) {
 
                             var flatCounts = new FlatHeatCount({
@@ -489,7 +489,7 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                       })
             };
 
-            if(req.blockData.heatType!=='Κεντρική θέρμανση'){
+            if(req.blockData.heatType!=='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){
                 loop();
             }
 

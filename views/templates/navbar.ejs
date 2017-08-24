@@ -7,8 +7,9 @@
         <li class="active"><a href="/users/profile">Edit profile</a></li>
         <li class="active"><a href="/users/block">1.Πολυκατοικία</a></li>
         <li class="active"><a href="/users/flat">2.Διαμερίσματα</a></li>
-        <br>
+
         <% if(typeof flatsShownNav !== 'undefined'){ %>
+        <br>
         <ul class="list-group">
             <%  flatsShownNav.forEach(function( flatsShownNav){ %>
             <li class="list-group-item list-group-item-info"><a href="/users/flat/<%=flatsShownNav._id %>"><%=  flatsShownNav.flatNum %>:  <%=  flatsShownNav.lastname %> </a></li>

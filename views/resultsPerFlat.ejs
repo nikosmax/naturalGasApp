@@ -110,12 +110,20 @@
                                         key!=='Ασανσέρ Ανταλ. Επισκευή' &&
                                         key!=='Πετρέλαιο/Αέριο' &&
                                         key!=='Συντήρηση Καυστήρα/Λέβητα' &&
-                                        key!=='Επισκευή Καυστήρα/Λέβητα'){%>
-                                    <tr>
-                                        <td><%=key%></td>
-                                        <td class="text-right"><%= expenses[key].toFixed(2)%></td>
-                                    </tr>
-                                     <%koinExpenses+=expenses[key]%>
+                                        key!=='Επισκευή Καυστήρα/Λέβητα' &&
+                                        key!=='Περιγραφή εξόδου'){%>
+                                    <%if(key==='Λοιπά έξοδα'){%>
+                                        <tr>
+                                            <td><%=expenses['Περιγραφή εξόδου']%></td>
+                                            <td class="text-right"><%= expenses[key].toFixed(2)%></td>
+                                        </tr>
+                                    <%}else {%>
+                                        <tr>
+                                            <td><%=key%></td>
+                                            <td class="text-right"><%= expenses[key].toFixed(2)%></td>
+                                        </tr>
+                                    <%}%>
+                                    <%koinExpenses+=expenses[key]%>
                                     <%if(key==='Αποθεματικό'){%>
                                         <%ownerSharedExpenses=expenses[key]%>
                                     <%}%>
@@ -125,7 +133,7 @@
                     <tr bgcolor="#ffba66">
                         <th>Σύνολο Κοινοχρήστων</th>
                         <th class="text-right"><%= koinExpenses.toFixed(2)%></th>
-                        <th class="text-center"><%=(flatsShownNav.koinratio/1000).toFixed(2)%></th>
+                        <th class="text-center"><%=(flatsShownNav.koinratio/1000).toFixed(4)%></th>
                         <th class="text-center"><%=(flatsShownNav.koinratio/1000 * koinExpenses).toFixed(2)%></th>
                     </tr>
                     </tbody>

@@ -56,10 +56,10 @@
                 </tr>
                 </thead>
                 <tbody>
-
+                <!--Ανάλυση των εξόδων -->
                 <% for(var key in expenses) {%>
                     <% if(expenses.hasOwnProperty(key)){%>
-                        <% if(expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας'){%>
+                        <% if(expenses[key]!=null && key!= 'Έτος' && key!= 'Μήνας' && key!='Περιγραφή εξόδου'){%>
                             <tr>
                                 <%if(key==='Πετρέλαιο/Αέριο' && typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά'){%>
                                     <td><%=key%></td>
@@ -68,7 +68,10 @@
                                         <td>Πάγιο Θέρμανσης</td>
                                         <td class="text-right"><%= (blockHeatFixed*expenses[key]/100).toFixed(2)%></td>
                                     </tr>
-                                <%}else {%>
+                                <%}else if(key==='Λοιπά έξοδα'){%><!--Αντί να γράφει λοιπα έξοδα το αντικαθστούμε με την περιγραφή του εξόδου-->
+                                    <td><%=expenses['Περιγραφή εξόδου']%></td>
+                                    <td class="text-right"><%= expenses[key].toFixed(2)%></td>
+                                <%}else{%>
                                     <td><%=key%></td>
                                     <td class="text-right"><%= expenses[key].toFixed(2)%></td>
                                 <%}%>

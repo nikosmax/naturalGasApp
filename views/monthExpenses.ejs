@@ -210,9 +210,10 @@
                     </div>
                 </div>
                 <div id="otherExpenses" class="form-group">
-                    <label class="control-label col-sm-4" for="otherExpenses">Λοιπά έξοδα:</label>
+                    <label class="control-label col-sm-4" for="otherExpenses">Λοιπά Έξοδα:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="otherExpenses" value="<%=expenses.otherExpenses%>">
+                    <input type="text" class="form-control" name="otherExpCom" placeholder="Π.χ Περιγραφή Εξόδου" value="<%=expenses.otherExpCom%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="otherExpenses" placeholder="Κόστος εξόδου" value="<%=expenses.otherExpenses%>">
                     <button onclick="delFunction('otherExpenses')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>

@@ -334,6 +334,7 @@ router.post('/monthexpenses',function(req,res){
                 reserve: req.body.reserve,//Αποθεματικό
                 shared: req.body.shared,//Έκδοση κοινοχρήστων
                 otherExpenses: req.body.otherExpenses,
+                otherExpCom:req.body.otherExpCom,
                 comments:req.body.comments,
                 block: req.blockData._id
             })
@@ -376,7 +377,6 @@ router.post('/monthexpenses',function(req,res){
 router.get('/monthexpenses/:monthexpensesId',function(req,res){
     Expenses.findOne({_id: req.params.monthexpensesId},function(err,expenses){
         if(err) console.log(err);
-
         var filterExpenses = {
             year:'',
             month:'',
@@ -397,6 +397,7 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
             reserve:'',
             shared:'',
             otherExpenses:'',
+            otherExpCom:'',
             comments:''
         };
         filterExpenses['year']=expenses.year;
@@ -418,6 +419,7 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
         filterExpenses['reserve']=expenses.reserve;
         filterExpenses['shared']=expenses.shared;
         filterExpenses['otherExpenses']=expenses.otherExpenses;
+        filterExpenses['otherExpCom']=expenses.otherExpCom;
         filterExpenses['comments']=expenses.comments;
 
     FlatHeatCount.find({expenses:expenses._id}, null, {sort: {_id: 1}}, function(err,flatHeatCount) {
@@ -460,12 +462,12 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
             expenses.reserve= req.body.reserve;//Αποθεματικό
             expenses.shared= req.body.shared;//Έκδοση κοινοχρήστων
             expenses.otherExpenses= req.body.otherExpenses;
+            expenses.otherExpCom= req.body.otherExpCom;
             expenses.comments= req.body.comments;
 
         expenses.save(function(err){
             if(err) console.log(err);
             console.log('expenses saved');
-            console.log(req.body.flatheatcount);
             var fhc=req.body.flatheatcount;
             var count=0;
             var i=-1;
@@ -488,7 +490,7 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                          })
                       })
             };
-
+            //Μόνο όταν ο τύπος θέρμανσης είναι με αυτονομία έχουμε και μονάδες θέρμανσης
             if(req.blockData.heatType!=='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){
                 loop();
             }
@@ -556,7 +558,8 @@ router.post('/results',function(req,res){
             'Επισκευή Καυστήρα/Λέβητα':'',
             Αποθεματικό:'',
             'Αμοιβή εκδ. Κοινοχρήστωνv':'',
-            'Λοιπά έξοδα':''
+            'Λοιπά έξοδα':'',
+            'Περιγραφή εξόδου':''
             };
                 greekExpenses['Έτος']=expenses.year;
                 greekExpenses['Μήνας']=expenses.month;
@@ -577,12 +580,14 @@ router.post('/results',function(req,res){
                 greekExpenses['Αποθεματικό']=expenses.reserve;
                 greekExpenses['Αμοιβή εκδ. Κοινοχρήστωνv']=expenses.shared;
                 greekExpenses['Λοιπά έξοδα']=expenses.otherExpenses;
+                greekExpenses['Περιγραφή εξόδου']=expenses.otherExpCom;
 
             var objTotal=expenses.toObject();
             delete objTotal._id;
             delete objTotal.year;
             delete objTotal.month;
             delete objTotal.block;
+            delete objTotal.otherExpCom;
             delete objTotal.comments;
 
            //total sum of the month expenses
@@ -658,7 +663,8 @@ router.post('/resultsPerFlat',function(req,res){
                 'Επισκευή Καυστήρα/Λέβητα':'',
                 Αποθεματικό:'',
                 'Αμοιβή εκδ. Κοινοχρήστωνv':'',
-                'Λοιπά έξοδα':''
+                'Λοιπά έξοδα':'',
+                'Περιγραφή εξόδου':''
             };
             greekExpenses['Έτος']=expenses.year;
             greekExpenses['Μήνας']=expenses.month;
@@ -679,12 +685,14 @@ router.post('/resultsPerFlat',function(req,res){
             greekExpenses['Αποθεματικό']=expenses.reserve;
             greekExpenses['Αμοιβή εκδ. Κοινοχρήστωνv']=expenses.shared;
             greekExpenses['Λοιπά έξοδα']=expenses.otherExpenses;
+            greekExpenses['Περιγραφή εξόδου']=expenses.otherExpCom;
 
             var objTotal=expenses.toObject();
             delete objTotal._id;
             delete objTotal.year;
             delete objTotal.month;
             delete objTotal.block;
+            delete objTotal.otherExpCom;
             delete objTotal.comments;
 
             //total sum of the month expenses

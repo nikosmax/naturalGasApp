@@ -20,7 +20,8 @@ var expenseSchema=new Schema({
     heatRepair:         Number,//Θέρμανση επισκευή καυστήρα/λέβητα - Εξοδο ιδιοκτήτη
     reserve:            Number,//Αποθεματικό - Εξοδο ιδιοκτήτη
     shared:             Number,//Έκδοση κοινοχρήστων
-    otherExpenses:      Number,
+    otherExpenses:      Number,//Λοιπά έξοδα
+    otherExpCom:        String,//Περιγραφη εξόδου για τα λοιπά
     comments:           String,//για να μπει στο πινακα των αποτελεσμάτων
     block :      [{ type: Schema.Types.ObjectId, ref: 'Block' }]
 })

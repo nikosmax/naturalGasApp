@@ -275,13 +275,13 @@
 <!-- Ελέγχουμε αν υπάρχουν έξοδα για να εμφανίσουμε την φόρμα της διόρθωσης -->
 <%if(expenses!='undefined'){%>
 <script>
-    <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
+    <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι χωρις αυτονομία δεν εμφανίζουμε τις μοναδες θέρμανσης
         document.getElementById('labelHeatCountId').style.display='none';
         var divRmvCor=document.getElementById('correctionPost');
         divRmvCor.parentNode.removeChild(divRmvCor);
         var divRmv=document.getElementById('removeFromPost');
         divRmv.parentNode.removeChild(divRmv);
-    <%}else{%>//Εαν δεν είναι κεντρική εμφανίζουμε τις μοναδες θέρμανσης
+    <%}else{%>//Εαν είναι με αυτονομία εμφανίζουμε τις μοναδες θέρμανσης
         var divRmv=document.getElementById('removeFromPost');
         divRmv.parentNode.removeChild(divRmv);
     <%}%>

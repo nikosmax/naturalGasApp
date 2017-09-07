@@ -38,7 +38,7 @@
             </script>
             <br>
             <%}%>
-            <form class="form-horizontal" method="post" action="" id="monthexpensesPost">
+            <form class="form-horizontal" method="post" action="" id="monthexpensesPost" onsubmit="calc()">
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="year">Έτος:</label>
                     <div class="col-sm-7">
@@ -243,9 +243,10 @@
                     <%  flatHeatCount.forEach(function( flatHeatCount){ %>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email"><%=flatsShownNav[count].flatNum%>:</label>
+                        <!--Δημιουργείται ένα array επειδη έχουμε το ίδιο name flatheatcount,debit,flat -->
                         <div class="col-sm-7">
                             <input onChange="this.value=this.value.replace(/,/g, '.');" class=form-control" type="text" name="flatheatcount" value="<%=flatHeatCount.flatheatcount%>">
-                            <input class=form-control" type="text" name="rest" value="">
+                            <input class=form-control" type="text" name="debit" value="<%=flatHeatCount.debit%>">
                             <input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav[count]._id%>">
                         </div>
                     </div>
@@ -268,7 +269,7 @@
                     <button id="btnDelete" type="button" onclick="window.location='/users/delete/<%=id%>';" class="btn btn-primary">Delete</button>
                 </div>
             </form>
-            <button  onclick="calc()" class="btn btn-primary">click</button>
+            <button  type="button" class="btn btn-primary" onclick="calc()">calc</button>
         </div>
     </div>
 </div>
@@ -353,7 +354,7 @@
         var secDiv=textChild[3].childNodes;
         secDiv[1].value=null;
     }
-
+    
     function calc() {
         var salaryEx = document.getElementsByName('salary')[0].value;
         var ikaEx = document.getElementsByName('ika')[0].value;
@@ -374,8 +375,8 @@
         var otherExpensesEx = document.getElementsByName('otherExpenses')[0].value;
         var flatheatcountEx = document.getElementsByName('flatheatcount');
 
-        var typeofheatEx = '<%=typeOfHeat%>';
-        var blockHeatFixed= <%=blockHeatFixed%>;
+        var typeofheatEx = '<%=typeOfHeat%>';//Τύπος θέρμανσης
+        var blockHeatFixed= '<%=blockHeatFixed%>';//Παγιο θέρμανσης
         var flatsShownNav= <%- JSON.stringify(flatsShownNav)%>;
         var totalExpKoin = Number(salaryEx) + Number(ikaEx) + Number(waterEx) + Number(energyEx) + Number(cleaningEx) + Number(lightEx) + Number(drainsEx) +
                 Number(disinsectisationEx) + Number(gardenEx) + Number(reserveEx) + Number(sharedEx) + Number(otherExpensesEx);
@@ -390,8 +391,8 @@
 
         var flatTotal;
 
-        <!-- Υπολογισμός του sumOf(Ωi x Χιλιοστά θέρμανσης) -->
-        <!-- Εαν έχουμε έξοδα θέρμανσης και η θέρμανση δεν είναι κεντρική υπολόγισε sumΩixXil -->
+        //Υπολογισμός του sumOf(Ωi x Χιλιοστά θέρμανσης) -->
+        //Εαν έχουμε έξοδα θέρμανσης και η θέρμανση δεν είναι κεντρική υπολόγισε sumΩixXil -->
         if(totalExpHeat && typeofheatEx!='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){
             flatsShownNav.forEach(function( flatsShownNav){
                 sumΩixXil+= flatheatcountEx[count].value*flatsShownNav.koinratio;
@@ -399,13 +400,13 @@
                 sumeixΩi+= flatsShownNav.ei*flatheatcountEx[count].value;
                 count+=1;
             })
-        }else {<!-- Αλλιώς εαν δεν έχουμε έξοδα θέρμανσης το sumΩixXil ίσον με ένα -->
+        }else {//Αλλιώς εαν δεν έχουμε έξοδα θέρμανσης το sumΩixXil ίσον με ένα -->
             sumΩixXil=1;
             sumeixfi=1;
             sumeixΩi=1;
         }
 
-        <!--Ελέγχουμε αν έχουμε έξοδα θέρμανσης με μηδενικές μονάδες έχει να κάνει με το πάγιο του αερίου το καλοκαίρι -->
+        //Ελέγχουμε αν έχουμε έξοδα θέρμανσης με μηδενικές μονάδες έχει να κάνει με το πάγιο του αερίου το καλοκαίρι -->
         var flatCheck;
         var flag=0;
         if(sumΩixXil===0){
@@ -413,8 +414,8 @@
         }
 
         count=0;
+        var debit=document.getElementsByName('debit');
 
-        var rest=document.getElementsByName('rest');
         flatsShownNav.forEach(function( flatsShownNav) {
             if(typeofheatEx!=='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){
                 flatCheck=flatheatcountEx[count].value;
@@ -423,6 +424,7 @@
                         sumΩixXil=1000;
                     }
             }
+
             if(typeofheatEx==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά') {
                 flatTotal =(((flatsShownNav.koinratio*(totalExpKoin))/1000)+
                                     ((flatsShownNav.liftratio*totalExpLift)/1000)+
@@ -444,12 +446,10 @@
                 flatsShownNav.ei * Number(heatUpKeepEx) +
                 flatsShownNav.ei * Number(heatRepairEx)).toFixed(2);
             }
-            rest[count].value=flatTotal;
+            debit[count].value=flatTotal;
             count+=1;
         })
     }
-
-
 </script>
 
 <% include templates/footer.ejs %>

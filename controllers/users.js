@@ -443,6 +443,7 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
 
 //Post expenses data for correction
 router.post('/monthexpenses/:monthexpensesId',function(req,res){
+    console.log(req.body.debit);
     Expenses.findOne({_id: req.params.monthexpensesId},function(err,expenses) {
         if(err) console.log(err);
 
@@ -471,7 +472,8 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
         expenses.save(function(err){
             if(err) console.log(err);
             console.log('expenses saved');
-            var fhc=req.body.flatheatcount;
+            var heatingUnits=req.body.flatheatcount;
+            var flatDebit=req.body.debit; //Ποσό χρέωσης διαμερίσματος
             var count=0;
             var i=-1;
 
@@ -483,8 +485,9 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                 }
                      FlatHeatCount.findOne({expenses: req.params.monthexpensesId, flat: req.body.flat[i]}).exec().then(function(flatheatcount) {
                           if (err) console.log(err);
-                          console.log(fhc[i] + ' ' + flatheatcount.flat);
-                         flatheatcount.flatheatcount=fhc[i];
+                          console.log(heatingUnits[i] + ' ' + flatheatcount.flat +' '+ flatDebit[i] );
+                         flatheatcount.flatheatcount=heatingUnits[i];
+                         flatheatcount.debit=flatDebit[i];
 
                          return flatheatcount.save(function(err){
                              if(err) console.log(err);

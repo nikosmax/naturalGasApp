@@ -3,6 +3,7 @@ var Schema=mongoose.Schema;
 
 var flatHeatCountSchema=new Schema({
     flatheatcount:  Number,
+    debit:          Number,
     flat :          [{ type: Schema.Types.ObjectId, ref: 'Flat' }],
     expenses :      [{ type: Schema.Types.ObjectId, ref: 'Expenses' }]
 })

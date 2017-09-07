@@ -223,7 +223,7 @@
                 </div>
                 <br>
 
-                <div id="removeFromPost">
+                <div id="removeFromPost"><!-- Το βγάζουμε από το form submission όταν η θέρμανση είναι χωρίς αυτονομία -->
                      <% if(typeof flatsShownNav !== 'undefined'){ %>
                        <%  flatsShownNav.forEach(function( flatsShownNav){ %>
                     <div class="form-group">
@@ -237,7 +237,7 @@
                      <%}%>
                 </div>
 
-                <div id="correctionPost">
+                <div id="correctionPost"><!--Εμφανίζεται όταν έχουμε διόρθωση των εξόδων  και έχουμε αυτονομία οπότε και δεν έχουμε μονάδες θέρμανσης-->
                     <% var count=0%>
                     <% if(flatHeatCount!='undefined'){ %>
                     <%  flatHeatCount.forEach(function( flatHeatCount){ %>
@@ -269,7 +269,6 @@
                     <button id="btnDelete" type="button" onclick="window.location='/users/delete/<%=id%>';" class="btn btn-primary">Delete</button>
                 </div>
             </form>
-            <button  type="button" class="btn btn-primary" onclick="calc()">calc</button>
         </div>
     </div>
 </div>
@@ -278,10 +277,10 @@
 <%if(expenses!='undefined'){%>
 <script>
     <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι χωρις αυτονομία δεν εμφανίζουμε τις μοναδες θέρμανσης
-        document.getElementById('labelHeatCountId').style.display='none';
+        document.getElementById('labelHeatCountId').style.display='none';//Απόκρυψη του τίτλου μονάδες θέρμανσης
         var divRmvCor=document.getElementById('correctionPost');
         divRmvCor.parentNode.removeChild(divRmvCor);
-        var divRmv=document.getElementById('removeFromPost');
+        var divRmv=document.getElementById('removeFromPost');//Εμφάνιση μόνο όταν καταχωρούμε το έξοδο για πρώτη φορα αλλιως το σβήνουμε όπως εδώ
         divRmv.parentNode.removeChild(divRmv);
     <%}else{%>//Εαν είναι με αυτονομία εμφανίζουμε τις μοναδες θέρμανσης
         var divRmv=document.getElementById('removeFromPost');
@@ -373,8 +372,8 @@
         var reserveEx = document.getElementsByName('reserve')[0].value;
         var sharedEx = document.getElementsByName('shared')[0].value;
         var otherExpensesEx = document.getElementsByName('otherExpenses')[0].value;
-        var flatheatcountEx = document.getElementsByName('flatheatcount');
 
+        var flatheatcountEx = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
         var typeofheatEx = '<%=typeOfHeat%>';//Τύπος θέρμανσης
         var blockHeatFixed= '<%=blockHeatFixed%>';//Παγιο θέρμανσης
         var flatsShownNav= <%- JSON.stringify(flatsShownNav)%>;
@@ -409,7 +408,7 @@
         //Ελέγχουμε αν έχουμε έξοδα θέρμανσης με μηδενικές μονάδες έχει να κάνει με το πάγιο του αερίου το καλοκαίρι -->
         var flatCheck;
         var flag=0;
-        if(sumΩixXil===0){
+        if(sumΩixXil===0){//Εάν το αθροισμα τον μοναδων θέρμανσης είναι ίσον με το μηδέν θέτω flag=1
             flag=1;
         }
 
@@ -420,31 +419,31 @@
             if(typeofheatEx!=='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){
                 flatCheck=flatheatcountEx[count].value;
                     if(flag){
-                        flatCheck=1;
+                        flatCheck=1;//μονάδες θέρμνασης θέτονται ίσον με ένα  γιατί με μηδέν δεν θα βγαίνει αποτέλεσμα
                         sumΩixXil=1000;
                     }
             }
 
             if(typeofheatEx==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά') {
                 flatTotal =(((flatsShownNav.koinratio*(totalExpKoin))/1000)+
-                                    ((flatsShownNav.liftratio*totalExpLift)/1000)+
-                                    ((flatsShownNav.koinratio*totalExpHeat)/1000)).toFixed(2);
+                            ((flatsShownNav.liftratio*totalExpLift)/1000)+
+                            ((flatsShownNav.koinratio*totalExpHeat)/1000)).toFixed(2);
 
             }else if(typeofheatEx==='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά'){
                 flatTotal=(((flatsShownNav.koinratio*(totalExpKoin))/1000)+
-                                    ((flatsShownNav.liftratio*totalExpLift)/1000)+
-                                    ((flatsShownNav.koinratio*flatCheck*(100-blockHeatFixed)*Number(heatEx)/100)/sumΩixXil)+
-                                    ((flatsShownNav.koinratio*blockHeatFixed*Number(heatEx)/100)/1000)+
-                                    (flatsShownNav.koinratio*Number(heatUpKeepEx)/1000)+
-                                    (flatsShownNav.koinratio*Number(heatRepairEx)/1000)).toFixed(2);
+                            ((flatsShownNav.liftratio*totalExpLift)/1000)+
+                            ((flatsShownNav.koinratio*flatCheck*(100-blockHeatFixed)*Number(heatEx)/100)/sumΩixXil)+
+                            ((flatsShownNav.koinratio*blockHeatFixed*Number(heatEx)/100)/1000)+
+                            (flatsShownNav.koinratio*Number(heatUpKeepEx)/1000)+
+                            (flatsShownNav.koinratio*Number(heatRepairEx)/1000)).toFixed(2);
 
             }else if(typeofheatEx==='Αυτόνομη Θέρμανση με ωρομέτρηση και συντελεστές ei fi'){
                 flatTotal = (((flatsShownNav.koinratio * totalExpKoin) / 1000) +
-                ((flatsShownNav.liftratio * totalExpLift) / 1000) +
-                ((flatsShownNav.ei * flatheatcountEx[count].value / sumeixΩi) * (1 - sumeixfi)) * Number(heatEx) +
-                (flatsShownNav.ei * flatsShownNav.fi / sumeixfi) * sumeixfi * Number(heatEx) +
-                flatsShownNav.ei * Number(heatUpKeepEx) +
-                flatsShownNav.ei * Number(heatRepairEx)).toFixed(2);
+                            ((flatsShownNav.liftratio * totalExpLift) / 1000) +
+                            ((flatsShownNav.ei * flatheatcountEx[count].value / sumeixΩi) * (1 - sumeixfi)) * Number(heatEx) +
+                            (flatsShownNav.ei * flatsShownNav.fi / sumeixfi) * sumeixfi * Number(heatEx) +
+                             flatsShownNav.ei * Number(heatUpKeepEx) +
+                             flatsShownNav.ei * Number(heatRepairEx)).toFixed(2);
             }
             debit[count].value=flatTotal;
             count+=1;

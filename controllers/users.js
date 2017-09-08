@@ -347,30 +347,25 @@ router.post('/monthexpenses',function(req,res){
                     if (err) console.log(err);
                     if (!expenses){
                         console.log('no expenses');
-                    }
-                    else if(req.blockData.heatType!=='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){//Στην κεντρική δεν έχουμε μονάδες για αυτό και ο έλεγχος
+                    }else{
                         for (var i = 0; i < req.body.flat.length; i++) {
-
                             var flatCounts = new FlatHeatCount({
                                 flatheatcount: req.body.flatheatcount[i],
+                                debit:req.body.debit[i],
                                 flat: req.body.flat[i],
                                 expenses: expenses._id
                             })
                             flatCounts.save(function (err) {
+                                if (err) console.log(err);
+                                else console.log('Flat counts saved successfully');
+                            })
+                        }
+                        res.redirect('monthExpenses');
+                    }
+                })
+            }, function (err) {
                 if (err) console.log(err);
-                else {
-                    console.log('Flat counts saved successfully');
-                }
-            })
-            }
-            res.redirect('monthExpenses');
-        }else{
-               res.redirect('monthExpenses');
-             }
-    })
-}, function (err) {
-                if (err) console.log(err);
-            })
+                })
         }
     })
 })
@@ -496,10 +491,8 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                          })
                       })
             };
-            //Μόνο όταν ο τύπος θέρμανσης είναι με αυτονομία έχουμε και μονάδες θέρμανσης
-            if(req.blockData.heatType!=='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){
-                loop();
-            }
+
+            loop();
 
             function done() {
                 console.log('All data has been loaded :).');
@@ -733,6 +726,47 @@ router.post('/resultsPerFlat',function(req,res){
                 expenses:'',
                 totalExpenses:'',
                 comments:'',
+                results:'Δεν βρέθηκε Καταχώρηση για την επιλογή μήνα: '+ req.body.month
+            })
+        }
+    })
+})
+
+//Payment control page
+router.get('/paymentControl',function(req,res){
+    res.render('paymentControl',{
+        name: req.user.name,
+        flatsShownNav:req.flatsShow,//show flats in left navigation menu
+        calendar:req.calendarShow,
+        typeOfHeat:req.blockData.heatType,
+        expenses:'',
+        results:''
+    });
+})
+
+router.post('/paymentControl',function(req,res){
+    Expenses.findOne({year:req.body.year,month:req.body.month,block: req.blockData._id},function(err,expenses){
+        if(err) console.log(err);
+        if(expenses){
+            FlatHeatCount.find({expenses:expenses._id}, null, {sort: {_id: 1}}, function(err,flatHeatCount){
+                if(err) console.log(err);
+                res.render('paymentControl',{
+                    name: req.user.name,
+                    flatsShownNav:req.flatsShow,//show flats in left navigation menu
+                    calendar:req.calendarShow,// calendar with months
+                    typeOfHeat:req.blockData.heatType,
+                    expenses:expenses,
+                    flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
+                    results:''
+                })
+            })
+        }else{
+            res.render('paymentControl',{
+                name: req.user.name,
+                flatsShownNav:req.flatsShow,//show flats in left navigation menu
+                calendar:req.calendarShow,
+                typeOfHeat:req.blockData.heatType,
+                expenses:'',
                 results:'Δεν βρέθηκε Καταχώρηση για την επιλογή μήνα: '+ req.body.month
             })
         }

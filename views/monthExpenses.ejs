@@ -227,9 +227,10 @@
                      <% if(typeof flatsShownNav !== 'undefined'){ %>
                        <%  flatsShownNav.forEach(function( flatsShownNav){ %>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="email"><%=flatsShownNav.flatNum%>:</label>
+                        <label class="control-label col-sm-2 flatLabels" for="email"><%=flatsShownNav.flatNum%>:</label>
                         <div class="col-sm-7">
                             <input onChange="this.value=this.value.replace(/,/g, '.');" class=form-control" type="text" name="flatheatcount" value="">
+                            <input class=form-control" type="hidden" name="debit" value="">
                             <input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav._id%>">
                         </div>
                     </div>
@@ -278,8 +279,10 @@
 <script>
     <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι χωρις αυτονομία δεν εμφανίζουμε τις μοναδες θέρμανσης
         document.getElementById('labelHeatCountId').style.display='none';//Απόκρυψη του τίτλου μονάδες θέρμανσης
-        var divRmvCor=document.getElementById('correctionPost');
-        divRmvCor.parentNode.removeChild(divRmvCor);
+        var flatheatcount = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
+        for(i=0;i<flatheatcount.length;i++){
+            flatheatcount[i].style.display='none';//Να μην εμφανίζονται οι μονάδες θέρμανσης
+        }
         var divRmv=document.getElementById('removeFromPost');//Εμφάνιση μόνο όταν καταχωρούμε το έξοδο για πρώτη φορα αλλιως το σβήνουμε όπως εδώ
         divRmv.parentNode.removeChild(divRmv);
     <%}else{%>//Εαν είναι με αυτονομία εμφανίζουμε τις μοναδες θέρμανσης
@@ -309,35 +312,28 @@
 
 <script>
     <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
-       document.getElementById('labelHeatCountId').style.display='none';
-        var divRmvCor=document.getElementById('correctionPost');
+       document.getElementById('labelHeatCountId').style.display='none';//ΔΕν εμφανίζουμε τον τίτλο μονάδες θέρμανσης
+        var divRmvCor=document.getElementById('correctionPost');//Δεν εμφανίζουμε την φόρμα διορθωσης εφόσον δεν έχουμε έξοδα
         divRmvCor.parentNode.removeChild(divRmvCor);
-        var divRmv=document.getElementById('removeFromPost');
-        divRmv.parentNode.removeChild(divRmv);
+        var flatheatcount = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
+        var flatLabels = document.getElementsByClassName('control-label col-sm-2 flatLabels');//Αριθμός διαμερίσματος
+        for(i=0;i<flatheatcount.length;i++){
+            flatheatcount[i].style.display='none';//Να μην εμφανίζονται οι μονάδες θέρμανσης
+            flatLabels[i].style.display='none';//Να μην εμφανίζονται οι αριθμοί διαμερισμάτων
+        }
     <%}else{%>//Εαν δεν είναι κεντρική εμφανίζουμε τις μοναδες θέρμανσης
-        var divRmvCor=document.getElementById('correctionPost');
+        var divRmvCor=document.getElementById('correctionPost');//Δεν εμφανίζουμε την φόρμα διορθωσης εφόσον δεν έχουμε έξοδα
         divRmvCor.parentNode.removeChild(divRmvCor);
     <%}%>
-    //Δεν εμφανίζουμε τα έξοδα μεχρι να τα επιλέξουμε απο το μενού
     document.getElementById('monthexpensesPost').action="/users/monthexpenses";
-    document.getElementById('btnDelete').style.display='none';
-    document.getElementById('salary').style.display='none';
-    document.getElementById('ika').style.display='none';
-    document.getElementById('water').style.display='none';
-    document.getElementById('energy').style.display='none';
-    document.getElementById('cleaning').style.display='none';
-    document.getElementById('light').style.display='none';
-    document.getElementById('drains').style.display='none';
-    document.getElementById('disinsectisation').style.display='none';
-    document.getElementById('garden').style.display='none';
-    document.getElementById('liftUpKeep').style.display='none';
-    document.getElementById('liftRepair').style.display='none';
-    document.getElementById('heat').style.display='none';
-    document.getElementById('heatUpKeep').style.display='none';
-    document.getElementById('heatRepair').style.display='none';
-    document.getElementById('reserve').style.display='none';
-    document.getElementById('shared').style.display='none';
-    document.getElementById('otherExpenses').style.display='none';
+    //Δεν εμφανίζουμε τα έξοδα μεχρι να τα επιλέξουμε απο το μενού
+    var arrayElemNotShow=['btnDelete','salary','ika','water','energy','cleaning','light','drains','disinsectisation','garden',
+        'liftUpKeep','liftRepair','heat','heatUpKeep','heatRepair','reserve','shared','otherExpenses'];
+
+    for(i=0;i<arrayElemNotShow.length;i++){
+        document.getElementById(arrayElemNotShow[i]).style.display='none';
+    }
+
 </script>
 <%}%>
 

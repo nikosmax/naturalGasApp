@@ -21,10 +21,11 @@ router.use(function requireLogin (req, res, next) {
 router.use(function flatsShowNav(req,res,next){
     Block.findOne({user:req.user._id},function(err,block) {
         if (block){
-            Flat.find({block:block._id}, function (err, flats) {
+            Flat.find({block:block._id},null, {sort: {_id: 1}}, function (err, flats) {
                 if (flats) {
                     req.flatsShow = flats;
                     res.locals.flatsShow = flats;
+                    //console.log(flats);
                     next();
                 } else {
                     req.flatsShow = 'undefined';
@@ -348,24 +349,68 @@ router.post('/monthexpenses',function(req,res){
                     if (!expenses){
                         console.log('no expenses');
                     }else{
-                        for (var i = 0; i < req.body.flat.length; i++) {
+                        var i=-1;
+
+                        var loop=function() {
+                            i++;
+                            if (i === req.body.flat.length){
+                                done();
+                                return;
+                            }
                             var flatCounts = new FlatHeatCount({
                                 flatheatcount: req.body.flatheatcount[i],
                                 debit:req.body.debit[i],
                                 flat: req.body.flat[i],
                                 expenses: expenses._id
                             })
-                            flatCounts.save(function (err) {
-                                if (err) console.log(err);
-                                else console.log('Flat counts saved successfully');
-                            })
+                                return flatCounts.save(function(err){
+                                    if(err) console.log(err);
+                                    //console.log('new count added..');
+                                    loop();
+                                })
                         }
+
+                        loop();
+
+                        function done() {
+                            console.log('All data with debits has been loaded :).');
+                        }
+
                         res.redirect('monthExpenses');
                     }
                 })
+            }).then(function(){
+                var debit=req.body.debit;
+                var i=-1;
+
+                var loop=function() {
+                    i++;
+                    if (i === req.body.flat.length){
+                        done();
+                        return;
+                    }
+                   Flat.findOne({block: req.blockData._id,_id: req.body.flat[i]}).exec().then(function(flat) {
+                        if (err) console.log(err);
+                        //console.log(debit[i] + ' ' + flat.flatNum );
+                        flat.balance+=Number(debit[i]);
+
+                        return flat.save(function(err){
+                            if(err) console.log(err);
+                            //console.log('new debit added..');
+                            loop();
+                        })
+                    })
+                };
+
+                loop();
+
+                function done() {
+                    console.log('All data with new balance has been loaded :).');
+                }
+
             }, function (err) {
                 if (err) console.log(err);
-                })
+            })
         }
     })
 })
@@ -438,7 +483,6 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
 
 //Post expenses data for correction
 router.post('/monthexpenses/:monthexpensesId',function(req,res){
-    console.log(req.body.debit);
     Expenses.findOne({_id: req.params.monthexpensesId},function(err,expenses) {
         if(err) console.log(err);
 
@@ -515,7 +559,38 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
 
 router.get('/delete/:deleteId',function(req,res) {
     Expenses.remove({_id: req.params.deleteId}).exec();
-    FlatHeatCount.remove({expenses: req.params.deleteId}).exec();
+    FlatHeatCount.find({expenses: req.params.deleteId},function(err,flatheatcount){
+        var i=-1;
+
+        var loop=function() {
+            i++;
+            if (i === flatheatcount.length){
+                done();
+                return;
+            }
+            Flat.findOne({block: req.blockData._id,_id: flatheatcount[i].flat}).exec().then(function(flat) {
+                if (err) console.log(err);
+                flat.balance-=Number(flatheatcount[i].debit);
+
+                return flat.save(function(err){
+                    if(err) console.log(err);
+                    //console.log('new debit added..');
+                    loop();
+                })
+            })
+        };
+
+        loop();
+
+        function done() {
+            console.log('All data with new balance has been loaded :).');
+        }
+
+
+    }).then(function(){
+        FlatHeatCount.remove({expenses: req.params.deleteId}).exec();
+    })
+
 
     res.redirect('/users/monthExpenses');
     console.log('deleted');
@@ -745,32 +820,92 @@ router.get('/paymentControl',function(req,res){
 })
 
 router.post('/paymentControl',function(req,res){
-    Expenses.findOne({year:req.body.year,month:req.body.month,block: req.blockData._id},function(err,expenses){
-        if(err) console.log(err);
-        if(expenses){
-            FlatHeatCount.find({expenses:expenses._id}, null, {sort: {_id: 1}}, function(err,flatHeatCount){
-                if(err) console.log(err);
-                res.render('paymentControl',{
-                    name: req.user.name,
-                    flatsShownNav:req.flatsShow,//show flats in left navigation menu
-                    calendar:req.calendarShow,// calendar with months
-                    typeOfHeat:req.blockData.heatType,
-                    expenses:expenses,
-                    flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
-                    results:''
+    if(!req.body.balance) {
+        Expenses.findOne({
+            year: req.body.year,
+            month: req.body.month,
+            block: req.blockData._id
+        }, function (err, expenses) {
+            if (err) console.log(err);
+            if (expenses) {
+                FlatHeatCount.find({expenses: expenses._id}, null, {sort: {_id: 1}}, function (err, flatHeatCount) {
+                    if (err) console.log(err);
+                    res.render('paymentControl', {
+                        name: req.user.name,
+                        flatsShownNav: req.flatsShow,//show flats in left navigation menu
+                        calendar: req.calendarShow,// calendar with months
+                        typeOfHeat: req.blockData.heatType,
+                        expenses: expenses,
+                        flatHeatCount: flatHeatCount,//μονάδες θέρμανσης
+                        results: ''
+                    })
                 })
-            })
-        }else{
-            res.render('paymentControl',{
-                name: req.user.name,
-                flatsShownNav:req.flatsShow,//show flats in left navigation menu
-                calendar:req.calendarShow,
-                typeOfHeat:req.blockData.heatType,
-                expenses:'',
-                results:'Δεν βρέθηκε Καταχώρηση για την επιλογή μήνα: '+ req.body.month
-            })
-        }
-    })
+            } else {
+                res.render('paymentControl', {
+                    name: req.user.name,
+                    flatsShownNav: req.flatsShow,//show flats in left navigation menu
+                    calendar: req.calendarShow,
+                    typeOfHeat: req.blockData.heatType,
+                    expenses: '',
+                    results: 'Δεν βρέθηκε Καταχώρηση για την επιλογή μήνα: ' + req.body.month
+                })
+            }
+        })
+    }else{
+        Expenses.findOne({year: req.body.year, month: req.body.month, block: req.blockData._id}, function (err, expenses) {
+            if (err) console.log(err);
+            if (expenses) {
+                var payoff=req.body.payoff; //Ποσό χρέωσης διαμερίσματος
+                console.log(payoff);
+                var count=0;
+                var i=-1;
+
+                    var loop=function() {
+                        i++;
+                        if (i === req.body.flat.length){
+                            done();
+                            return;
+                        }
+                        FlatHeatCount.findOne({expenses: expenses._id, flat: req.body.flat[i]}).exec().then(function(flatheatcount) {
+                            if (err) console.log(err);
+                            console.log(flatheatcount.flat +' '+ payoff[i] );
+                            flatheatcount.payoff=payoff[i];
+
+                            return flatheatcount.save(function(err){
+                                if(err) console.log(err);
+                                console.log('Data payoff saved..');
+                                loop();
+                            })
+                        })
+                    };
+
+                    loop();
+
+                    function done() {
+                        console.log('All data has been loaded :).');
+                    }
+
+                    res.render('paymentControl', {
+                        name: req.user.name,
+                        flatsShownNav: req.flatsShow,//show flats in left navigation menu
+                        calendar: req.calendarShow,// calendar with months
+                        typeOfHeat: req.blockData.heatType,
+                        expenses: '',
+                        results: ''
+                    })
+            } else {
+                res.render('paymentControl', {
+                    name: req.user.name,
+                    flatsShownNav: req.flatsShow,//show flats in left navigation menu
+                    calendar: req.calendarShow,
+                    typeOfHeat: req.blockData.heatType,
+                    expenses: '',
+                    results: 'Δεν βρέθηκε Καταχώρηση για την επιλογή μήνα: ' + req.body.month
+                })
+            }
+        })
+
+    }//End of if else
 })
 
 module.exports = router;

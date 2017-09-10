@@ -223,13 +223,13 @@
                 </div>
                 <br>
 
-                <div id="removeFromPost"><!-- Το βγάζουμε από το form submission όταν η θέρμανση είναι χωρίς αυτονομία -->
+                <div id="removeFromPost"><!--Καταχώρηση εξόδων αρχικα-->
                      <% if(typeof flatsShownNav !== 'undefined'){ %>
                        <%  flatsShownNav.forEach(function( flatsShownNav){ %>
                     <div class="form-group">
                         <label class="control-label col-sm-2 flatLabels" for="email"><%=flatsShownNav.flatNum%>:</label>
                         <div class="col-sm-7">
-                            <input onChange="this.value=this.value.replace(/,/g, '.');" class=form-control" type="text" name="flatheatcount" value="">
+                            <input onChange="this.value=this.value.replace(/,/g, '.');" class=form-control" type="text" name="flatheatcount" value="0">
                             <input class=form-control" type="hidden" name="debit" value="">
                             <input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav._id%>">
                         </div>
@@ -238,7 +238,7 @@
                      <%}%>
                 </div>
 
-                <div id="correctionPost"><!--Εμφανίζεται όταν έχουμε διόρθωση των εξόδων  και έχουμε αυτονομία οπότε και δεν έχουμε μονάδες θέρμανσης-->
+                <div id="correctionPost"><!--Διόρθωση των εξόδων και έχουμε αυτονομία οπότε και δεν έχουμε μονάδες θέρμανσης-->
                     <% var count=0%>
                     <% if(flatHeatCount!='undefined'){ %>
                     <%  flatHeatCount.forEach(function( flatHeatCount){ %>
@@ -274,56 +274,46 @@
     </div>
 </div>
 
-<!-- Ελέγχουμε αν υπάρχουν έξοδα για να εμφανίσουμε την φόρμα της διόρθωσης -->
-<%if(expenses!='undefined'){%>
 <script>
+<!-- Ελέγχουμε αν υπάρχουν έξοδα για να εμφανίσουμε την φόρμα της διόρθωσης -->
+<%if(expenses!=='undefined'){%>
+    var elemDivFirst=document.getElementById('removeFromPost');
+    elemDivFirst.parentNode.removeChild(elemDivFirst);
     <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι χωρις αυτονομία δεν εμφανίζουμε τις μοναδες θέρμανσης
         document.getElementById('labelHeatCountId').style.display='none';//Απόκρυψη του τίτλου μονάδες θέρμανσης
         var flatheatcount = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
         for(i=0;i<flatheatcount.length;i++){
             flatheatcount[i].style.display='none';//Να μην εμφανίζονται οι μονάδες θέρμανσης
         }
-        var divRmv=document.getElementById('removeFromPost');//Εμφάνιση μόνο όταν καταχωρούμε το έξοδο για πρώτη φορα αλλιως το σβήνουμε όπως εδώ
-        divRmv.parentNode.removeChild(divRmv);
-    <%}else{%>//Εαν είναι με αυτονομία εμφανίζουμε τις μοναδες θέρμανσης
-        var divRmv=document.getElementById('removeFromPost');
-        divRmv.parentNode.removeChild(divRmv);
     <%}%>
-    document.getElementById('monthexpensesPost').action="/users/monthexpenses/<%=id%>";
+    document.getElementById('monthexpensesPost').action="/users/monthExpenses/<%=id%>";
     document.getElementById('btnSubmit').innerHTML='Διόρθωση';
     document.getElementById("selectYear").value='<%=expenses.year%>';
     document.getElementById("selectMonth").value='<%=expenses.month%>';
-</script>
 
 <% for(var key in expenses){%>
     <% if(expenses.hasOwnProperty(key)){%>
-        <% if(expenses[key]!=null && key!='year'){%>
-            <script>
-                document.getElementById('<%=key %>').style.display='block';
-            </script>
-         <%}else {%>
-            <script>
-                document.getElementById('<%=key %>').style.display='none';
-            </script>
+        <% if(key!='year' && key!='month' && key!='otherExpCom'){%>
+            <% if(expenses[key]!=null){%>
+                    document.getElementById('<%=key %>').style.display='block';
+            <%}else {%>
+                    document.getElementById('<%=key %>').style.display='none';
+            <%}%>
         <%}%>
     <%}%>
 <%}%>
-<%}else {%><!--Εφόσον δεν υπάρχουν έξοδα εμφανίζουμε τη φόρμα της πρώτης καταχώρησης -->
 
-<script>
+<%}else{%><!--Εφόσον δεν υπάρχουν έξοδα εμφανίζουμε τη φόρμα της πρώτης καταχώρησης -->
+    var divRmvCor=document.getElementById('correctionPost');
+    divRmvCor.parentNode.removeChild(divRmvCor);//Δεν εμφανίζουμε την φόρμα διορθωσης εφόσον δεν έχουμε έξοδα
     <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
        document.getElementById('labelHeatCountId').style.display='none';//ΔΕν εμφανίζουμε τον τίτλο μονάδες θέρμανσης
-        var divRmvCor=document.getElementById('correctionPost');//Δεν εμφανίζουμε την φόρμα διορθωσης εφόσον δεν έχουμε έξοδα
-        divRmvCor.parentNode.removeChild(divRmvCor);
         var flatheatcount = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
         var flatLabels = document.getElementsByClassName('control-label col-sm-2 flatLabels');//Αριθμός διαμερίσματος
         for(i=0;i<flatheatcount.length;i++){
             flatheatcount[i].style.display='none';//Να μην εμφανίζονται οι μονάδες θέρμανσης
             flatLabels[i].style.display='none';//Να μην εμφανίζονται οι αριθμοί διαμερισμάτων
         }
-    <%}else{%>//Εαν δεν είναι κεντρική εμφανίζουμε τις μοναδες θέρμανσης
-        var divRmvCor=document.getElementById('correctionPost');//Δεν εμφανίζουμε την φόρμα διορθωσης εφόσον δεν έχουμε έξοδα
-        divRmvCor.parentNode.removeChild(divRmvCor);
     <%}%>
     document.getElementById('monthexpensesPost').action="/users/monthexpenses";
     //Δεν εμφανίζουμε τα έξοδα μεχρι να τα επιλέξουμε απο το μενού
@@ -333,11 +323,8 @@
     for(i=0;i<arrayElemNotShow.length;i++){
         document.getElementById(arrayElemNotShow[i]).style.display='none';
     }
+<%}%>//end of if else
 
-</script>
-<%}%>
-
-<script>
     function expensesFunction() {//Εμφάνιση των εξόδων που επιλέγουμε από το μενού
         var x = document.getElementById("selectExpenses").value;
         document.getElementById(x).style.display='block';

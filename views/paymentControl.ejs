@@ -7,7 +7,7 @@
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
             <h4 id="h4">Αποτελέσματα</h4>
-            <form class="form-horizontal" method="post" action="/users/paymentControl">
+            <form class="form-horizontal" method="post" onsubmit="checkPayoffChecked()" action="/users/paymentControl">
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="year">Έτος:</label>
                     <div class="col-sm-7">
@@ -40,14 +40,15 @@
                 </div>
             <br>
 
-                <%if(expenses){%><!-- Αν έχουμε έξοδα τότε εμφανίζονται όλοι οι πίνακες) -->
+                <!-- Αν έχουμε έξοδα τότε εμφανίζονται όλοι οι πίνακες) -->
+                <%if(expenses){%>
                     <h4 class="text-center">ΕΛΕΓΧΟΣ ΠΛΗΡΩΜΩΝ ΜΗΝΑ</h4>
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                     <tr>
                         <th class="text-center">Διαμέρισμα</th>
                         <th class="text-center">Ποσό πληρωμής</th>
-                        <th class="text-center">Εξώφληση</th>
+                        <th class="text-center">Εξόφληση</th>
                         <th class="text-center">Υπόλοιπο Για Πληρωμή</th>
                     </tr>
                     </thead>
@@ -58,8 +59,8 @@
                             <tr>
                                 <td class="text-center"><%=flatsShownNav[count].flatNum%></td>
                                 <td class="text-center"><%=flatHeatCount.debit.toFixed(2)%></td>
-                                <td class="text-center"><label><input type="checkbox" name="remember"> Ναι</label></td>
-                                <td class="text-center"><input type='text' name="some" value='<%=flatsShownNav[count].balance.toFixed(2)%>'></td>
+                                <td class="text-center"><label><input type="checkbox" name="payoff"> Ναι</label></td>
+                                <td class="text-center"><input type='text' name="balance" value='<%=flatsShownNav[count].balance.toFixed(2)%>'></td>
                                 <td><input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav[count]._id%>"></td>
                             </tr>
                             <%count+=1%>
@@ -68,7 +69,7 @@
                     </table>
                     <%}%>
                 <%}%><!-- end of if totalExpenses -->
-                <button type="submit" class="btn btn-primary">Αναζήτηση</button>
+                <button id='btnSubmit' type="submit" class="btn btn-primary">Αναζήτηση</button>
             </form>
             <%if(results!==''){%>
                 <p class="list-group-item list-group-item-danger"><%=results%></p>
@@ -76,6 +77,38 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    <%if(expenses){%>
+        document.getElementById('btnSubmit').innerHTML='Καταχώρηση'
+        var checkPayoff= document.getElementsByName('payoff');
+        var count=0;
+        <%  flatHeatCount.forEach(function( flatHeatCount){ %>
+               <%if(flatHeatCount.payoff){%>
+                    checkPayoff[count].checked=true;
+                <%}else{%>
+                    checkPayoff[count].checked=false;
+                <%}%>
+            count++;
+        <%})%>
+    <%}%>
+
+    function checkPayoffChecked(){
+            var checkPayoff= document.getElementsByName('payoff');
+            if(checkPayoff){
+                for(var i=0;i<checkPayoff.length;i++){
+                    if(checkPayoff[i].checked){
+                        checkPayoff[i].value='true';
+                    }else{
+                        checkPayoff[i].value='false';
+                        checkPayoff[i].type='hidden';
+                    }
+                }
+            }
+    }
+
+</script>
 
 <% include templates/footer.ejs %>
 </body>

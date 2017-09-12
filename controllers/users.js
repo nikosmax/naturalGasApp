@@ -513,6 +513,7 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
             console.log('expenses saved');
             var heatingUnits=req.body.flatheatcount;
             var flatDebit=req.body.debit; //Ποσό χρέωσης διαμερίσματος
+            var arrayFlatheatcount=[];
             var count=0;
             var i=-1;
 
@@ -525,12 +526,14 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                      FlatHeatCount.findOne({expenses: req.params.monthexpensesId, flat: req.body.flat[i]}).exec().then(function(flatheatcount) {
                           if (err) console.log(err);
                           console.log(heatingUnits[i] + ' ' + flatheatcount.flat +' '+ flatDebit[i] );
+                         arrayFlatheatcount.push(flatheatcount.debit);
                          flatheatcount.flatheatcount=heatingUnits[i];
                          flatheatcount.debit=flatDebit[i];
 
+
                          return flatheatcount.save(function(err){
                              if(err) console.log(err);
-                             console.log('count saved..');
+                             console.log('heating counts and flat debit saved..');
                              loop();
                          })
                       })
@@ -540,6 +543,35 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
 
             function done() {
                 console.log('All data has been loaded :).');
+
+                var debit=req.body.debit;
+                var i=-1;
+
+                var loop=function() {
+                    i++;
+                    if (i === req.body.flat.length){
+                        done();
+                        return;
+                    }
+                    Flat.findOne({block: req.blockData._id,_id: req.body.flat[i]}).exec().then(function(flat) {
+                        if (err) console.log(err);
+                        //console.log(debit[i] + ' ' + flat.flatNum );
+                        flat.balance+=Number(debit[i])-arrayFlatheatcount[i];
+
+                        return flat.save(function(err){
+                            if(err) console.log(err);
+                            //console.log('new debit added..');
+                            loop();
+                        })
+                    })
+                };
+
+                loop();
+
+                function done() {
+                    console.log('All data with new balance has been loaded :).');
+                }
+
             }
 
             res.render('monthExpenses',{

@@ -374,40 +374,35 @@ router.post('/monthexpenses',function(req,res){
 
                         function done() {
                             console.log('All data with debits has been loaded :).');
+
+                            var debit=req.body.debit;
+                            var i=-1;
+
+                            var loop=function() {
+                                i++;
+                                if (i === req.body.flat.length){
+                                    console.log('All data with new balance has been loaded :).');
+                                    return;
+                                }
+                                Flat.findOne({block: req.blockData._id,_id: req.body.flat[i]}).exec().then(function(flat) {
+                                    if (err) console.log(err);
+                                    //console.log(debit[i] + ' ' + flat.flatNum );
+                                    flat.balance+=Number(debit[i]);
+
+                                    return flat.save(function(err){
+                                        if(err) console.log(err);
+                                        //console.log('new debit added..');
+                                        loop();
+                                    })
+                                })
+                            };
+
+                            loop();
                         }
 
                         res.redirect('monthExpenses');
                     }
                 })
-            }).then(function(){
-                var debit=req.body.debit;
-                var i=-1;
-
-                var loop=function() {
-                    i++;
-                    if (i === req.body.flat.length){
-                        done();
-                        return;
-                    }
-                   Flat.findOne({block: req.blockData._id,_id: req.body.flat[i]}).exec().then(function(flat) {
-                        if (err) console.log(err);
-                        //console.log(debit[i] + ' ' + flat.flatNum );
-                        flat.balance+=Number(debit[i]);
-
-                        return flat.save(function(err){
-                            if(err) console.log(err);
-                            //console.log('new debit added..');
-                            loop();
-                        })
-                    })
-                };
-
-                loop();
-
-                function done() {
-                    console.log('All data with new balance has been loaded :).');
-                }
-
             }, function (err) {
                 if (err) console.log(err);
             })
@@ -571,7 +566,6 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                 function done() {
                     console.log('All data with new balance has been loaded :).');
                 }
-
             }
 
             res.render('monthExpenses',{
@@ -597,7 +591,7 @@ router.get('/delete/:deleteId',function(req,res) {
         var loop=function() {
             i++;
             if (i === flatheatcount.length){
-                done();
+                console.log('All data balance has been subtracted from debit :).');
                 return;
             }
             Flat.findOne({block: req.blockData._id,_id: flatheatcount[i].flat}).exec().then(function(flat) {
@@ -614,18 +608,13 @@ router.get('/delete/:deleteId',function(req,res) {
 
         loop();
 
-        function done() {
-            console.log('All data with new balance has been loaded :).');
-        }
-
-
     }).then(function(){
         FlatHeatCount.remove({expenses: req.params.deleteId}).exec();
     })
 
 
     res.redirect('/users/monthExpenses');
-    console.log('deleted');
+    console.log('Month expenses deleted');
 })
 
 //Results page

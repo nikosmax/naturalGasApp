@@ -6,9 +6,9 @@
     <div class="row content">
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
-            <h4 id="h4">Αποτελέσματα</h4>
+            <h4 id="textId" class="text-center">ΕΛΕΓΧΟΣ ΠΛΗΡΩΜΩΝ ΜΗΝΑ</h4>
             <form class="form-horizontal" method="post" onsubmit="checkPayoffChecked()" action="/users/paymentControl">
-                <div class="form-group">
+                <div id="year" class="form-group">
                     <label class="control-label col-sm-2" for="year">Έτος:</label>
                     <div class="col-sm-7">
                         <select class="form-control" name="year">
@@ -19,7 +19,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div id="month" class="form-group">
                     <label class="control-label col-sm-2" for="month">Μήνας:</label>
                     <div class="col-sm-7">
                         <select class="form-control" name="month">
@@ -42,25 +42,29 @@
 
                 <!-- Αν έχουμε έξοδα τότε εμφανίζονται όλοι οι πίνακες) -->
                 <%if(expenses){%>
-                    <h4 class="text-center">ΕΛΕΓΧΟΣ ΠΛΗΡΩΜΩΝ ΜΗΝΑ</h4>
+
                 <table class="table table-hover">
                     <thead>
                     <tr>
                         <th class="text-center">Διαμέρισμα</th>
                         <th class="text-center">Ποσό πληρωμής</th>
-                        <th class="text-center">Εξόφληση</th>
+                        <th class="text-center">Εξόφληση Μήνα</th>
+                        <th class="text-center">Πλέον του Μήνα</th>
                         <th class="text-center">Υπόλοιπο Για Πληρωμή</th>
                     </tr>
                     </thead>
                     <tbody>
                     <% var count=0%>
                     <% if(flatHeatCount!='undefined'){ %>
+                    <input class=form-control" type="hidden" name="year" value="<%=expenses.year%>">
+                    <input class=form-control" type="hidden" name="month" value="<%=expenses.month%>">
                         <%  flatHeatCount.forEach(function( flatHeatCount){ %>
                             <tr>
                                 <td class="text-center"><%=flatsShownNav[count].flatNum%></td>
-                                <td class="text-center"><%=flatHeatCount.debit.toFixed(2)%></td>
-                                <td class="text-center"><label><input type="checkbox" name="payoff"> Ναι</label></td>
-                                <td class="text-center"><input type='text' name="balance" value='<%=flatsShownNav[count].balance.toFixed(2)%>'></td>
+                                <td class="text-center" name="monthDebit"><%=flatHeatCount.debit.toFixed(2)%></td>
+                                <td class="text-center"><label><input type="checkbox" name="payoff" id="<%=count%>" onchange="calcNewDebit(this.id);"> Ναι</label></td>
+                                <td class="text-center"><input type='text' name="extraPayoff" id="g-<%=count%>" onchange="calcExtraPayoff(this.id);" value=''></td>
+                                <td class="text-center"><input type='text' name="balance" value='<%=flatsShownNav[count].balance.toFixed(2)%>' readonly></td>
                                 <td><input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav[count]._id%>"></td>
                             </tr>
                             <%count+=1%>
@@ -69,7 +73,13 @@
                     </table>
                     <%}%>
                 <%}%><!-- end of if totalExpenses -->
-                <button id='btnSubmit' type="submit" class="btn btn-primary">Αναζήτηση</button>
+
+                <div class="text-center">
+                    <button id='btnSubmit' type="submit" class="btn btn-primary">Αναζήτηση</button>
+                    <button id='search' type="button" class="btn btn-primary" onclick="window.location='/users/paymentControl';">Νέα Αναζήτηση</button>
+                </div>
+
+
             </form>
             <%if(results!==''){%>
                 <p class="list-group-item list-group-item-danger"><%=results%></p>
@@ -81,6 +91,10 @@
 <script>
 
     <%if(expenses){%>
+        document.getElementById('year').style.display='none';
+        document.getElementById('month').style.display='none';
+        document.getElementById('textId').innerHTML='ΈΛΕΓΧΟΣ ΠΛΗΡΩΜΩΝ <br> <br> ΜΗΝΑΣ: <%=expenses.month%> - ΈΤΟΣ : <%=expenses.year%>';
+        document.getElementById('search').style.display='block';
         document.getElementById('btnSubmit').innerHTML='Καταχώρηση'
         var checkPayoff= document.getElementsByName('payoff');
         var count=0;
@@ -92,6 +106,8 @@
                 <%}%>
             count++;
         <%})%>
+    <%}else {%>
+        document.getElementById('search').style.display='none';
     <%}%>
 
     function checkPayoffChecked(){
@@ -107,6 +123,38 @@
                 }
             }
     }
+
+    function calcNewDebit(elemId) {
+
+        var checkPayoff = document.getElementsByName('payoff');
+        var balance = document.getElementsByName('balance');
+        var monthDebit = document.getElementsByName('monthDebit');
+        var temp;
+
+            if (checkPayoff[elemId].checked) {
+                temp =Number(balance[elemId].value)- Number(monthDebit[elemId].innerHTML);
+                balance[elemId].value=temp.toFixed(2);
+            } else {
+                temp=Number(balance[elemId].value)+ Number(monthDebit[elemId].innerHTML);
+                balance[elemId].value=temp.toFixed(2);
+            }
+
+    }//End of function calcNewDebit
+
+    function calcExtraPayoff(elemId) {
+        elemId=elemId.slice(2);
+
+        var balance = document.getElementsByName('balance');
+        var extraPayoff = document.getElementsByName('extraPayoff');
+        var temp;
+
+            temp =Number(balance[elemId].value)- Number(extraPayoff[elemId].value);
+            balance[elemId].value=temp.toFixed(2);
+
+
+    }//End of function calcNewDebit
+
+
 
 </script>
 

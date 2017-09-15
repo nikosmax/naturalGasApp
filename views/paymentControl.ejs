@@ -63,7 +63,7 @@
                                 <td class="text-center"><%=flatsShownNav[count].flatNum%></td>
                                 <td class="text-center" name="monthDebit"><%=flatHeatCount.debit.toFixed(2)%></td>
                                 <td class="text-center"><label><input type="checkbox" name="payoff" id="<%=count%>" onchange="calcNewDebit(this.id);"> Ναι</label></td>
-                                <td class="text-center"><input type='text' name="extraPayoff" id="g-<%=count%>" onchange="calcExtraPayoff(this.id);" value=''></td>
+                                <td class="text-center"><input type='text' name="extraPayoff" id="g-<%=count%>" onchange="calcExtraPayoff(this.id);" value='<%=flatHeatCount.extraPayoff.toFixed(2)%>'></td>
                                 <td class="text-center"><input type='text' name="balance" value='<%=flatsShownNav[count].balance.toFixed(2)%>' readonly></td>
                                 <td><input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav[count]._id%>"></td>
                             </tr>
@@ -91,8 +91,10 @@
 <script>
 
     <%if(expenses){%>
-        document.getElementById('year').style.display='none';
-        document.getElementById('month').style.display='none';
+        var removeYear=document.getElementById('year');
+        var removeMonth=document.getElementById('month');
+        removeYear.parentNode.removeChild(removeYear);//Remove div year from submit
+        removeMonth.parentNode.removeChild(removeMonth); //Remove div month from submit
         document.getElementById('textId').innerHTML='ΈΛΕΓΧΟΣ ΠΛΗΡΩΜΩΝ <br> <br> ΜΗΝΑΣ: <%=expenses.month%> - ΈΤΟΣ : <%=expenses.year%>';
         document.getElementById('search').style.display='block';
         document.getElementById('btnSubmit').innerHTML='Καταχώρηση'

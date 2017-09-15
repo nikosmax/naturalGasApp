@@ -360,6 +360,7 @@ router.post('/monthexpenses',function(req,res){
                             var flatCounts = new FlatHeatCount({
                                 flatheatcount: req.body.flatheatcount[i],
                                 debit:req.body.debit[i],
+                                extraPayoff: 0,
                                 flat: req.body.flat[i],
                                 expenses: expenses._id
                             })
@@ -521,9 +522,11 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                      FlatHeatCount.findOne({expenses: req.params.monthexpensesId, flat: req.body.flat[i]}).exec().then(function(flatheatcount) {
                           if (err) console.log(err);
                           console.log(heatingUnits[i] + ' ' + flatheatcount.flat +' '+ flatDebit[i] );
-                         arrayFlatheatcount.push(flatheatcount.debit);
+                         arrayFlatheatcount.push(flatheatcount.debit);//we hold the old debit in array
                          flatheatcount.flatheatcount=heatingUnits[i];
-                         flatheatcount.debit=flatDebit[i];
+                         flatheatcount.debit=flatDebit[i];//new debit submitted
+                        // flatheatcount.extraPayoff=0;//extra payoff
+
 
 
                          return flatheatcount.save(function(err){
@@ -551,11 +554,12 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                     Flat.findOne({block: req.blockData._id,_id: req.body.flat[i]}).exec().then(function(flat) {
                         if (err) console.log(err);
                         //console.log(debit[i] + ' ' + flat.flatNum );
-                        flat.balance+=Number(debit[i])-arrayFlatheatcount[i];
+                        flat.balance+=Number(debit[i])-arrayFlatheatcount[i];//new balance is new debit minus old debit
+
 
                         return flat.save(function(err){
                             if(err) console.log(err);
-                            //console.log('new debit added..');
+                            console.log('new debit added..');
                             loop();
                         })
                     })
@@ -596,6 +600,7 @@ router.get('/delete/:deleteId',function(req,res) {
             }
             Flat.findOne({block: req.blockData._id,_id: flatheatcount[i].flat}).exec().then(function(flat) {
                 if (err) console.log(err);
+                //na kano tin periptosi pou kano delete alla o allos exei balei ejoflisi tou minah ejoflisi pleon tou mina
                 flat.balance-=Number(flatheatcount[i].debit);
 
                 return flat.save(function(err){
@@ -841,7 +846,7 @@ router.get('/paymentControl',function(req,res){
 })
 
 router.post('/paymentControl',function(req,res){
-    if(!req.body.balance) {
+    if(!req.body.balance) {//Submit for searching
         Expenses.findOne({
             year: req.body.year,
             month: req.body.month,
@@ -872,12 +877,12 @@ router.post('/paymentControl',function(req,res){
                 })
             }
         })
-    }else{
+    }else{//submit for new balance
         Expenses.findOne({year: req.body.year, month: req.body.month, block: req.blockData._id}, function (err, expenses) {
             if (err) console.log(err);
             if (expenses) {
-                var payoff=req.body.payoff; //Ποσό χρέωσης διαμερίσματος
-                console.log(payoff);
+                var payoff=req.body.payoff; //Εξόφληση μήνα Ναι η Οχι
+                var extraPayoff=req.body.extraPayoff;//Εξόφληση πλέον του μήνα
                 var count=0;
                 var i=-1;
 
@@ -889,12 +894,13 @@ router.post('/paymentControl',function(req,res){
                         }
                         FlatHeatCount.findOne({expenses: expenses._id, flat: req.body.flat[i]}).exec().then(function(flatheatcount) {
                             if (err) console.log(err);
-                            console.log(flatheatcount.flat +' '+ payoff[i] );
+                            //console.log(flatheatcount.flat +' '+ payoff[i] );
                             flatheatcount.payoff=payoff[i];
+                            flatheatcount.extraPayoff=extraPayoff[i];
 
                             return flatheatcount.save(function(err){
                                 if(err) console.log(err);
-                                console.log('Data payoff saved..');
+                                //console.log('Data payoff saved..');
                                 loop();
                             })
                         })
@@ -903,7 +909,31 @@ router.post('/paymentControl',function(req,res){
                     loop();
 
                     function done() {
-                        console.log('All data has been loaded :).');
+                        console.log('All data for payOff ans extraPayoff has been loaded in flatheatcount database :).');
+
+                        var newBalance=req.body.balance;
+                        var i=-1;
+
+                        var loop=function() {
+                            i++;
+                            if (i === req.body.flat.length){
+                                console.log('All data with new balance has been loaded in flat database :).');
+                                return;
+                            }
+                            Flat.findOne({block: req.blockData._id,_id: req.body.flat[i]}).exec().then(function(flat) {
+                                if (err) console.log(err);
+                                //console.log(debit[i] + ' ' + flat.flatNum );
+                                flat.balance=Number(newBalance[i]);
+
+                                return flat.save(function(err){
+                                    if(err) console.log(err);
+                                    //console.log('new debit added..');
+                                    loop();
+                                })
+                            })
+                        };
+
+                        loop();
                     }
 
                     res.render('paymentControl', {

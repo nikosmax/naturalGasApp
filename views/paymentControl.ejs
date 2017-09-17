@@ -72,14 +72,15 @@
                     </tbody>
                     </table>
                     <%}%>
-                <%}%><!-- end of if totalExpenses -->
-
+                <div class="text-center">
+                    <button id='search' type="button" class="btn btn-primary" onclick="window.location='/users/paymentControl';">Νέα Αναζήτηση</button>
+                    <button id='btnSubmit' type="submit" class="btn btn-primary">Καταχώρηση</button>
+                </div>
+                <%}else {%>
                 <div class="text-center">
                     <button id='btnSubmit' type="submit" class="btn btn-primary">Αναζήτηση</button>
-                    <button id='search' type="button" class="btn btn-primary" onclick="window.location='/users/paymentControl';">Νέα Αναζήτηση</button>
                 </div>
-
-
+                <%}%><!-- end of if totalExpenses -->
             </form>
             <%if(results!==''){%>
                 <p class="list-group-item list-group-item-danger"><%=results%></p>
@@ -96,8 +97,6 @@
         removeYear.parentNode.removeChild(removeYear);//Remove div year from submit
         removeMonth.parentNode.removeChild(removeMonth); //Remove div month from submit
         document.getElementById('textId').innerHTML='ΈΛΕΓΧΟΣ ΠΛΗΡΩΜΩΝ <br> <br> ΜΗΝΑΣ: <%=expenses.month%> - ΈΤΟΣ : <%=expenses.year%>';
-        document.getElementById('search').style.display='block';
-        document.getElementById('btnSubmit').innerHTML='Καταχώρηση'
         var checkPayoff= document.getElementsByName('payoff');
         var count=0;
         <%  flatHeatCount.forEach(function( flatHeatCount){ %>
@@ -108,8 +107,6 @@
                 <%}%>
             count++;
         <%})%>
-    <%}else {%>
-        document.getElementById('search').style.display='none';
     <%}%>
 
     function checkPayoffChecked(){

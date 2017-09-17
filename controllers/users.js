@@ -401,7 +401,7 @@ router.post('/monthexpenses',function(req,res){
                             loop();
                         }
 
-                        res.redirect('monthExpenses');
+                        res.redirect('/users/monthExpenses');
                     }
                 })
             }, function (err) {

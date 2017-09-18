@@ -504,6 +504,7 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
             expenses.otherExpCom= req.body.otherExpCom;
             expenses.comments= req.body.comments;
 
+        console.log(expenses);
         expenses.save(function(err){
             if(err) console.log(err);
             console.log('expenses saved');

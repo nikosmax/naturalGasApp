@@ -33,6 +33,13 @@
             </div><!-- End of modal -->
 
             <h4 align="center">Στοιχεία Πολυκατοικίας</h4>
+            <% if(errors != undefined){ %>
+            <ul class="list-group">
+                <% errors.forEach(function(error){ %>
+                <li class="list-group-item list-group-item-danger"><%= error.msg %></li>
+                <% }) %>
+            </ul>
+            <%}%>
             <form method="post" action="" id="blockPost">
                 <div class="form-group">
                     <label for="name">Διεύθυνση:</label>
@@ -83,19 +90,12 @@
                 <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>
             </form>
             <br>
-            <% if(errors != undefined){ %>
-            <ul class="list-group">
-                <% errors.forEach(function(error){ %>
-                <li class="list-group-item list-group-item-danger"><%= error.msg %></li>
-                <% }) %>
-            </ul>
-            <%}%>
         </div>
     </div>
 </div>
 
 <script>
-<% if(flag) {%>
+<% if(flag) {%>//Εαν έχει καταχωρηθεί πολυκατοικία
     document.getElementById('blockPost').action="/users/blockUpdate";
     document.getElementById("heatType").value= '<%=block.heatType%>';
     document.getElementById('btnSubmit').innerHTML='Διόρθωση Στοιχείων';

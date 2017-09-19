@@ -87,13 +87,13 @@ router.post('/updateProfile',function(req,res){
 router.get('/block',function(req,res){
 Block.findOne({'user': req.user._id},function(err,block) {
     if (err) console.log(err);
-    if (block!= null) {
+    if (block) {
         res.render('block', {
         name: req.user.name,
         flatsShownNav:req.flatsShow,
         calendar:req.calendarShow,
         block:block,
-        flag: 1
+        flag: 1 //if there is block flag=1
     });
     }else{
             res.render('block', {
@@ -101,7 +101,7 @@ Block.findOne({'user': req.user._id},function(err,block) {
             block:{},
             flatsShownNav:req.flatsShow,
             calendar:req.calendarShow,
-            flag: 0
+            flag: 0 //if no block flag=0
         });
     }
 })
@@ -109,8 +109,14 @@ Block.findOne({'user': req.user._id},function(err,block) {
 
 //block post first time contents
 router.post('/block',function(req,res){
-    req.checkBody('address','Address is required').notEmpty();
-    req.checkBody('totalFlats','Total of flats is required').notEmpty();
+    req.checkBody('address','Η διεύθυνση πρέπει να είναι συμπληρωμένη').notEmpty();
+    req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπλρωμένος').notEmpty();
+    req.checkBody('postal','Ο Τ.Κ Πρέπει να είναι αριθμός').isNumeric();
+    req.checkBody('phone','Ο Αριθμός Τηλεφώνου Πρέπει να είναι αριθμός').isNumeric();
+    req.checkBody('mobile','Ο Αριθμός Κινητού Πρέπει να είναι αριθμός').isNumeric();
+    req.checkBody('heatFixed','Πάγιο Θέρμανσης Πρέπει να είναι αριθμός').isNumeric();
+    req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
+
     var errors=req.validationErrors();
 
     if(errors)
@@ -155,25 +161,49 @@ router.post('/block',function(req,res){
 
 //block update contents
 router.post('/blockUpdate',function(req,res){
-    Block.findOne({user: req.user._id},function(err,block){
-        if(err) console.log(err);
-            block.address=req.body.address;
-            block.location=req.body.location;
-            block.postal=req.body.postal;
-            block.nameRes=req.body.nameRes;
-            block.phone=req.body.phone;
-            block.mobile=req.body.mobile;
-            block.heatType=req.body.heatType;
-            block.heatFixed=req.body.heatFixed;
-            block.totalFlats=req.body.totalFlats;
-            block.reserve=req.body.reserve;
+        Block.findOne({user: req.user._id}, function (err, block) {
+            if (err) console.log(err);
 
-        block.save(function(err,update){
-            if(err) console.log(err);
-            console.log('block updated');
-            res.redirect('block');
+            req.checkBody('address','Η διεύθυνση πρέπει να είναι συμπληρωμένη').notEmpty();
+            req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπλρωμένος').notEmpty();
+            req.checkBody('postal','Ο Τ.Κ Πρέπει να είναι αριθμός').isNumeric();
+            req.checkBody('phone','Ο Αριθμός Τηλεφώνου Πρέπει να είναι αριθμός').isNumeric();
+            req.checkBody('mobile','Ο Αριθμός Κινητού Πρέπει να είναι αριθμός').isNumeric();
+            req.checkBody('heatFixed','Πάγιο Θέρμανσης Πρέπει να είναι αριθμός').isNumeric();
+            req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
+
+            var errors=req.validationErrors();
+
+            if(errors)
+            {
+                console.log('errors');
+                res.render('block',{
+                    name: req.user.name,
+                    flatsShownNav:req.flatsShow,
+                    calendar:req.calendarShow,
+                    block:block,
+                    flag:1,
+                    errors:errors
+                })
+            }else {
+                block.address = req.body.address;
+                block.location = req.body.location;
+                block.postal = req.body.postal;
+                block.nameRes = req.body.nameRes;
+                block.phone = req.body.phone;
+                block.mobile = req.body.mobile;
+                block.heatType = req.body.heatType;
+                block.heatFixed = req.body.heatFixed;
+                block.totalFlats = req.body.totalFlats;
+                block.reserve = req.body.reserve;
+
+                block.save(function (err, update) {
+                    if (err) console.log(err);
+                console.log('block updated');
+                res.redirect('block');
+                })
+            }//end of if else errors
         })
-    })
 })
 
 //Flat page
@@ -229,7 +259,8 @@ router.post('/flat',function(req,res){
                     count:count,
                     flatsShownNav:req.flatsShow,//show flats in left navigation menu
                     calendar:req.calendarShow,
-                    errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία'
+                    errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία',
+                    flat: 'undefined'
                 })
             })
         }
@@ -526,7 +557,7 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                          arrayFlatheatcount.push(flatheatcount.debit);//we hold the old debit in array
                          flatheatcount.flatheatcount=heatingUnits[i];
                          flatheatcount.debit=flatDebit[i];//new debit submitted
-                        // flatheatcount.extraPayoff=0;//extra payoff
+                         //flatheatcount.extraPayoff=0;//extra payoff
 
 
 

@@ -39,51 +39,51 @@
             <form method="post" action="" id="flatPost">
                 <div class="form-group">
                     <label for="name">Όνομα:</label>
-                    <input type="text" class="form-control" name="firstname" value="<%= flat.firstname%>">
+                    <input type="text" class="form-control" name="firstname" value="<%= typeof flat!=='undefined'?flat.firstname:null%>">
                 </div>
                 <div class="form-group">
                     <label for="name">Επίθετο:</label>
-                    <input type="text" class="form-control" name="lastname" value="<%= flat.lastname%>">
+                    <input type="text" class="form-control" name="lastname" value="<%= typeof flat!=='undefined'?flat.lastname:null%>">
                 </div>
                 <div class="form-group">
                     <label for="name">Τηλέφωνο:</label>
-                    <input type="text" class="form-control" name="phone" value="<%= flat.phone%>">
+                    <input type="text" class="form-control" name="phone" value="<%= typeof flat!=='undefined'?flat.phone:null%>">
                 </div>
                 <div class="form-group">
                     <label for="name">Κινητό:</label>
-                    <input type="text" class="form-control" name="mobile" value="<%= flat.mobile%>">
+                    <input type="text" class="form-control" name="mobile" value="<%= typeof flat!=='undefined'?flat.mobile:null%>">
                 </div>
                 <div class="form-group">
                     <label for="name">Email:</label>
-                    <input type="text" class="form-control" name="email" value="<%= flat.email%>">
+                    <input type="text" class="form-control" name="email" value="<%= typeof flat!=='undefined'?flat.email:null%>">
                 </div>
                 <div class="form-group">
                     <label for="name">Αριθμός Διαμερίσματος:</label>
-                    <input type="text" class="form-control" name="flatNum" value="<%= flat.flatNum%>">
+                    <input type="text" class="form-control" name="flatNum" value="<%= typeof flat!=='undefined'?flat.flatNum:null%>">
                 </div>
                 <div class="form-group">
                     <label for="name">Αναλογία Δαπανών Κοινοχρήστων:</label>
-                    <input type="text" class="form-control" name="koinratio" value="<%= flat.koinratio%>">
+                    <input type="text" class="form-control" name="koinratio" value="<%= typeof flat!=='undefined'?flat.koinratio:null%>">
                 </div>
                 <div class="form-group">
                     <label for="name">Αναλογία Δαπανών Ανελκυστήρα:</label>
-                    <input type="text" class="form-control" name="liftratio" value="<%= flat.liftratio%>">
+                    <input type="text" class="form-control" name="liftratio" value="<%= typeof flat!=='undefined'?flat.liftratio:null%>">
                 </div>
                 <div id="flatxilId" class="form-group">
                     <label for="name">Χιλιοστά Διαμερίσματος για θέρμανση:</label>
-                    <input type="text" class="form-control" name="flatxil" value="<%= flat.flatxil%>">
+                    <input type="text" class="form-control" name="flatxil" value="<%= typeof flat!=='undefined'?flat.flatxil:null%>">
                 </div>
                 <div id="eiId" class="form-group">
                     <label for="name">Συντελεστής ei:</label>
-                    <input type="text" class="form-control" name="ei" value="<%= flat.ei%>">
+                    <input type="text" class="form-control" name="ei" value="<%= typeof flat!=='undefined'?flat.ei:null%>">
                 </div>
                 <div id="fiId" class="form-group">
                     <label for="name">Συντελεστής fi:</label>
-                    <input type="text" class="form-control" name="fi" value="<%= flat.fi%>">
+                    <input type="text" class="form-control" name="fi" value="<%= typeof flat!=='undefined'?flat.fi:null%>">
                 </div>
                 <div class="form-group">
                     <label for="name">Υπόλοιπο Διαμερίσματος σε Ευρώ:</label>
-                    <input type="text" class="form-control" name="balance" value="<%= flat.balance%>">
+                    <input type="text" class="form-control" name="balance" value="<%= typeof flat!=='undefined'?flat.balance:null%>">
                 </div>
                 <div class="form-group">
                     <label for="name">Ιδιοκτήτης:</label>
@@ -115,8 +115,9 @@
     document.getElementById("btnSubmit").disabled = true;
     document.getElementById("check").className = "list-group-item list-group-item-danger";
 <%}%>
+
 //Εαν έχουμε διαμερίσματα η φόρμα αλάζει σε φόρμα διόρθωσης -->
-<%if(flat!='undefined'){%>
+<%if(typeof flat!=='undefined'){%>
     document.getElementById('h4').innerHTML='Διαμέρισμα <%=flat.flatNum%>';
     document.getElementById('flatPost').action="/users/flat/<%=flat._id%>";
     document.getElementById('btnSubmit').innerHTML='Διόρθωση';
@@ -130,6 +131,7 @@
 <%}else {%>
     document.getElementById('flatPost').action="/users/flat";
 <%}%>
+
 //Εμφανιση η απόκρυψη πλαισίων εισαγωγής ανάλογα με το τύπο θέρμανσης
 <%if(typeOfHeat==='Αυτόνομη Θέρμανση με ωρομέτρηση και συντελεστές ei fi' ||
      typeOfHeat==='Αυτόνομη Θέρμανση με θερμιδομέτρηση και συντελεστές ei fi'){%>

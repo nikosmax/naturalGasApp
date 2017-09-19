@@ -43,35 +43,36 @@
             <form method="post" action="" id="blockPost">
                 <div class="form-group">
                     <label for="name">Διεύθυνση:</label>
-                    <input type="text" class="form-control" name="address" value="<%= block.address %>">
+                    <input type="text" class="form-control" name="address" value="<%= typeof block!=='undefined'?block.address:null %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Περιοχή:</label>
-                    <input type="text" class="form-control" name="location" value="<%= block.location %>">
+                    <input type="text" class="form-control" name="location" value="<%= typeof block!=='undefined'?block.location:null %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Τ.Κ:</label>
-                    <input type="text" class="form-control" name="postal" value="<%= block.postal %>">
+                    <input type="text" class="form-control" name="postal" value="<%= typeof block!=='undefined'?block.postal:null %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Όνομα Διαχειριστή:</label>
-                    <input type="text" class="form-control" name="nameRes" value="<%= block.nameRes %>">
+                    <input type="text" class="form-control" name="nameRes" value="<%= typeof block!=='undefined'?block.nameRes:null %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Τηλέφωνο:</label>
-                    <input type="text" class="form-control" name="phone" value="<%= block.phone %>">
+                    <input type="text" class="form-control" name="phone" value="<%= typeof block!=='undefined'?block.phone:null %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Κινητό:</label>
-                    <input type="text" class="form-control" name="mobile" value="<%= block.mobile %>">
+                    <input type="text" class="form-control" name="mobile" value="<%= typeof block!=='undefined'?block.mobile:null %>">
                 </div>
                 <div class="form-group">
                     <label for="name">Σύνολο Διαμερισμάτων:</label>
-                    <input type="text" class="form-control" name="totalFlats" value="<%= block.totalFlats %>">
+                    <input type="text" class="form-control" name="totalFlats" value="<%= typeof block!=='undefined'?block.totalFlats:null %>">
                 </div>
                 <div class="form-group">
                     <label for="sel1">Είδος Θέρμανσης:</label>
                     <select id='heatType' onchange="heatFixedFunction()" class="form-control" name="heatType">
+                        <option value="">Επιλογή τύπου θέρμανσης</option>
                         <option value="Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά">Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά</option>
                         <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά">Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά</option>
                         <option value="Αυτόνομη Θέρμανση με ωρομέτρηση και συντελεστές ei fi">Αυτόνομη Θέρμανση με ωρομέτρηση και συντελεστές ei fi</option>
@@ -80,11 +81,11 @@
                 </div>
                 <div id="heatFixedId" class="form-group">
                     <label for="name">Πάγιο Θέρμανσης %:</label>
-                    <input type="text" class="form-control" name="heatFixed" value="<%= block.heatFixed %>">
+                    <input type="text" class="form-control" name="heatFixed" value="<%= typeof block!=='undefined'?block.heatFixed:0 %>">
                 </div>
                 <div id="reserve" class="form-group">
                     <label for="reserve">Αποθεματικό:</label>
-                    <input type="text" class="form-control" name="reserve" value="<%= block.reserve %>">
+                    <input type="text" class="form-control" name="reserve" value="<%= typeof block!=='undefined'?block.reserve:0 %>">
                 </div>
 
                 <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>
@@ -95,7 +96,7 @@
 </div>
 
 <script>
-<% if(flag) {%>//Εαν έχει καταχωρηθεί πολυκατοικία
+<% if(typeof block!=='undefined') {%>//Εαν έχει καταχωρηθεί πολυκατοικία
     document.getElementById('blockPost').action="/users/blockUpdate";
     document.getElementById("heatType").value= '<%=block.heatType%>';
     document.getElementById('btnSubmit').innerHTML='Διόρθωση Στοιχείων';
@@ -107,7 +108,7 @@
     }else{
         document.getElementById('heatFixedId').style.display='block';
     }
-<%} else if(!flag){%>
+<%} else if(typeof block==='undefined'){%>
     document.getElementById('blockPost').action="/users/block";
 <%}%>
 

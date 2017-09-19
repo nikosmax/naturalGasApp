@@ -92,16 +92,13 @@ Block.findOne({'user': req.user._id},function(err,block) {
         name: req.user.name,
         flatsShownNav:req.flatsShow,
         calendar:req.calendarShow,
-        block:block,
-        flag: 1 //if there is block flag=1
+        block:block
     });
     }else{
             res.render('block', {
             name: req.user.name,
-            block:{},
             flatsShownNav:req.flatsShow,
-            calendar:req.calendarShow,
-            flag: 0 //if no block flag=0
+            calendar:req.calendarShow
         });
     }
 })
@@ -111,10 +108,6 @@ Block.findOne({'user': req.user._id},function(err,block) {
 router.post('/block',function(req,res){
     req.checkBody('address','Η διεύθυνση πρέπει να είναι συμπληρωμένη').notEmpty();
     req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπλρωμένος').notEmpty();
-    req.checkBody('postal','Ο Τ.Κ Πρέπει να είναι αριθμός').isNumeric();
-    req.checkBody('phone','Ο Αριθμός Τηλεφώνου Πρέπει να είναι αριθμός').isNumeric();
-    req.checkBody('mobile','Ο Αριθμός Κινητού Πρέπει να είναι αριθμός').isNumeric();
-    req.checkBody('heatFixed','Πάγιο Θέρμανσης Πρέπει να είναι αριθμός').isNumeric();
     req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
     var errors=req.validationErrors();
@@ -126,8 +119,6 @@ router.post('/block',function(req,res){
             name: req.user.name,
             flatsShownNav:req.flatsShow,
             calendar:req.calendarShow,
-            block:{},
-            flag:0,
             errors:errors
         })
     }else {
@@ -152,8 +143,7 @@ router.post('/block',function(req,res){
                 name:req.user.name,
                 block:newBlock,
                 flatsShownNav:req.flatsShow,
-                calendar:req.calendarShow,
-                flag:       1
+                calendar:req.calendarShow
             });
         })
     }
@@ -166,10 +156,6 @@ router.post('/blockUpdate',function(req,res){
 
             req.checkBody('address','Η διεύθυνση πρέπει να είναι συμπληρωμένη').notEmpty();
             req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπλρωμένος').notEmpty();
-            req.checkBody('postal','Ο Τ.Κ Πρέπει να είναι αριθμός').isNumeric();
-            req.checkBody('phone','Ο Αριθμός Τηλεφώνου Πρέπει να είναι αριθμός').isNumeric();
-            req.checkBody('mobile','Ο Αριθμός Κινητού Πρέπει να είναι αριθμός').isNumeric();
-            req.checkBody('heatFixed','Πάγιο Θέρμανσης Πρέπει να είναι αριθμός').isNumeric();
             req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
             var errors=req.validationErrors();
@@ -182,7 +168,6 @@ router.post('/blockUpdate',function(req,res){
                     flatsShownNav:req.flatsShow,
                     calendar:req.calendarShow,
                     block:block,
-                    flag:1,
                     errors:errors
                 })
             }else {
@@ -208,6 +193,8 @@ router.post('/blockUpdate',function(req,res){
 
 //Flat page
 router.get('/flat',function(req,res){
+    //Να βάλω έλεγχο σε περιπτωση που δεν έχει καταχωρηθει πολυκατοικια και ο πελατης παταει τυχαία εδώ
+
     Flat.count({block:req.blockData._id},function(err,count){
         if (err) console.log(err);
         res.render('flat',{
@@ -216,8 +203,7 @@ router.get('/flat',function(req,res){
             typeOfHeat:req.blockData.heatType,
             count:count,
             flatsShownNav:req.flatsShow,
-            calendar:req.calendarShow,
-            flat: 'undefined'
+            calendar:req.calendarShow
         });
     })
 })
@@ -259,8 +245,7 @@ router.post('/flat',function(req,res){
                     count:count,
                     flatsShownNav:req.flatsShow,//show flats in left navigation menu
                     calendar:req.calendarShow,
-                    errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία',
-                    flat: 'undefined'
+                    errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία'
                 })
             })
         }

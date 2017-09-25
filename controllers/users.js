@@ -107,7 +107,7 @@ Block.findOne({'user': req.user._id},function(err,block) {
 //block post first time contents
 router.post('/block',function(req,res){
     req.checkBody('address','Η διεύθυνση πρέπει να είναι συμπληρωμένη').notEmpty();
-    req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπλρωμένος').notEmpty();
+    req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπλρωμένος').isNumeric();
     req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
     var errors=req.validationErrors();
@@ -155,7 +155,8 @@ router.post('/blockUpdate',function(req,res){
             if (err) console.log(err);
 
             req.checkBody('address','Η διεύθυνση πρέπει να είναι συμπληρωμένη').notEmpty();
-            req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπλρωμένος').notEmpty();
+            req.checkBody('phone','Ο αριθμός τηλεφώνου πρέπει να περιλαμβλάνει μόνο αριθμούς').isNumeric();
+            req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπλρωμένος  και να είναι ακέραιος αριθμός').isNumeric();
             req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
             var errors=req.validationErrors();
@@ -193,61 +194,82 @@ router.post('/blockUpdate',function(req,res){
 
 //Flat page
 router.get('/flat',function(req,res){
-    //Να βάλω έλεγχο σε περιπτωση που δεν έχει καταχωρηθει πολυκατοικια και ο πελατης παταει τυχαία εδώ
-
-    Flat.count({block:req.blockData._id},function(err,count){
-        if (err) console.log(err);
+    if(typeof req.blockData._id==='undefined'){//if block  is undefined
         res.render('flat',{
             name: req.user.name,
-            flatsCount:req.blockData.totalFlats,
-            typeOfHeat:req.blockData.heatType,
-            count:count,
-            flatsShownNav:req.flatsShow,
             calendar:req.calendarShow
         });
-    })
+    }else{//if block is not undefined
+        Flat.count({block:req.blockData._id},function(err,count){
+            if (err) console.log(err);
+            res.render('flat',{
+                name: req.user.name,
+                block:req.blockData,
+                count:count,
+                flatsShownNav:req.flatsShow,
+                calendar:req.calendarShow
+            });
+        })
+    }
 })
 
 //Flat post first time contents
 router.post('/flat',function(req,res){
     Block.findOne({user: req.user._id},function(err,block) {
             if (err) conslole.log(err);
-            if(block) {
-            var newFlat = new Flat({
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                phone: req.body.phone,
-                mobile: req.body.mobile,
-                email: req.body.email,
-                flatNum: req.body.flatNum,
-                koinratio: req.body.koinratio,
-                liftratio: req.body.liftratio,
-                flatxil: req.body.flatxil,
-                ei:req.body.ei,
-                fi:req.body.fi,
-                owner: req.body.owner,
-                balance:req.body.balance,
-                block: block._id
-            })
 
-            newFlat.save(function (err) {
-                if (err) console.log(err);
-                else console.log('Flat saved successfully');
-                res.redirect('flat');
+        req.checkBody('flatNum','Ο αριθμός διαμερίσματος πρέπει να είναι συμπληρωμένος').notEmpty();
+
+        var errors=req.validationErrors();
+
+        if(errors)
+        {
+            console.log('errors');
+            res.render('flat',{
+                name: req.user.name,
+                block:req.blockData,
+                count:req.flatsShow.length,
+                flatsShownNav:req.flatsShow,
+                calendar:req.calendarShow,
+                errors:errors
             })
-        }else{
-            console.log('Block not found');
-            Flat.count({},function(err,count) {
-                res.render('flat', {
-                    name: req.user.name,
-                    flatsCount:req.blockData.totalFlats,
-                    typeOfHeat:req.blockData.heatType,
-                    count:count,
-                    flatsShownNav:req.flatsShow,//show flats in left navigation menu
-                    calendar:req.calendarShow,
-                    errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία'
+        }else {
+            if (block) {
+                var newFlat = new Flat({
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    phone: req.body.phone,
+                    mobile: req.body.mobile,
+                    email: req.body.email,
+                    flatNum: req.body.flatNum,
+                    koinratio: req.body.koinratio,
+                    liftratio: req.body.liftratio,
+                    flatxil: req.body.flatxil,
+                    ei: req.body.ei,
+                    fi: req.body.fi,
+                    owner: req.body.owner,
+                    balance: req.body.balance,
+                    block: block._id
                 })
-            })
+
+                newFlat.save(function (err) {
+                    if (err) console.log(err);
+                    else console.log('Flat saved successfully');
+                    res.redirect('flat');
+                })
+            } else {
+                console.log('Block not found');
+                Flat.count({}, function (err, count) {
+                    res.render('flat', {
+                        name: req.user.name,
+                        block: req.blockData,
+                        count: count,
+                        flatsShownNav: req.flatsShow,//show flats in left navigation menu
+                        calendar: req.calendarShow,
+                        errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία'
+                    })
+                })
+            }
         }
     })
 })
@@ -258,8 +280,7 @@ router.get('/flat/:flatId',function(req,res){
         if(err) console.log(err);
         res.render('flat',{
             name: req.user.name,
-            flatsCount:req.blockData.totalFlats,//from session cookie blockData
-            typeOfHeat:req.blockData.heatType,
+            block:req.blockData,//from session cookie blockData
             flatsShownNav:req.flatsShow,//show flats in left navigation menu
             calendar:req.calendarShow,
             count:null,
@@ -272,32 +293,52 @@ router.get('/flat/:flatId',function(req,res){
 router.post('/flat/:flatId',function(req,res){
     Flat.findOne({_id: req.params.flatId},function(err,flat){
         if(err) console.log(err);
-            flat.firstname= req.body.firstname;
-            flat.lastname= req.body.lastname;
-            flat.phone= req.body.phone;
-            flat.mobile= req.body.mobile;
-            flat.email= req.body.email;
-            flat.flatNum= req.body.flatNum;
-            flat.koinratio= req.body.koinratio;
-            flat.liftratio= req.body.liftratio;
-            flat.flatxil= req.body.flatxil;
-            flat.owner= req.body.owner;
-            flat.balance=req.body.balance;
 
+        req.checkBody('flatNum','Ο αριθμός διαμερίσματος πρέπει να είναι συμπληρωμένος').notEmpty();
 
-        flat.save(function (err) {
-            if (err) console.log(err);
-            else console.log('Flat updated successfully');
+        var errors=req.validationErrors();
+
+        if(errors)
+        {
+            console.log('errors');
             res.render('flat',{
                 name: req.user.name,
-                flatsCount:req.blockData.totalFlats,
-                typeOfHeat:req.blockData.heatType,
-                flatsShownNav:req.flatsShow,//show flats in left navigation menu
+                block:req.blockData,
+                count:req.flatsShow.length,
+                flatsShownNav:req.flatsShow,
                 calendar:req.calendarShow,
-                count:null,
-                flat:flat
+                flat:flat,
+                errors:errors
+            },function(err,ejs){
+                res.location('/user/flat/'+req.params.flatId);
+                res.send(ejs);
             })
-        })
+        }else {
+            flat.firstname = req.body.firstname;
+            flat.lastname = req.body.lastname;
+            flat.phone = req.body.phone;
+            flat.mobile = req.body.mobile;
+            flat.email = req.body.email;
+            flat.flatNum = req.body.flatNum;
+            flat.koinratio = req.body.koinratio;
+            flat.liftratio = req.body.liftratio;
+            flat.flatxil = req.body.flatxil;
+            flat.owner = req.body.owner;
+            flat.balance = req.body.balance;
+
+            flat.save(function (err) {
+                if (err) console.log(err);
+                else console.log('Flat updated successfully');
+                res.render('flat', {
+                    name: req.user.name,
+                    block: req.blockData,
+                    flatsShownNav: req.flatsShow,//show flats in left navigation menu
+                    calendar: req.calendarShow,
+                    count: null,
+                    flat: flat
+                })
+            })
+        }
     })
 })
 

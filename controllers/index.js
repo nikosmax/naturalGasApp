@@ -40,6 +40,10 @@ router.get('/',function(req,res){
     }
 })
 
+router.get('/loaderio-34b2fba11dc87f73e38068a9413235ff',function(req,res){
+res.send('loaderio-34b2fba11dc87f73e38068a9413235ff');
+})
+
 //Login page
 router.get('/login',function(req,res){
     res.render('login');

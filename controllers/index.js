@@ -39,7 +39,7 @@ router.get('/',function(req,res){
         });
     }
 })
-
+//for testing
 router.get('/loaderio-34b2fba11dc87f73e38068a9413235ff',function(req,res){
 res.send('loaderio-34b2fba11dc87f73e38068a9413235ff');
 })

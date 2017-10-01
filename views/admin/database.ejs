@@ -1,0 +1,21 @@
+<% include header.ejs %>
+<body>
+
+<div class="container">
+    <% include body.ejs %>
+    <div class="row content">
+        <% include navbarleft.ejs %>
+        <div class="col-sm-9">
+
+            <h1>DataBase Collections</h1>
+            <% db.forEach(function(db){%>
+            <p><%=db%></p>
+            <%})%>
+        </div>
+    </div>
+</div>
+
+<% include footer.ejs %>
+</body>
+
+</html>

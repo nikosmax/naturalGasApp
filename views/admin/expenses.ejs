@@ -1,0 +1,39 @@
+<% include header.ejs %>
+<body>
+
+<div class="container">
+    <% include body.ejs %>
+    <div class="row content">
+        <% include navbarleft.ejs %>
+        <div class="col-sm-9">
+
+            <h1>Block Page</h1>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>year</th>
+                    <th>month</th>
+                    <th>block</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <%var i=0%>
+                <% expenses.forEach(function(expenses){%>
+                <tr>
+                    <td><%=expenses.block%></td>
+                    <td><%=expenses.year%></td>
+                    <td><%=expenses.month%></td>
+                </tr>
+                <%i+=1%>
+                <%})%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<% include footer.ejs %>
+</body>
+
+</html>

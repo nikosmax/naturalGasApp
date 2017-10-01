@@ -99,98 +99,98 @@
                 <div id="salary" class="form-group">
                     <label class="control-label col-sm-4" for="salary">Βοηθός Διαχειριστή:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="salary" value="<%=expenses.salary%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="salary" value="<%=typeof expenses!=='undefined'?expenses.salary:null%>">
                     <button onclick="delFunction('salary')" type="button" class="btn-md" >delete</button>
                     </div>
                 </div>
                 <div id="ika" class="form-group">
                     <label class="control-label col-sm-4" for="ika">Εργοδοτική Εισ. ΙΚΑ ΤΕΑΜ:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="ika" value="<%=expenses.ika%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="ika" value="<%=typeof expenses!=='undefined'?expenses.ika:null%>">
                     <button onclick="delFunction('ika')" type="button" class="btn-md">delete</button>
                         </div>
                 </div>
                 <div id="water" class="form-group">
                     <label class="control-label col-sm-4" for="water">ΕΥΔΑΠ:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="water" value="<%=expenses.water%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="water" value="<%=typeof expenses!=='undefined'?expenses.water:null%>">
                     <button onclick="delFunction('water')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="energy" class="form-group">
                     <label class="control-label col-sm-4" for="energy">ΔΕΗ:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="energy" value="<%=expenses.energy%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="energy" value="<%=typeof expenses!=='undefined'?expenses.energy:null%>">
                     <button onclick="delFunction('energy')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="cleaning" class="form-group">
                     <label class="control-label col-sm-4" for="cleaning">Καθαριότητα:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="cleaning" value="<%=expenses.cleaning%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="cleaning" value="<%=typeof expenses!=='undefined'?expenses.cleaning:null%>">
                     <button onclick="delFunction('cleaning')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="light" class="form-group">
                     <label class="control-label col-sm-4" for="light">Λαμπτήρες:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="light" value="<%=expenses.light%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="light" value="<%=typeof expenses!=='undefined'?expenses.light:null%>">
                     <button onclick="delFunction('light')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="drains" class="form-group">
                     <label class="control-label col-sm-4" for="drains">Αποχέτευση:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="drains" value="<%=expenses.drains%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="drains" value="<%=typeof expenses!=='undefined'?expenses.drains:null%>">
                     <button onclick="delFunction('drains')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="disinsectisation" class="form-group">
                     <label class="control-label col-sm-4" for="disinsectisation">Απεντόμωση:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="disinsectisation" value="<%=expenses.disinsectisation%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="disinsectisation" value="<%=typeof expenses!=='undefined'?expenses.disinsectisation:null%>">
                     <button onclick="delFunction('disinsectisation')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="garden" class="form-group">
                     <label class="control-label col-sm-4" for="garden">Συντήρηση Κήπου:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="garden" value="<%=expenses.garden%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="garden" value="<%=typeof expenses!=='undefined'?expenses.garden:null%>">
                     <button onclick="delFunction('garden')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="liftUpKeep" class="form-group">
                     <label class="control-label col-sm-4" for="liftUpKeep">Ασανσέρ Συντήρηση:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="liftUpKeep" value="<%=expenses.liftUpKeep%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="liftUpKeep" value="<%=typeof expenses!=='undefined'?expenses.liftUpKeep:null%>">
                     <button onclick="delFunction('liftUpKeep')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="liftRepair" class="form-group">
                     <label class="control-label col-sm-4" for="liftRepair">Ασανσέρ Ανταλ. Επισκευή:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="liftRepair" value="<%=expenses.liftRepair%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="liftRepair" value="<%=typeof expenses!=='undefined'?expenses.liftRepair:null%>">
                     <button onclick="delFunction('liftRepair')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="heat" class="form-group">
                     <label class="control-label col-sm-4" for="heat">Πετρέλαιο/Αέριο:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="heat" value="<%=expenses.heat%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="heat" value="<%=typeof expenses!=='undefined'?expenses.heat:null%>">
                     <button onclick="delFunction('heat')" type="button" class="btn-md">delete</button>
                      </div>
                 </div>
                 <div id="heatUpKeep" class="form-group">
                     <label class="control-label col-sm-4" for="heat">Συντήρηση Καυστήρα/Λέβητα:</label>
                     <div class="col-sm-5">
-                        <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="heatUpKeep" value="<%=expenses.heatUpKeep%>">
+                        <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="heatUpKeep" value="<%=typeof expenses!=='undefined'?expenses.heatUpKeep:null%>">
                         <button onclick="delFunction('heatUpKeep')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="heatRepair" class="form-group">
                     <label class="control-label col-sm-4" for="heatRepair">Επισκευή Καυστήρα/Λέβητα:</label>
                     <div class="col-sm-5">
-                        <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="heatRepair" value="<%=expenses.heatRepair%>">
+                        <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="heatRepair" value="<%=typeof expenses!=='undefined'?expenses.heatRepair:null%>">
                         <button onclick="delFunction('heatRepair')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
@@ -198,22 +198,22 @@
                 <div id="reserve" class="form-group">
                     <label class="control-label col-sm-4" for="reserve">Αποθεματικό:</label>
                     <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="reserve" value="<%=expenses.reserve%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="reserve" value="<%=typeof expenses!=='undefined'?expenses.reserve:null%>">
                     <button onclick="delFunction('reserve')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="shared" class="form-group">
                     <label class="control-label col-sm-4" for="shared">Αμοιβή εκδ. Κοινοχρήστων:</label>
                     <div class="col-sm-5">
-                    <input  type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="shared" value="<%=expenses.shared%>">
+                    <input  type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="shared" value="<%=typeof expenses!=='undefined'?expenses.shared:null%>">
                     <button onclick="delFunction('shared')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
                 <div id="otherExpenses" class="form-group">
                     <label class="control-label col-sm-4" for="otherExpenses">Λοιπά Έξοδα:</label>
                     <div class="col-sm-5">
-                    <input type="text" class="form-control" name="otherExpCom" placeholder="Π.χ Περιγραφή Εξόδου" value="<%=expenses.otherExpCom%>">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="otherExpenses" placeholder="Κόστος εξόδου" value="<%=expenses.otherExpenses%>">
+                    <input type="text" class="form-control" name="otherExpCom" placeholder="Π.χ Περιγραφή Εξόδου" value="<%=typeof expenses!=='undefined'?expenses.otherExpCom:null%>">
+                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="otherExpenses" placeholder="Κόστος εξόδου" value="<%=typeof expenses!=='undefined'?expenses.otherExpenses:null%>">
                     <button onclick="delFunction('otherExpenses')" type="button" class="btn-md">delete</button>
                     </div>
                 </div>
@@ -240,7 +240,7 @@
 
                 <div id="correctionPost"><!--Διόρθωση των εξόδων και έχουμε αυτονομία οπότε και δεν έχουμε μονάδες θέρμανσης-->
                     <% var count=0%>
-                    <% if(flatHeatCount!='undefined'){ %>
+                    <% if(typeof flatHeatCount!=='undefined'){ %>
                     <%  flatHeatCount.forEach(function( flatHeatCount){ %>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email"><%=flatsShownNav[count].flatNum%>:</label>
@@ -261,13 +261,13 @@
                 <div id="comments" class="form-group">
                      <label class="control-label col-sm-2" for="email">Διευκρινίσεις:</label>
                 <div class="col-sm-7">
-                    <input style="width:80%;" class=form-control" type="text" placeholder="Π.χ Περιλαμβάνει και τον Ιούλιο" name="comments" value="<%=expenses.comments%>">
+                    <input style="width:80%;" class=form-control" type="text" placeholder="Π.χ Περιλαμβάνει και τον Ιούλιο" name="comments" value="<%=typeof expenses!=='undefined'?expenses.comments:null%>">
                 </div>
                 </div>
 
                 <div class="text-center">
                     <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>
-                    <button id="btnDelete" type="button" onclick="window.location='/users/delete/<%=id%>';" class="btn btn-primary">Delete</button>
+                    <button id="btnDelete" type="button" onclick="window.location='/users/delete/<%=typeof id!=='undefined'?id:null%>';" class="btn btn-primary">Delete</button>
                 </div>
             </form>
         </div>
@@ -276,10 +276,10 @@
 
 <script>
 // Ελέγχουμε αν υπάρχουν έξοδα για να εμφανίσουμε την φόρμα της διόρθωσης -->
-<%if(expenses!=='undefined'){%>
+<%if(typeof expenses!=='undefined'){%>
     var elemDivFirst=document.getElementById('removeFromPost');
     elemDivFirst.parentNode.removeChild(elemDivFirst);
-    <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι χωρις αυτονομία δεν εμφανίζουμε τις μοναδες θέρμανσης
+    <%if(block.heatType==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι χωρις αυτονομία δεν εμφανίζουμε τις μοναδες θέρμανσης
         document.getElementById('labelHeatCountId').style.display='none';//Απόκρυψη του τίτλου μονάδες θέρμανσης
         var flatheatcount = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
         for(i=0;i<flatheatcount.length;i++){
@@ -306,7 +306,7 @@
 <%}else{%><!--Εφόσον δεν υπάρχουν έξοδα εμφανίζουμε τη φόρμα της πρώτης καταχώρησης -->
     var divRmvCor=document.getElementById('correctionPost');
     divRmvCor.parentNode.removeChild(divRmvCor);//Δεν εμφανίζουμε την φόρμα διορθωσης εφόσον δεν έχουμε έξοδα
-    <%if(typeOfHeat==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
+    <%if(block.heatType==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
        document.getElementById('labelHeatCountId').style.display='none';//ΔΕν εμφανίζουμε τον τίτλο μονάδες θέρμανσης
         var flatheatcount = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
         var flatLabels = document.getElementsByClassName('control-label col-sm-2 flatLabels');//Αριθμός διαμερίσματος
@@ -357,8 +357,8 @@
         var otherExpensesEx = document.getElementsByName('otherExpenses')[0].value;
 
         var flatheatcountEx = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
-        var typeofheatEx = '<%=typeOfHeat%>';//Τύπος θέρμανσης
-        var blockHeatFixed= '<%=blockHeatFixed%>';//Παγιο θέρμανσης
+        var typeofheatEx = '<%=block.heatType%>';//Τύπος θέρμανσης
+        var blockHeatFixed= '<%=block.heatFixed%>';//Παγιο θέρμανσης
         var flatsShownNav= <%- JSON.stringify(flatsShownNav)%>;
         var totalExpKoin = Number(salaryEx) + Number(ikaEx) + Number(waterEx) + Number(energyEx) + Number(cleaningEx) + Number(lightEx) + Number(drainsEx) +
                 Number(disinsectisationEx) + Number(gardenEx) + Number(reserveEx) + Number(sharedEx) + Number(otherExpensesEx);

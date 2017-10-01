@@ -113,14 +113,14 @@
 </div>
 
 <script>
-    console.log(window.location.href);
 <%if(typeof block!=='undefined'){%>
 //Έλεγχος πόσων διαμερισμάτων από τα συνολικά έχουν καταχωρηθεί -->
     <%if(block.totalFlats && count!==null){%>
         document.getElementById("check").className = "list-group-item list-group-item-info";
         document.getElementById("check").innerHTML=' <%= count %> από σύνολο <%= block.totalFlats%> Διαμερίσματων έχουν Καταχωρηθεί';
     <%}%>
-// Εαν έχουν συμπληρωθεί όλα τα διαμερίσματα πλέον δεν μπορούν να καταχωρηθούν άλλα  -->
+// Εαν έχουν συμπληρωθεί όλα τα διαμερίσματα πλέον δεν μπορούν να καταχωρηθούν άλλα οπότε και δεν θα εμφανίζονται πεδία για καταχώρηση -->
+//Παίζει ρόλο μόνο στην σελίδα /flat  για αυτό και στην διόρθωση /flat/:flatId το βάζουμε null -->
     <%if(count===block.totalFlats){%>
         document.getElementById('flatPost').style.display='none';
         document.getElementById("check").className = "list-group-item list-group-item-danger";
@@ -156,7 +156,7 @@
 
 <%}else {%>//Εαν δεν έχει καταχωρηθεί πολυκατοικία
     document.getElementById("check").className = "list-group-item list-group-item-danger";
-    document.getElementById("check").innerHTML='Πρέπει πρώτα να έχει καταχωρηθεί πολυκατοικία Βήμα 1';//εδω να μπει Link
+    document.getElementById("check").innerHTML='Πρέπει πρώτα να έχει καταχωρηθεί πολυκατοικία ' + '<a href=\'/users/block\'>Βήμα 1<\/a>';//εδω να μπει Link
     document.getElementById('flatPost').style.display='none';
 <%}%>
 </script>

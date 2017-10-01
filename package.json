@@ -20,7 +20,7 @@
     "ejs": "^2.5.6",
     "email-templates": "^2.6.0",
     "express": "^4.15.3",
-    "express-validator": "^3.2.0",
+    "express-validator": "^4.2.1",
     "mongoose": "^4.10.5",
     "nodemailer": "^4.0.1"
   }

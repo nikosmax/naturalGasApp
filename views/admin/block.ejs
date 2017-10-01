@@ -1,0 +1,42 @@
+<% include header.ejs %>
+<body>
+
+<div class="container">
+    <% include body.ejs %>
+    <div class="row content">
+        <% include navbarleft.ejs %>
+        <div class="col-sm-9">
+
+            <h1>Block Page</h1>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Address</th>
+                    <th>Location</th>
+                    <th>Total Flats</th>
+                    <th>Heat Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                <%var i=0%>
+                <% block.forEach(function(block){%>
+                <tr>
+                    <td><%=username[i]%></td>
+                    <td><%=block.address%></td>
+                    <td><%=block.location%></td>
+                    <td><%=block.totalFlats%> </td>
+                    <td><%=block.heatType%> </td>
+                </tr>
+                <%i+=1%>
+                <%})%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<% include footer.ejs %>
+</body>
+
+</html>

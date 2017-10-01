@@ -9,14 +9,19 @@ var User=require('./models/user');//database for user configutation
 var Block=require('./models/block');//database for block configutation
 //var router=express.Router();
 var server=express();
-
+var dbCollection=[];
 //connect to database test;
 mongoose.connect('mongodb://localhost/test');
 var db=mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
 db.once('open', function() {
     console.log("Connection to database succeeded.");
+    Object.keys(db.models).forEach(function(collection) {
+        dbCollection.push(collection);//show database collections
+    });
 });
+
+
 
 //view engine setup
 server.set('views', path.join(__dirname, 'views'));
@@ -28,6 +33,8 @@ server.use(bodyParser.urlencoded({extended: false}));
 //Set static path to public folder
 server.use(express.static(path.join(__dirname,'public')));
 server.use(function(req,res,next){
+    req.dbCol=dbCollection;
+    res.locals.dbCol=dbCollection;
     res.locals.errors=null;
     next();
 });

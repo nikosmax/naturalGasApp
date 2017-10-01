@@ -107,8 +107,13 @@ Block.findOne({'user': req.user._id},function(err,block) {
 //block post first time contents
 router.post('/block',function(req,res){
     req.checkBody('address','Η διεύθυνση πρέπει να είναι συμπληρωμένη').notEmpty();
-    req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπλρωμένος').isNumeric();
-    req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
+    req.checkBody('postal','Το πεδίο Τ.Κ πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('phone','Το πεδίο τηλέφωνο πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('mobile','Το πεδίο κινητό πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπληρωμένος').isNumeric();
+    req.checkBody('heatType','Ο τύπος θέρμανσης πρέπει να είναι επιλεγμένος').notEmpty();
+    req.checkBody('heatFixed','Το πεδίο Πάγιο θέρμανσης πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').optional({ checkFalsy: true }).isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
     var errors=req.validationErrors();
 
@@ -155,9 +160,13 @@ router.post('/blockUpdate',function(req,res){
             if (err) console.log(err);
 
             req.checkBody('address','Η διεύθυνση πρέπει να είναι συμπληρωμένη').notEmpty();
-            req.checkBody('phone','Ο αριθμός τηλεφώνου πρέπει να περιλαμβλάνει μόνο αριθμούς').isNumeric();
-            req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπλρωμένος  και να είναι ακέραιος αριθμός').isNumeric();
-            req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
+            req.checkBody('postal','Το πεδίο Τ.Κ πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+            req.checkBody('phone','Το πεδίο τηλέφωνο πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+            req.checkBody('mobile','Το πεδίο κινητό πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+            req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπληρωμένος').isNumeric();
+            req.checkBody('heatType','Ο τύπος θέρμανσης πρέπει να είναι επιλεγμένος').notEmpty();
+            req.checkBody('heatFixed','Το πεδίο Πάγιο θέρμανσης πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+            req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').optional({ checkFalsy: true }).isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
             var errors=req.validationErrors();
 
@@ -219,6 +228,15 @@ router.post('/flat',function(req,res){
             if (err) conslole.log(err);
 
         req.checkBody('flatNum','Ο αριθμός διαμερίσματος πρέπει να είναι συμπληρωμένος').notEmpty();
+        req.checkBody('phone','Το πεδίο Τηλέφωνο πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('mobile','Το πεδίο Κινητό πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('email','Το πεδίο email δεν είναι αποδεκτό').optional({ checkFalsy: true }).isEmail();
+        req.checkBody('koinratio','Το πεδίο Αναλογία Δαπανών Κοινοχρήστων πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('liftratio','Το πεδίο Αναλογία Δαπανών Ανελκυστήρα πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('flatxil','Το πεδίο Χιλιοστά Διαμερίσματος για θέρμανση πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('ei','Το πεδίο ei πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('fi','Το πεδίο fi πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('balance','Το πεδίο Υπόλοιπο Διαμερίσματος πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
         var errors=req.validationErrors();
 
@@ -283,7 +301,7 @@ router.get('/flat/:flatId',function(req,res){
             block:req.blockData,//from session cookie blockData
             flatsShownNav:req.flatsShow,//show flats in left navigation menu
             calendar:req.calendarShow,
-            count:null,
+            count:null,//We use it only for the page /flat to know when we have fill the total number of flats
             flat:flat
         })
     })
@@ -295,6 +313,15 @@ router.post('/flat/:flatId',function(req,res){
         if(err) console.log(err);
 
         req.checkBody('flatNum','Ο αριθμός διαμερίσματος πρέπει να είναι συμπληρωμένος').notEmpty();
+        req.checkBody('phone','Το πεδίο Τηλέφωνο πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('mobile','Το πεδίο Κινητό πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('email','Το πεδίο email δεν είναι αποδεκτό').optional({ checkFalsy: true }).isEmail();
+        req.checkBody('koinratio','Το πεδίο Αναλογία Δαπανών Κοινοχρήστων πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('liftratio','Το πεδίο Αναλογία Δαπανών Ανελκυστήρα πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('flatxil','Το πεδίο Χιλιοστά Διαμερίσματος για θέρμανση πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('ei','Το πεδίο ei πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('fi','Το πεδίο fi πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('balance','Το πεδίο Υπόλοιπο Διαμερίσματος πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
         var errors=req.validationErrors();
 
@@ -304,7 +331,7 @@ router.post('/flat/:flatId',function(req,res){
             res.render('flat',{
                 name: req.user.name,
                 block:req.blockData,
-                count:req.flatsShow.length,
+                count:null,//We use it only for the page /flat to know when we have fill the total number of flats
                 flatsShownNav:req.flatsShow,
                 calendar:req.calendarShow,
                 flat:flat,
@@ -348,12 +375,8 @@ router.get('/monthexpenses',function(req,res){
         name: req.user.name,
         flatsShownNav:req.flatsShow,//show flats in left navigation menu
         calendar:req.calendarShow,
-        typeOfHeat:req.blockData.heatType,
-        blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies
-        errorMessage:false,
-        expenses: 'undefined',
-        flatHeatCount:'undefined',//μονάδες θέρμανσης
-        id:''
+        block:req.blockData,
+        errorMessage:false
     });
 })
 
@@ -366,12 +389,8 @@ router.post('/monthexpenses',function(req,res){
                 name: req.user.name,
                 flatsShownNav: req.flatsShow,//show flats in left navigation menu,
                 calendar:req.calendarShow,
-                typeOfHeat:req.blockData.heatType,
-                blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies
-                errorMessage:'Έχει γίνει υπολογισμός για την συγκεκριμένη επιλογή έτους και μήνα',
-                expenses: 'undefined',
-                flatHeatCount:'undefined',//μονάδες θέρμανσης
-                id:''
+                block:req.blockData,
+                errorMessage:'Έχει γίνει υπολογισμός για την συγκεκριμένη επιλογή έτους και μήνα'
             })
         }else {
             var newExpenses = new Expenses({
@@ -523,8 +542,7 @@ router.get('/monthexpenses/:monthexpensesId',function(req,res){
             name: req.user.name,//show user name in left navigation menu
             flatsShownNav: req.flatsShow,//show flats in left navigation menu
             calendar: req.calendarShow,//show calendar in left navigation menu
-            typeOfHeat:req.blockData.heatType,
-            blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies
+            block:req.blockData,
             expenses: filterExpenses,
             id: expenses._id,
             flatHeatCount:flatHeatCount,//μονάδες θέρμανσης
@@ -561,7 +579,7 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
             expenses.otherExpCom= req.body.otherExpCom;
             expenses.comments= req.body.comments;
 
-        console.log(expenses);
+        console.log(expenses);//...................................................................................
         expenses.save(function(err){
             if(err) console.log(err);
             console.log('expenses saved');
@@ -584,8 +602,6 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                          flatheatcount.flatheatcount=heatingUnits[i];
                          flatheatcount.debit=flatDebit[i];//new debit submitted
                          //flatheatcount.extraPayoff=0;//extra payoff
-
-
 
                          return flatheatcount.save(function(err){
                              if(err) console.log(err);
@@ -614,7 +630,6 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                         //console.log(debit[i] + ' ' + flat.flatNum );
                         flat.balance+=Number(debit[i])-arrayFlatheatcount[i];//new balance is new debit minus old debit
 
-
                         return flat.save(function(err){
                             if(err) console.log(err);
                             console.log('new debit added..');
@@ -634,12 +649,8 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
                 name: req.user.name,
                 flatsShownNav:req.flatsShow,//show flats in left navigation menu
                 calendar:req.calendarShow,//Calendar in left navigation menu to see if we have set expenses for a month
-                typeOfHeat:req.blockData.heatType,//Type of heat
-                blockHeatFixed:req.blockData.heatFixed,//Πάγιο θέρμανσης από cookies
-                errorMessage:false,
-                expenses: 'undefined',
-                flatHeatCount:'undefined',//μονάδες θέρμανσης
-                id:''
+                block:req.blockData,
+                errorMessage:false
             });
         })
     })

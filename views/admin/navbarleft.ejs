@@ -1,5 +1,11 @@
 <div class="col-sm-3 sidenav">
     <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="/admin/adminUsers">Users</a></li>
+        <li class="active"><a href="/admin/database">Database</a></li>
+        <ul class="list-group">
+            <% db.forEach(function(db){%>
+                <li class="list-group-item list-group-item-info"><a href="/admin/database/<%=db%>"><%=db%> </a></li>
+            <%})%>
+        </ul>
     </ul>
 </div>

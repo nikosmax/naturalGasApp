@@ -1,7 +1,19 @@
 <table onload="" class="table table-bordered">
     <thead>
     <tr>
-        <th id='calYear' class="text-center" colspan="3"></th>
+        <div class="row">
+            <div class="col-xs-2">
+                <button class="btn btn-primary" id="leftbtn" onclick="minusYear()"><span class="glyphicon glyphicon-backward"></span></button>
+            </div>
+
+            <div class="col-xs-8" style="padding-left: 10px;padding-right: 10px">
+                <h4 id="getYear" align="center"></h4>
+            </div>
+
+            <div class="col-xs-2">
+                <button style="position: absolute;right: 15px" class="btn btn-primary" id="rightbtn" onclick="addYear()"><span class="glyphicon glyphicon-forward"></span></button>
+            </div>
+        </div>
     </tr>
     </thead>
     <tbody>
@@ -31,8 +43,7 @@
 
 <script>
     var d= new Date();
-    document.getElementById("calYear").innerHTML ='<div style=\'float:left; width:10%\'><button onclick="minusYear()"><span class="glyphicon glyphicon-backward"></span></button></div>'+'<div id=\'getYear\' style=\'float:left; width:80%\'>'+ d.getFullYear()+'</div>' +'<div style=\'float:left; width:10%\'><button onclick="addYear()"><span class="glyphicon glyphicon-forward"></span></button></div>';
-    var tdTable;
+   document.getElementById("getYear").innerHTML =d.getFullYear();
 console.log(d);
     function calcCalendar(setYear){
         var yearFromDb;//Το έτος από την database

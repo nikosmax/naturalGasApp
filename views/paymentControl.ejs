@@ -46,7 +46,7 @@
 
                 <table class="table table-hover">
                     <thead>
-                    <tr>
+                    <tr bgcolor="LightGray">
                         <th class="text-center">Διαμέρισμα</th>
                         <th class="text-center">Ποσό πληρωμής</th>
                         <th class="text-center">Εξόφληση Μήνα</th>
@@ -64,12 +64,19 @@
                                 <td class="text-center"><%=flatsShownNav[count].flatNum%></td>
                                 <td class="text-center" name="monthDebit"><%=flatHeatCount.debit.toFixed(2)%></td>
                                 <td class="text-center"><label><input type="checkbox" name="payoff" id="<%=count%>" onchange="calcNewDebit(this.id);"> Ναι</label></td>
-                                <td class="text-center"><input type='text' name="extraPayoff" id="g-<%=count%>" onchange="calcExtraPayoff(this.id);" value='<%=flatHeatCount.extraPayoff.toFixed(2)%>'></td>
-                                <td class="text-center"><input type='text' name="balance" value='<%=flatsShownNav[count].balance.toFixed(2)%>' readonly></td>
+                                <td><input class="text-right" type='text' name="extraPayoff" id="g-<%=count%>" onchange="calcExtraPayoff(this.id);" value='<%=flatHeatCount.extraPayoff.toFixed(2)%>'></td>
+                                <td><input class="text-right" type='text' name="balance" value='<%=flatsShownNav[count].balance.toFixed(2)%>' readonly></td>
                                 <td><input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav[count]._id%>"></td>
                             </tr>
                             <%count+=1%>
                         <%})%>
+                    <tr bgcolor="LightGray">
+                        <th class="text-center">Σύνολο</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th id='totalBlockBalance' class="text-center"></th>
+                    </tr>
                     </tbody>
                     </table>
                     <%}%>
@@ -144,6 +151,7 @@
                 temp=Number(balance[elemId].value)+ Number(monthDebit[elemId].innerHTML);
                 balance[elemId].value=temp.toFixed(2);
             }
+        calcTotalBlockBalance();
 
     }//End of function calcNewDebit
 
@@ -156,11 +164,21 @@
 
             temp =Number(balance[elemId].value)- Number(extraPayoff[elemId].value);
             balance[elemId].value=temp.toFixed(2);
+        calcTotalBlockBalance();
 
 
     }//End of function calcNewDebit
 
+    function calcTotalBlockBalance(){//Τι χρωστάνε συνολικά όλα τα διαμερίσματα
+        var balance = document.getElementsByName('balance');
+        var totalBlockBalance=0;
+        for(i=0;i<balance.length;i++){
+            totalBlockBalance+=Number(balance[i].value);
+        }
+        document.getElementById('totalBlockBalance').innerHTML=totalBlockBalance.toFixed(2);
+    }
 
+    calcTotalBlockBalance();
 
 </script>
 

@@ -31,7 +31,7 @@
 
                 </div>
             </div>
-            <h4 align="center">Έξοδα Μήνα</h4>
+            <h4 id="textId" align="center">Έξοδα Μήνα</h4>
             <% if(errorMessage){%>
             <script>
                 alert('<%= errorMessage %>');
@@ -74,7 +74,7 @@
                     <label class="control-label col-sm-2" for="month">Έξοδα:</label>
                     <div class="col-sm-7">
                     <select id="selectExpenses"  onchange="expensesFunction()" class="form-control" name="expenses">
-                        <option>Επιλέξτε τα έξοδα του μήνα..</option>
+                        <option id="selectText">Επιλέξτε τα έξοδα του μήνα..</option>
                         <option value="salary">Βοηθός Διαχειριστή</option>
                         <option value="ika">Εργοδοτική Εισ. ΙΚΑ ΤΕΑΜ</option>
                         <option value="water">ΕΥΔΑΠ</option>
@@ -95,6 +95,11 @@
                     </select>
                         </div>
                 </div>
+
+                <%if(typeof expenses!=='undefined'){%>
+                    <input class=form-control" type="hidden" name="year" value="<%=expenses.year%>">
+                    <input class=form-control" type="hidden" name="month" value="<%=expenses.month%>">
+                <%}%>
 
                 <div id="salary" class="form-group">
                     <label class="control-label col-sm-4" for="salary">Βοηθός Διαχειριστή:</label>
@@ -277,6 +282,12 @@
 <script>
 // Ελέγχουμε αν υπάρχουν έξοδα για να εμφανίσουμε την φόρμα της διόρθωσης -->
 <%if(typeof expenses!=='undefined'){%>
+    var removeYear=document.getElementById('year');
+    var removeMonth=document.getElementById('month');
+    removeYear.parentNode.removeChild(removeYear);//Remove div year from submit
+    removeMonth.parentNode.removeChild(removeMonth); //Remove div month from submit
+    document.getElementById('textId').innerHTML='ΕΞΟΔΑ <br> <br> ΜΗΝΑΣ: <%=expenses.month%> - ΈΤΟΣ : <%=expenses.year%>';
+    document.getElementById('selectText').innerHTML='Προσθέστε τυχόν έξοδα που δεν καταχωρήθηκαν..';
     var elemDivFirst=document.getElementById('removeFromPost');
     elemDivFirst.parentNode.removeChild(elemDivFirst);
     <%if(block.heatType==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι χωρις αυτονομία δεν εμφανίζουμε τις μοναδες θέρμανσης
@@ -288,8 +299,6 @@
     <%}%>
     document.getElementById('monthexpensesPost').action="/users/monthExpenses/<%=id%>";
     document.getElementById('btnSubmit').innerHTML='Διόρθωση';
-    document.getElementById("selectYear").value='<%=expenses.year%>';
-    document.getElementById("selectMonth").value='<%=expenses.month%>';
 
 <% for(var key in expenses){%>
     <% if(expenses.hasOwnProperty(key)){%>

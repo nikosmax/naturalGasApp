@@ -17,14 +17,25 @@
 
                     <!-- Modal content-->
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header" style="background-color: #5cb85c;color:white !important;">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Modal Header</h4>
+                            <h4 id='modalLabel' class="modal-title text-center">Καταχώρηση Διαμερισμάτων</h4>
                         </div>
-                        <div class="modal-body">
-                            <p>Some text in the modal.</p>
+                        <div id="modalBody" class="modal-body">
+                            <ul>
+                                <li>Σε αυτό το στάδιο καταχωρούμε ένα ένα τα διαμερίσματα της πολυκατοικίας. Σημαντικό είναι να
+                                    έχουμε ορίσει σωστά τον συνολικό αριθμό  των Διαμερισμάτων από το προηγούμενο βήμα (1.Καταχώρηση πολυκατοκίας).</li>
+                                <li>Το πρόγραμμα μας ενημερώνει με τον αριθμό διαμερισμάτων που έχουμε καταχωρήσει. Επίσης κάθε φορά που καταχωρούμε
+                                    ένα διαμέρισμα εμφανίζεται στο αριστερό μενού ο αριθμός και το όνομα ιδιοκτήτη του διαμερίσματος.</li>
+                                <li>Με την συμπλήρωση όλων των διαμερισμάτων το πρόγραμμα μας ενημερώνει ότι καταχωρήθηκαν όλα τα διαμερίσματα και πλέον
+                                    δεν μπορούμε να καταχωρήσουμε άλλα.</li>
+                                <li>Απαραίτητα πρέπει να είναι συμπληρωμένα τα πεδία Αριθμός Διαμερίσματος, Αναλογία Δαπανών Κοινοχρήστων, Αναλογία Δαπανών Ανελκυστήρα
+                                    και Χιλιοστά Διαμερίσματος για θέρμανση.</li>
+                                <li>Το πεδίο υπόλοιπο διαμερίσματος αφορά τα χρήματα που χρωστάει το συγκεκριμένο διαμέρισμα σε ευρώ. Αν τη στιγμή λοιπόν που το
+                                    καταχωρούμε έχει υπόλοιπο τότε το συμπληρώνουμε.</li>
+                            </ul>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer" style="background-color: #5cb85c;color:white !important;">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -113,7 +124,7 @@
 </div>
 
 <script>
-<%if(typeof block!=='undefined'){%>
+<%if(typeof block!=='undefined'){%>//Εάν έχουμε καταχωρήσει πολυκατοικία
 //Έλεγχος πόσων διαμερισμάτων από τα συνολικά έχουν καταχωρηθεί -->
     <%if(block.totalFlats && count!==null){%>
         document.getElementById("check").className = "list-group-item list-group-item-info";

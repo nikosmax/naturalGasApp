@@ -20,12 +20,7 @@
                 <li><a href="#">Page 2</a></li>
                 <li><a href="#">Page 3</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li id="signup"><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li id="login"><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                <li id="profile"><a href="/users/profile"><span class="glyphicon glyphicon-tasks"></span> Profile</a></li>
-                <li id="admin"><a href="/admin/adminPage"><span class="glyphicon glyphicon-tasks"></span> Admin</a></li>
-                <li id="logout"><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            <ul id="navBarRight" class="nav navbar-nav navbar-right">
             </ul>
         </div>
     </div>
@@ -35,30 +30,68 @@
 What you want is: typeof message === "undefined"-->
 <% if(typeof user==="undefined"){%>
 <script>
-    document.getElementById("signup").style.display='block';
-    document.getElementById("login").style.display='block';
-    document.getElementById("profile").style.display='none';
-    document.getElementById("admin").style.display='none';
-    document.getElementById("logout").style.display='none';
+    var navBarRight=document.getElementById('navBarRight');
+    var createLiElem=document.createElement('LI');
+        createLiElem.id='signup';
+    navBarRight.appendChild(createLiElem);
+    var createLinkElem=document.createElement('a');
+    createLinkElem.href='/signup';
+    createLinkElem.innerHTML='<span class="glyphicon glyphicon-user"></span> Sign Up';
+    createLiElem.appendChild(createLinkElem);
+
+    var navBarRight=document.getElementById('navBarRight');
+    var createLiElem=document.createElement('LI');
+    createLiElem.id='login';
+    navBarRight.appendChild(createLiElem);
+    var createLinkElem=document.createElement('a');
+    createLinkElem.href='/login';
+    createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-in"></span> Login';
+    createLiElem.appendChild(createLinkElem);
+
 </script>
 <%}%>
 
 <% if(typeof user!=="undefined"){%>
     <%if(typeof usrnm!=='undefined' && usrnm==='admin@admin.com'){%>
         <script>
-            document.getElementById("signup").style.display='none';
-            document.getElementById("login").style.display='none';
-            document.getElementById("profile").style.display='none';
-            document.getElementById("admin").style.display='block';
-            document.getElementById("logout").style.display='block';
+            var navBarRight=document.getElementById('navBarRight');
+            var createLiElem=document.createElement('LI');
+            createLiElem.id='admin';
+            navBarRight.appendChild(createLiElem);
+            var createLinkElem=document.createElement('a');
+            createLinkElem.href='/admin/adminPage';
+            createLinkElem.innerHTML='<span class="glyphicon glyphicon-tasks"></span> Admin';
+            createLiElem.appendChild(createLinkElem);
+
+            var navBarRight=document.getElementById('navBarRight');
+            var createLiElem=document.createElement('LI');
+            createLiElem.id='logout';
+            navBarRight.appendChild(createLiElem);
+            var createLinkElem=document.createElement('a');
+            createLinkElem.href='/logout';
+            createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-out"></span> Logout';
+            createLiElem.appendChild(createLinkElem);
+            var createSpanElem=document.createElement('SPAN');
         </script>
     <%}else{%>
         <script>
-            document.getElementById("signup").style.display='none';
-            document.getElementById("login").style.display='none';
-            document.getElementById("profile").style.display='block';
-            document.getElementById("admin").style.display='none';
-            document.getElementById("logout").style.display='block';
+            var navBarRight=document.getElementById('navBarRight');
+            var createLiElem=document.createElement('LI');
+            createLiElem.id='profile';
+            navBarRight.appendChild(createLiElem);
+            var createLinkElem=document.createElement('a');
+            createLinkElem.href='/users/profile';
+            createLinkElem.innerHTML='<span class="glyphicon glyphicon-tasks"></span> Profile';
+            createLiElem.appendChild(createLinkElem);
+
+            var navBarRight=document.getElementById('navBarRight');
+            var createLiElem=document.createElement('LI');
+            createLiElem.id='logout';
+            navBarRight.appendChild(createLiElem);
+            var createLinkElem=document.createElement('a');
+            createLinkElem.href='/logout';
+            createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-out"></span> Logout';
+            createLiElem.appendChild(createLinkElem);
         </script>
     <%}%>
 <%}%>

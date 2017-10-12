@@ -3,62 +3,95 @@
 
 <div class="container">
     <% include templates/body.ejs %>
-    <h2>Καλώς Ήρθατε στην ιστοσελίδα μας</h2>
-    <p>Το online Κοινόχρηστα είναι μια διαδυκτιακή εφαρμογή έκδοσης κοινοχρήστων. Τώρα μπορεί ο καθένας γρήγορα και απλά
+    <h2 class="text-muted" style="color: orangered"> <span class="glyphicon glyphicon-thumbs-up"></span> Καλώς Ήρθατε στην ιστοσελίδα μας</h2>
+    <p class="text-muted">Το online Κοινόχρηστα είναι μια διαδυκτιακή εφαρμογή έκδοσης κοινοχρήστων. Τώρα μπορεί ο καθένας γρήγορα και απλά
         όπου και αν βρίσκεται και οποιοδήποτε ώρα να εκδόσει τα κοινόχρηστα της πολυκατοικίας του.</p>
-    <h2 class="text-center">Ποια είναι τα πλεονεκτήματα της εφαρμογής</h2>
+
+    <div class="row text-center">
+        <div class="col-sm-6 col-sm-offset-3" style="background-color:#3c763d;padding-bottom: 20px">
+            <h3 style="color: #f2f2f2">Κάνε εγγραφή στην εφαρμογή Σήμερα!</h3>
+            <p class="text-muted" style="color: #f2f2f2">Ταχύτητα, Οικονομία, Ευελιξία</p>
+            <button type="button" class="btn btn-primary btn-lg"> <span class="glyphicon glyphicon-user"></span> Εγγραφή</button>
+            <button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-log-in"></span> Είσοδος</button>
+        </div>
+    </div>
+
+    <h2 class="text-muted" style="color: orangered"> <span class="glyphicon glyphicon-thumbs-up"></span> Ποια είναι τα πλεονεκτήματα της εφαρμογής</h2>
     <div class="row">
         <div class="col-sm-6"><h3><span class="glyphicon glyphicon-ok text-success"></span> Ευκολία και ταχύτητα</h3>
-        <p>Μέσα σε λίγα λεπτά μπορείται να καταχωρήσετε τα έξοδα του μήνα και να τυπώσετε ή να στείλετε με email
-            την συγκεντρωτική κατάσταση μισθοδοσίας και τις αποδείξεις μισθοδοσίας.</p></div>
+        <p class="text-muted text-justify">Μέσα σε λίγα λεπτά μπορείται να καταχωρήσετε τα έξοδα του μήνα και να τυπώσετε ή να στείλετε με email
+            την <a href="totalBlock.png" target="_blank">συγκεντρωτική κατάσταση</a>  και
+            τις <a href="totalFlat.png" target="_blank">αποδείξεις διαμερισμάτων.</a></p></div>
         <div class="col-sm-6"><h3><span class="glyphicon glyphicon-ok text-success"></span> Οικονομία</h3>
-        <p>Με κόστος μόνο 1 ευρώ το μήνα για όλη την πολυκατοικία ανεξαρτήτως του αριθμού των διαμερισμάτων και
-            χρησιμοποιώντας την δυνατότητα αποστολής των αποδειξεων μισθοδοσίας με email κάνετε οικονομία στα
+        <p class="text-muted text-justify">Με κόστος μόνο 1 ευρώ το μήνα για όλη την πολυκατοικία ανεξαρτήτως του αριθμού των διαμερισμάτων και
+            χρησιμοποιώντας την δυνατότητα αποστολής των αποδειξεων διαμερισμάτων με email κάνετε οικονομία στα
             πάγια έξοδα της πολυκατοικίας. Μόλις 12 Ευρώ κόστος το χρόνο!!!!</p></div>
     </div>
     <div class="row">
         <div class="col-sm-6"><h3><span class="glyphicon glyphicon-ok text-success"></span> Αξιοπιστία</h3>
-        <p>Ως Μηχανολόγοι Μηχανικοί με 15 χρόνια εμπειρία στο χώρο της πολυκατοικίας και ενήμεροι της νομοθεσίας
-            είστε σίγουροι για την αξιοπιστία του προγράμματος.Είμαστε στη διάθεση σας για όποια απορία η πρόβλημα προκύψει.</p></div>
+        <p class="text-muted text-justify">Ως Μηχανολόγοι Μηχανικοί με 15 χρόνια εμπειρία στο χώρο της πολυκατοικίας και ενήμεροι της νομοθεσίας
+            είστε σίγουροι για την αξιοπιστία του προγράμματος. Είμαστε στη διάθεση σας για όποια απορία η πρόβλημα προκύψει.</p></div>
         <div class="col-sm-6"><h3><span class="glyphicon glyphicon-ok text-success"></span> Iστορικό - Πληροφόρηση</h3>
-        <p>Το πρόγραμμα κρατάει ιστορικό όλων των εξόδων μήνα μήνα της πολυκατοικίας καθώς και κάθε διαμερίσματος ξεχωριστά.
+        <p class="text-muted text-justify">Το πρόγραμμα κρατάει ιστορικό όλων των εξόδων μήνα μήνα της πολυκατοικίας καθώς και κάθε διαμερίσματος ξεχωριστά.
             Έχουμε πλήρη έλεγχο του υπολοίπου κάθε διαμερίσματος το οποίο ανανεώνεται αυτόματα με κάθε νέα έκδοση κοινοχρήστων καθώς
-            και μετά την ενημέρωση στην αντίστοιχη φόρμα οτι πληρώθηκε.
+            και μετά την ενημέρωση στην αντίστοιχη φόρμα <a href="check.png" target="_blank">(Έλεγχος Πληρωμών)</a> οτι εξοφλήθηκε.
         </p></div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-sm-6"><h3><span class="glyphicon glyphicon-ok text-success"></span> Ημερολόγιο Εξόδων</h3>
+            <p class="text-muted text-justify">Με το <a href="calendar.png" target="_blank">Hμερολόγιο Eξόδων</a> έχουμε
+                άμεση ειδοποιήση για τους ποιους μήνες έχουμε καταχωρήσει (σήμανση με πράσινο χρώμα) και με ένα κλικ πάνω
+                στο μήνα πέρνουμε απευθείας ενημέρωση για τα έξοδα του, τα οποία έχουμε την δυνατότητα να τα διορθώσουμε
+                ή και να τα διαγράψουμε.</p></div>
+        <div class="col-sm-6"><h3><span class="glyphicon glyphicon-ok text-success"></span> Διαρκής Ενημέρωση</h3>
+            <p class="text-muted text-justify">Το πρόγραμμα ενημερώνεται συνεχώς είτε με προσθήκη νέων δυνατοτήτων είτε  λόγω
+            αλλαγών στην νομοθεσία. Μας ενδιαφέρει η γνώμη σας για την λειτουργικότητα της εφαρμογής καθώς και νέων προτάσεων
+            η προσθηκών που θα το κάνουν ακόμα καλύτερο.</p></div>
+    </div>
+    <h2 class="text-muted" style="color: orangered"> <span class="glyphicon glyphicon-thumbs-up"></span> Χαρακτηριστικά της εφαρμογής</h2>
+    <br>
+    <div class="row">
+        <div class="col-md-3">
             <div class="thumbnail">
                 <a href="totalBlock.png" target="_blank">
-                    <img src="totalBlock.png" alt="Lights" style="width:100%;height: 200px">
+                    <img src="totalBlock.png" alt="Συγκεντρωτική Κατάσταση" style="width:100%;height: 200px">
                     <div class="caption">
                         <p>Συγκεντρωτική Κατάσταση.</p>
                     </div>
                 </a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="thumbnail">
                 <a href="totalFlat.png" target="_blank">
-                    <img src="totalFlat.png" alt="Nature" style="width:100%;height: 200px">
+                    <img src="totalFlat.png" alt="Αποδείξεις Διαμερισμάτων" style="width:100%;height: 200px">
                     <div class="caption">
                         <p>Αποδείξεις Διαμερισμάτων.</p>
                     </div>
                 </a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="thumbnail">
                 <a href="check.png" target="_blank">
-                    <img src="check.png" alt="Fjords" style="width:100%;height: 200px">
+                    <img src="check.png" alt="Έλεγχος Πληρωμών" style="width:100%;height: 200px">
                     <div class="caption">
-                        <p>Μενού επιλογών.</p>
+                        <p>Έλεγχος Πληρωμών.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="thumbnail">
+                <a href="calendar.png" target="_blank">
+                    <img src="calendar.png" alt="Ημερολόγιο Εξόδων" style="width:100%;height: 200px">
+                    <div class="caption">
+                        <p>Ημερολόγιο Εξόδων.</p>
                     </div>
                 </a>
             </div>
         </div>
     </div>
-    <a href="/login" class="btn btn-primary" role="button">Login</a>
 </div>
 
 <% include templates/footer.ejs %>

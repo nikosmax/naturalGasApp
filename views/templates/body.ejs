@@ -15,10 +15,9 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
+                <li><a href="/about">Σχετικά</a></li>
+                <li><a href="#">Νομοθεσία</a></li>
+                <li><a href="#">Επικοινωνία</a></li>
             </ul>
             <ul id="navBarRight" class="nav navbar-nav navbar-right">
             </ul>
@@ -36,7 +35,7 @@ What you want is: typeof message === "undefined"-->
     navBarRight.appendChild(createLiElem);
     var createLinkElem=document.createElement('a');
     createLinkElem.href='/signup';
-    createLinkElem.innerHTML='<span class="glyphicon glyphicon-user"></span> Sign Up';
+    createLinkElem.innerHTML='<span class="glyphicon glyphicon-user"></span> Εγγραφή';
     createLiElem.appendChild(createLinkElem);
 
     var navBarRight=document.getElementById('navBarRight');
@@ -45,7 +44,7 @@ What you want is: typeof message === "undefined"-->
     navBarRight.appendChild(createLiElem);
     var createLinkElem=document.createElement('a');
     createLinkElem.href='/login';
-    createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-in"></span> Login';
+    createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-in"></span> Είσοδος';
     createLiElem.appendChild(createLinkElem);
 
 </script>
@@ -69,7 +68,7 @@ What you want is: typeof message === "undefined"-->
             navBarRight.appendChild(createLiElem);
             var createLinkElem=document.createElement('a');
             createLinkElem.href='/logout';
-            createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-out"></span> Logout';
+            createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-out"></span> Έξοδος';
             createLiElem.appendChild(createLinkElem);
             var createSpanElem=document.createElement('SPAN');
         </script>
@@ -81,7 +80,7 @@ What you want is: typeof message === "undefined"-->
             navBarRight.appendChild(createLiElem);
             var createLinkElem=document.createElement('a');
             createLinkElem.href='/users/profile';
-            createLinkElem.innerHTML='<span class="glyphicon glyphicon-tasks"></span> Profile';
+            createLinkElem.innerHTML='<span class="glyphicon glyphicon-tasks"></span> Προφίλ';
             createLiElem.appendChild(createLinkElem);
 
             var navBarRight=document.getElementById('navBarRight');
@@ -90,7 +89,7 @@ What you want is: typeof message === "undefined"-->
             navBarRight.appendChild(createLiElem);
             var createLinkElem=document.createElement('a');
             createLinkElem.href='/logout';
-            createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-out"></span> Logout';
+            createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-out"></span> Έξοδος';
             createLiElem.appendChild(createLinkElem);
         </script>
     <%}%>

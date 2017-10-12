@@ -6,7 +6,7 @@
     <div class="row content">
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
-            <h4 id="setDate">Your Profile created at <%= date %></h4>
+            <h4 id="setDate" class="text-muted" style="color: orangered">Το προφίλ σας δημιουργήθηκε: <%= date %></h4>
             <form method="post" action="/users/updateProfile">
                 <div class="form-group">
                     <label for="name">Name:</label>

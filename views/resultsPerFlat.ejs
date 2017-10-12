@@ -1,12 +1,12 @@
 <% include templates/header.ejs %>
 <body>
 
-<div class="container">
+<div class="container" style="background-color: #eee">
     <% include templates/body.ejs %>
     <div class="row content">
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
-            <h4 id="h4">Αποτελέσματα</h4>
+            <h3 id="h4" class="text-center">Αποδείξεις Διαμερισμάτων</h3>
             <form class="form-horizontal" method="post" action="/users/resultsPerFlat">
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="year">Έτος:</label>
@@ -38,7 +38,7 @@
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Αναζήτηση</button>
+                <button type="submit" class="btn btn-success">Αναζήτηση</button>
             </form>
             <br>
 <div id="printableArea">

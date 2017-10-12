@@ -1,7 +1,7 @@
 <% include templates/header.ejs %>
 <body>
 
-<div class="container">
+<div class="container" style="background-color: #eee">
     <% include templates/body.ejs %>
     <div class="row content">
         <% include templates/navbar.ejs %>
@@ -39,7 +39,7 @@
                 </div>
             </div><!-- End of modal -->
 
-            <h4 align="center">Στοιχεία Πολυκατοικίας</h4>
+            <h3 align="center">Στοιχεία Πολυκατοικίας</h3>
             <% if(errors != undefined){ %>
             <ul class="list-group">
                 <% errors.forEach(function(error){ %>
@@ -95,7 +95,7 @@
                     <input type="text" class="form-control" name="reserve" value="<%= typeof block!=='undefined'?block.reserve:0 %>">
                 </div>
 
-                <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>
+                <button id="btnSubmit" type="submit" class="btn btn-success">Καταχώρηση</button>
             </form>
             <br>
         </div>

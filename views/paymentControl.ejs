@@ -1,7 +1,7 @@
 <% include templates/header.ejs %>
 <body>
 
-<div class="container">
+<div class="container" style="background-color: #eee">
     <% include templates/body.ejs %>
     <div class="row content">
         <% include templates/navbar.ejs %>
@@ -81,12 +81,12 @@
                     </table>
                     <%}%>
                 <div class="text-center">
-                    <button id='search' type="button" class="btn btn-primary" onclick="window.location='/users/paymentControl';">Νέα Αναζήτηση</button>
-                    <button id='btnSubmit' type="submit" class="btn btn-primary">Καταχώρηση</button>
+                    <button id='search' type="button" class="btn btn-success" onclick="window.location='/users/paymentControl';">Νέα Αναζήτηση</button>
+                    <button id='btnSubmit' type="submit" class="btn btn-success">Καταχώρηση</button>
                 </div>
                 <%}else {%>
                 <div class="text-center">
-                    <button id='btnSubmit' type="submit" class="btn btn-primary">Αναζήτηση</button>
+                    <button id='btnSubmit' type="submit" class="btn btn-success">Αναζήτηση</button>
                 </div>
                 <%}%><!-- end of if totalExpenses -->
             </form>

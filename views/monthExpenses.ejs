@@ -1,7 +1,7 @@
 <% include templates/header.ejs %>
 <body>
 
-<div class="container">
+<div class="container" style="background-color: #eee">
     <% include templates/body.ejs %>
     <div class="row content">
         <% include templates/navbar.ejs %>
@@ -35,13 +35,13 @@
                             </ul>
                         </div>
                         <div class="modal-footer" style="background-color: #5cb85c;color:white !important;">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
                         </div>
                     </div>
 
                 </div>
             </div>
-            <h4 id="textId" align="center">Έξοδα Μήνα</h4>
+            <h3 id="textId" align="center">Έξοδα Μήνα</h3>
             <% if(errorMessage){%>
             <script>
                 alert('<%= errorMessage %>');
@@ -281,8 +281,8 @@
                 </div>
 
                 <div class="text-center">
-                    <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>
-                    <button id="btnDelete" type="button" onclick="window.location='/users/delete/<%=typeof id!=='undefined'?id:null%>';" class="btn btn-primary">Delete</button>
+                    <button id="btnSubmit" type="submit" class="btn btn-success">Καταχώρηση</button>
+                    <button id="btnDelete" type="button" onclick="window.location='/users/delete/<%=typeof id!=='undefined'?id:null%>';" class="btn btn-success">Delete</button>
                 </div>
             </form>
         </div>
@@ -296,7 +296,7 @@
     var removeMonth=document.getElementById('month');
     removeYear.parentNode.removeChild(removeYear);//Remove div year from submit
     removeMonth.parentNode.removeChild(removeMonth); //Remove div month from submit
-    document.getElementById('textId').innerHTML='ΕΞΟΔΑ <br> <br> ΜΗΝΑΣ: <%=expenses.month%> - ΈΤΟΣ : <%=expenses.year%>';
+    document.getElementById('textId').innerHTML='ΕΞΟΔΑ <br> ΜΗΝΑΣ: <%=expenses.month%> - ΈΤΟΣ : <%=expenses.year%>';
     document.getElementById('selectText').innerHTML='Προσθέστε τυχόν έξοδα που δεν καταχωρήθηκαν..';
     var elemDivFirst=document.getElementById('removeFromPost');
     elemDivFirst.parentNode.removeChild(elemDivFirst);

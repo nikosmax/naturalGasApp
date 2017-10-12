@@ -1,12 +1,12 @@
 <% include templates/header.ejs %>
 <body>
 
-<div class="container">
+<div class="container" style="background-color: #eee">
     <% include templates/body.ejs %>
     <div class="row content">
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
-            <h4 id="setDate" class="text-muted" style="color: orangered">Το προφίλ σας δημιουργήθηκε: <%= date %></h4>
+            <h3 id="setDate">Το προφίλ σας δημιουργήθηκε: <%= date %></h3>
             <form method="post" action="/users/updateProfile">
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -20,7 +20,7 @@
                     <label for="pwd">Password:</label>
                     <input type="password" class="form-control" name="pwd">
                 </div>
-                <button type="submit" class="btn btn-default">Update Profile</button>
+                <button type="submit" class="btn btn-success">Update Profile</button>
             </form>
 
         </div>

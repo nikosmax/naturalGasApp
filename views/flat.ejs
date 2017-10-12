@@ -1,7 +1,7 @@
 <% include templates/header.ejs %>
 <body>
 
-<div class="container">
+<div class="container" style="background-color: #eee">
     <% include templates/body.ejs %>
     <div class="row content">
         <% include templates/navbar.ejs %>
@@ -43,7 +43,7 @@
                 </div>
             </div><!--End of modal -->
 
-            <h4 id="h4" align="center">Καταχώρηση Διαμερισμάτων</h4>
+            <h3 id="h4" align="center">Καταχώρηση Διαμερισμάτων</h3>
             <h5 id="h5" align="center">Τύπος Θέρμανσης: <%=typeof block!=='undefined'?block.heatType:null%></h5>
             <h5 id="check"></h5>
             <% if(errors != undefined){ %>
@@ -117,7 +117,7 @@
                     <label class="checkbox-inline"><input id="disconnectFlat" name="disconnectFlat" type="checkbox" value="true">Ναι</label>
                 </div>
 
-                <button id="btnSubmit" type="submit" class="btn btn-primary">Καταχώρηση</button>
+                <button id="btnSubmit" type="submit" class="btn btn-success">Καταχώρηση</button>
             </form>
         </div>
     </div>

@@ -56,7 +56,7 @@ router.use(function flatsShowCalendar(req,res,next){
 
 //User profile page
 router.get('/profile',function(req,res){
-    var d=new Date(req.user.created_date);
+    var d=new Date(req.user.created_date);//from cookies
     var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
     //console.log(req.flatsShow);
     res.render('profile',{

@@ -1,0 +1,25 @@
+<% include templates/header.ejs %>
+<body>
+
+<div class="container" style="background-color: #eee">
+    <% include templates/body.ejs %>
+    <div class="row content">
+        <% include templates/navbar.ejs %>
+        <div class="col-sm-9">
+            <h3 id="setDate">Αγόρασε μονάδες</h3>
+            <p>Μια μονάδα κοστίζει ένα ευρώ και αντιστοιχεί στην έκδοση κοινοχρήστων για ένα Μήνα </p>
+            <form method="post" action="/users/updateProfile">
+                <div class="form-group">
+                    <label for="pwd">Μονάδες:</label>
+                    <input type="text" class="form-control" name="credits">
+                </div>
+                <button type="submit" class="btn btn-success">Αγόρασε Μονάδες</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<% include templates/footer.ejs %>
+</body>
+
+</html>

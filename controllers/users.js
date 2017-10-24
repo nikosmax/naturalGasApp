@@ -5,6 +5,7 @@ var Block=require('../models/block');
 var Flat=require('../models/flat');
 var Expenses=require('../models/expenses');
 var FlatHeatCount=require('../models/flatHeatCounts');
+var paypal=require('../middlewares/paypal');
 
 router.use(function requireLogin (req, res, next) {
     if (!req.user)
@@ -56,7 +57,7 @@ router.use(function flatsShowCalendar(req,res,next){
 
 //User profile page
 router.get('/profile',function(req,res){
-    var d=new Date(req.user.created_date);//from cookies
+    var d=new Date(req.user.created_date);
     var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
     //console.log(req.flatsShow);
     res.render('profile',{
@@ -81,6 +82,69 @@ router.post('/updateProfile',function(req,res){
             res.redirect('profile');
         })
     })
+})
+
+//Add Credits page
+router.get('/addCredits',function(req,res){
+    var d=new Date(req.user.created_date);
+    var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
+    res.render('addCredits',{
+        name: req.user.name,
+        username:req.user.username,
+        date:mydate,
+        flatsShownNav:req.flatsShow,
+        calendar:req.calendarShow
+    });
+})
+
+//Add Credits page
+router.post('/addCredits',function(req,res){
+    var d=new Date(req.user.created_date);
+    var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
+
+    var create_payment_json = {
+        "intent": "sale",
+        "payer": {
+            "payment_method": "paypal"
+        },
+        "redirect_urls": {
+            "return_url": "http://return.url",
+            "cancel_url": "http://cancel.url"
+        },
+        "transactions": [{
+            "item_list": {
+                "items": [{
+                    "name": "item",
+                    "sku": "item",
+                    "price": "1.00",
+                    "currency": "USD",
+                    "quantity": 1
+                }]
+            },
+            "amount": {
+                "currency": "USD",
+                "total": "1.00"
+            },
+            "description": "This is the payment description."
+        }]
+    };
+
+    paypal.payment.create(create_payment_json, function (error, payment) {
+        if (error) {
+            throw error;
+        } else {
+            console.log("Create Payment Response");
+            console.log(payment);
+        }
+    });
+
+    res.render('addCredits',{
+        name: req.user.name,
+        username:req.user.username,
+        date:mydate,
+        flatsShownNav:req.flatsShow,
+        calendar:req.calendarShow
+    });
 })
 
 //Block page

@@ -101,6 +101,8 @@ router.get('/addCredits',function(req,res){
 router.post('/addCredits',function(req,res){
     var d=new Date(req.user.created_date);
     var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
+    var total=Number(req.body.credits);
+    console.log(total);
 
     var create_payment_json = {
         "intent": "sale",
@@ -108,22 +110,22 @@ router.post('/addCredits',function(req,res){
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://return.url",
-            "cancel_url": "http://cancel.url"
+            "return_url": "http://localhost:6969/users/success",
+            "cancel_url": "http://localhost:6969/users/cancel"
         },
         "transactions": [{
             "item_list": {
                 "items": [{
-                    "name": "item",
+                    "name": "Credits",
                     "sku": "item",
                     "price": "1.00",
-                    "currency": "USD",
+                    "currency": "EUR",
                     "quantity": 1
                 }]
             },
             "amount": {
-                "currency": "USD",
-                "total": "1.00"
+                "currency": "EUR",
+                "total": '1'
             },
             "description": "This is the payment description."
         }]
@@ -135,17 +137,36 @@ router.post('/addCredits',function(req,res){
         } else {
             console.log("Create Payment Response");
             console.log(payment);
+            var redirectUrl;
+            for(var i=0; i < payment.links.length; i++) {
+                var link = payment.links[i];
+                if (link.method === 'REDIRECT') {
+                    redirectUrl = link.href;
+                }
+            }
+            res.redirect(redirectUrl);
         }
     });
 
-    res.render('addCredits',{
-        name: req.user.name,
-        username:req.user.username,
-        date:mydate,
-        flatsShownNav:req.flatsShow,
-        calendar:req.calendarShow
-    });
 })
+
+router.get('/success', function(req, res) {
+    var paymentId = req.query.paymentId;
+    var payerId = { 'payer_id': req.query.PayerID };
+
+    paypal.payment.execute(paymentId, payerId, function(error, payment){
+        if(error){
+            console.error(error);
+        } else {
+            if (payment.state === 'approved'){
+                res.send('payment completed successfully');
+                console.log(payment);
+            } else {
+                res.send('payment not successful');
+            }
+        }
+    });
+});
 
 //Block page
 router.get('/block',function(req,res){

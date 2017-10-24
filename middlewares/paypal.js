@@ -2,8 +2,8 @@ var paypal = require('paypal-rest-sdk');
 
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
-    'client_id': 'Ab8NnVTOnESuAf6IKF7x8roKNKw-SWaTK2wUAmJpbOYhXcwu2dXumgYjJxGIt0dMvVpo0CgOYLMG_o1i',
-    'client_secret': 'EImQg-JFfZ1ZVraLhxNEJJbK6SjLaGpIB_7LjusgFBAy1OvNW13Dc3QzqwAMo0ZGwzK8eqzAk1hiXQ5-'
+    'client_id': 'AbDOkt2qwZ_CvoVZSiNe20WD-bdZgKCKGBgBmyJJQGbUgXidWZoTs4PEG8W9rBe9ow5ivxgt_-bbbUMB',
+    'client_secret': 'ELaFW07VG5lKMzQc8FrU5WfPBSM98sUrRWudEOM4yDP-zrcFPp-IkeABsLKtMj3Y_vccYszfKsBNvO0r'
 });
 
 module.exports=paypal;

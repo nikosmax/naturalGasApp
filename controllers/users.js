@@ -101,7 +101,7 @@ router.get('/addCredits',function(req,res){
 router.post('/addCredits',function(req,res){
     var d=new Date(req.user.created_date);
     var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
-    
+
     var create_payment_json = {
         "intent": "sale",
         "payer": {
@@ -128,11 +128,7 @@ router.post('/addCredits',function(req,res){
             "description": "This is the payment description."
         }]
     };
-
-    //create_payment_json['transactions'][0]['amount']['total']=JSON.stringify(total);
-    //console.log(create_payment_json);
-
-
+    
     paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
             throw error;

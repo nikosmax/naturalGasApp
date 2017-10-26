@@ -1,0 +1,19 @@
+<% include templates/header.ejs %>
+<body>
+
+<div class="container" style="background-color: #eee">
+    <% include templates/body.ejs %>
+    <div class="row content">
+        <% include templates/navbar.ejs %>
+        <div class="col-sm-9">
+            <h3 id="setDate">H πληρωμή ολοκληρώθηκε με επιτυχία!</h3>
+            <p>Προστέθηκαν στον λογαριασμό σου <%=amount%> μονάδες</p>
+
+        </div>
+    </div>
+</div>
+
+<% include templates/footer.ejs %>
+</body>
+
+</html>

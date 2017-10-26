@@ -64,6 +64,7 @@ router.get('/profile',function(req,res){
         name: req.user.name,
         username:req.user.username,
         date:mydate,
+        credits:req.user.credits,
         flatsShownNav:req.flatsShow,
         calendar:req.calendarShow
     });
@@ -134,7 +135,7 @@ router.post('/addCredits',function(req,res){
             throw error;
         } else {
             console.log("Create Payment Response");
-            console.log(payment);
+            //console.log(payment);
             var redirectUrl;
             for(var i=0; i < payment.links.length; i++) {
                 var link = payment.links[i];
@@ -154,11 +155,26 @@ router.get('/success', function(req, res) {
 
     paypal.payment.execute(paymentId, payerId, function(error, payment){
         if(error){
-            console.error(error);
+            console.log(error);
         } else {
             if (payment.state === 'approved'){
-                res.send('payment completed successfully');
-                console.log(payment);
+                //console.log(payment['transactions'][0]['amount']['total']);
+                User.findById(req.user._id,function(err,user){
+                    if(err) console.log(err);
+                    user.credits=payment['transactions'][0]['amount']['total'];
+
+                    user.save(function(err,update){
+                        if(err) throw err;
+                        console.log('update');
+                    })
+                })
+                res.render('success',{
+                    name: req.user.name,
+                    username:req.user.username,
+                    flatsShownNav:req.flatsShow,
+                    calendar:req.calendarShow,
+                    amount:payment['transactions'][0]['amount']['total']
+                });
             } else {
                 res.send('payment not successful');
             }

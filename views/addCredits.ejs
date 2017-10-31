@@ -7,7 +7,7 @@
         <% include templates/navbar.ejs %>
         <div class="col-sm-9">
             <h3 id="setDate">Αγόρασε μονάδες</h3>
-            <p>Μια μονάδα κοστίζει ένα ευρώ και αντιστοιχεί στην έκδοση κοινοχρήστων για ένα Μήνα </p>
+            <p>Μια μονάδα κοστίζει ένα ευρώ και αντιστοιχεί στην έκδοση κοινοχρήστων για ένα Μήνα. Η χρέωση μετράει από τον τρέχον μήνα. </p>
             <form method="post" action="/users/addCredits">
                 <div class="form-group">
                     <label for="pwd">Μονάδες:</label>
@@ -15,10 +15,10 @@
                 </div>
                     <label>Τρόποι Πληρωμής:</label>
                 <div class="radio">
-                    <label><input type="radio" name="optradio">Paypal</label>
+                    <label><input type="radio" name="typeOfPayment" value="paypal">Paypal</label>
                 </div>
                 <div class="radio">
-                    <label><input type="radio" name="optradio">Κατάθεση σε Τραπεζικό Λογαριασμό</label>
+                    <label><input type="radio" name="typeOfPayment" value="bankPayment">Κατάθεση σε Τραπεζικό Λογαριασμό</label>
                 </div>
                 <button type="submit" class="btn btn-success">Αγόρασε Μονάδες</button>
             </form>

@@ -6,6 +6,7 @@ var Flat=require('../models/flat');
 var Expenses=require('../models/expenses');
 var FlatHeatCount=require('../models/flatHeatCounts');
 var paypal=require('../middlewares/paypal');
+var months=["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 router.use(function requireLogin (req, res, next) {
     if (!req.user)
@@ -59,12 +60,15 @@ router.use(function flatsShowCalendar(req,res,next){
 router.get('/profile',function(req,res){
     var d=new Date(req.user.created_date);
     var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
+    var validUntil=typeof req.user.validUntil!=='undefined'? months[(req.user.validUntil).getMonth()]+'-'+ (req.user.validUntil).getFullYear():'Αγόρασε Μονάδες';
+
     //console.log(req.flatsShow);
     res.render('profile',{
         name: req.user.name,
         username:req.user.username,
         date:mydate,
         credits:req.user.credits,
+        validUntil:validUntil,
         flatsShownNav:req.flatsShow,
         calendar:req.calendarShow
     });
@@ -100,8 +104,7 @@ router.get('/addCredits',function(req,res){
 
 //Add Credits page
 router.post('/addCredits',function(req,res){
-    var d=new Date(req.user.created_date);
-    var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
+if(req.body.typeOfPayment==='paypal'){
 
     var create_payment_json = {
         "intent": "sale",
@@ -129,7 +132,7 @@ router.post('/addCredits',function(req,res){
             "description": "This is the payment description."
         }]
     };
-    
+
     paypal.payment.create(create_payment_json, function (error, payment) {
         if (error) {
             throw error;
@@ -146,12 +149,18 @@ router.post('/addCredits',function(req,res){
             res.redirect(redirectUrl);
         }
     });
+}else{
 
+}
 })
 
 router.get('/success', function(req, res) {
     var paymentId = req.query.paymentId;
     var payerId = { 'payer_id': req.query.PayerID };
+
+
+    var dateNow=new Date();
+    //var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
 
     paypal.payment.execute(paymentId, payerId, function(error, payment){
         if(error){
@@ -161,7 +170,9 @@ router.get('/success', function(req, res) {
                 //console.log(payment['transactions'][0]['amount']['total']);
                 User.findById(req.user._id,function(err,user){
                     if(err) console.log(err);
-                    user.credits=payment['transactions'][0]['amount']['total'];
+                    user.credits+=Number(payment['transactions'][0]['amount']['total']);
+                    dateNow.setMonth(dateNow.getMonth()+Number(payment['transactions'][0]['amount']['total'])-1);
+                    user.validUntil=dateNow;
 
                     user.save(function(err,update){
                         if(err) throw err;

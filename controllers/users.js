@@ -60,6 +60,7 @@ router.use(function flatsShowCalendar(req,res,next){
 router.get('/profile',function(req,res){
     var d=new Date(req.user.created_date);
     var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
+    //If validUntil is not undefined is equal with the date until else its equal to 'Αγόρασε μονάδες'
     var validUntil=typeof req.user.validUntil!=='undefined'? months[(req.user.validUntil).getMonth()]+'-'+ (req.user.validUntil).getFullYear():'Αγόρασε Μονάδες';
 
     //console.log(req.flatsShow);
@@ -157,10 +158,8 @@ if(req.body.typeOfPayment==='paypal'){
 router.get('/success', function(req, res) {
     var paymentId = req.query.paymentId;
     var payerId = { 'payer_id': req.query.PayerID };
-
-
-    var dateNow=new Date();
-    //var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
+    //If validUntil is equal to Αγόρασε Μονάδες then dateNow is equal to new Date else is equal to validUntil Date
+    var dateNow=req.user.validUntil==='Αγόρασε Μονάδες'? new Date():req.user.validUntil;
 
     paypal.payment.execute(paymentId, payerId, function(error, payment){
         if(error){
@@ -171,7 +170,7 @@ router.get('/success', function(req, res) {
                 User.findById(req.user._id,function(err,user){
                     if(err) console.log(err);
                     user.credits+=Number(payment['transactions'][0]['amount']['total']);
-                    dateNow.setMonth(dateNow.getMonth()+Number(payment['transactions'][0]['amount']['total'])-1);
+                    dateNow.setMonth(dateNow.getMonth()+Number(payment['transactions'][0]['amount']['total']));
                     user.validUntil=dateNow;
 
                     user.save(function(err,update){

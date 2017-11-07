@@ -6,7 +6,8 @@ var Flat=require('../models/flat');
 var Expenses=require('../models/expenses');
 var FlatHeatCount=require('../models/flatHeatCounts');
 var paypal=require('../middlewares/paypal');
-var months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+var months=["Ιανουάριος","Φεβρουάριος","Μάρτιος","Απρίλιος","Μαιος","Ιούνιος","Ιούλιος","Αύγουστος","Σεπτέμβριος","Οκτώβριος",
+    "Νοέμβριος","Δεκέμβριος"];
 
 router.use(function requireLogin (req, res, next) {
     if (!req.user)
@@ -58,6 +59,7 @@ router.use(function flatsShowCalendar(req,res,next){
 
 //User profile page
 router.get('/profile',function(req,res){
+    //everything starts with req.user is from user cookie session
     var d=new Date(req.user.created_date);
     var mydate= d.getDate()+'-'+ (d.getMonth()+1)+'-'+ d.getFullYear();
     //If validUntil is not undefined is equal with the date until else its equal to 'Αγόρασε μονάδες'
@@ -65,13 +67,13 @@ router.get('/profile',function(req,res){
 
     //console.log(req.flatsShow);
     res.render('profile',{
-        name: req.user.name,
-        username:req.user.username,
-        date:mydate,
-        credits:req.user.credits,
-        validUntil:validUntil,
-        flatsShownNav:req.flatsShow,
-        calendar:req.calendarShow
+        name: req.user.name,//name of user display in left menu
+        username:req.user.username,//user name is email of user
+        date:mydate,//date of register
+        credits:req.user.credits,//User credits on first time register equal to zero
+        validUntil:validUntil,//User is validated until this date
+        flatsShownNav:req.flatsShow,//list of flat taken from res.local
+        calendar:req.calendarShow//Calendar with months on left menu .
     });
 })
 
@@ -79,8 +81,8 @@ router.get('/profile',function(req,res){
 router.post('/updateProfile',function(req,res){
     User.findById(req.user._id,function(err,user){
         if(err) console.log(err);
-        user.name=req.body.name;
-        user.username=req.body.username;
+        user.name=req.body.name;//from form
+        user.username=req.body.username;//from form
 
         user.save(function(err,update){
             if(err) throw err;

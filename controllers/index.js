@@ -47,7 +47,7 @@ router.get('/',function(req,res){
             }
         };
 
-        sgMail.send(msg);
+        //sgMail.send(msg);
         res.render('index');
     } else{
         res.render('index',{

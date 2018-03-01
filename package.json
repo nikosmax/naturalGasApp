@@ -1,10 +1,11 @@
 {
-  "name": "nodejs-express",
+  "name": "koinoxrista",
   "version": "1.0.0",
   "description": "<h1>Node js - express - mongodb</h1>",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,8 @@
     "mongoose": "^4.10.5",
     "nodemailer": "^4.0.1",
     "paypal-rest-sdk": "^1.7.1"
+  },
+  "bugs": {
+    "url": "https://github.com/emdDevelop/koinoxrista/issues"
   }
 }

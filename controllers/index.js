@@ -40,14 +40,10 @@ router.get('/',function(req,res){
             text: 'and easy to do anywhere, even with Node.js',
             html: 'First Time SignUp',
             templateId: '6ed27339-1aca-4c55-adaf-146bc27e9ecb',
-            substitutions: {
-                name: 'Some One',
-                username: 'Denver',
-                password:'sta'
-            }
+
         };
 
-        //sgMail.send(msg);
+        sgMail.send(msg);
         res.render('index');
     } else{
         res.render('index',{

@@ -33,17 +33,6 @@ router.use('/admin', require('./admin'));
 //Home page
 router.get('/',function(req,res){
     if(typeof req.user==='undefined'){
-        const msg = {
-            to: 'dionisis.ef@gmail.com',
-            from: 'stadio18@hotmail.com',
-            subject: 'Sending with SendGrid is Fun',
-            text: 'and easy to do anywhere, even with Node.js',
-            html: 'First Time SignUp',
-            templateId: '6ed27339-1aca-4c55-adaf-146bc27e9ecb',
-
-        };
-
-        sgMail.send(msg);
         res.render('index');
     } else{
         res.render('index',{
@@ -119,8 +108,8 @@ router.get('/about',function(req,res){
 })
 
 router.post('/signup',function(req,res){
-    var emailTemplate=path.join(__dirname,'../views/templates','welcomeEmail');
-    var welcomeEmail=new EmailTemplate(emailTemplate);
+   // var emailTemplate=path.join(__dirname,'../views/templates','welcomeEmail');
+    //var welcomeEmail=new EmailTemplate(emailTemplate);
 
     User.findOne({username: req.body.username},function(err,user){
         if(err) throw err;
@@ -162,24 +151,17 @@ router.post('/signup',function(req,res){
             }
 
             //email send
-    welcomeEmail.render({name: req.body.name,username:req.body.username, password:req.body.pwd},function(err,results){
-            if(err) return console.log(err);
+            const msg = {
+                to: newUser.username,
+                from: 'stadio18@hotmail.com',
+                subject: 'Welcome'+ req.body.username,
+                text: 'and easy to do anywhere, even with Node.js',
+                html: 'First Time SignUp',
+                templateId: '6ed27339-1aca-4c55-adaf-146bc27e9ecb'
+            };
 
-            var mailOptions = {
-               from: 'dionisis.ef@gmail.com',
-               to: newUser.username,
-               subject: 'Welcome',
-               html: results.html
-           };
+            sgMail.send(msg);
 
-            transporter.sendMail(mailOptions, function(error, info){
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Email sent: ' + info.response);
-                }
-            })
-          })
         }//end of else
     })
 })

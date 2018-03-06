@@ -2,9 +2,7 @@ var express=require('express');
 var router=express.Router();
 var path=require('path');
 var User=require('../models/user');
-var transporter=require('../middlewares/nodemailer');
 var sgMail=require('../middlewares/sendgrid');
-var EmailTemplate = require('email-templates').EmailTemplate;
 var crypto = require('crypto');
 /*
  For each of your email templates (e.g. a welcome email to send to

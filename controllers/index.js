@@ -53,41 +53,6 @@ router.get('/forgot',function(req,res){
     res.render('forgot');
 })
 
-//Reset password
-router.get('/reset/:token',function(req,res){
-    console.log(req.params.token);
-    User.findOne({resetPasswordToken: req.params.token},function(err,user){
-        if (err) console.log(err);
-        if(!user){
-            console.log('Password reset token is invalid or has expired.');
-            res.render('reset',{
-                errors: 'Password reset token is invalid or has expired.',
-                message:'',
-                token:''
-            })
-        }
-        if(user){
-            var timeSet=user.resetPasswordExpires.getTime();
-            var timeNow=Date.now();
-            if(timeNow > timeSet){
-                console.log('Password expired');
-                res.render('reset',{
-                    errors: 'Password reset token is invalid or has expired.',
-                    message: '',
-                    token:''
-                })
-            }else{
-                console.log('User reset ok');
-                res.render('reset',{
-                    errors:'',
-                    message:'',
-                    token: req.params.token
-,                });
-            }
-        }
-    })
-})
-
 //Logout page
 router.get('/logout',function(req,res){
     console.log('Logout');
@@ -106,9 +71,6 @@ router.get('/about',function(req,res){
 })
 
 router.post('/signup',function(req,res){
-   // var emailTemplate=path.join(__dirname,'../views/templates','welcomeEmail');
-    //var welcomeEmail=new EmailTemplate(emailTemplate);
-
     User.findOne({username: req.body.username},function(err,user){
         if(err) throw err;
     var messages=[];
@@ -121,7 +83,7 @@ router.post('/signup',function(req,res){
               messages.push(error.msg); //push errors msg to messages array
           })
       }
-
+        //if user exist
         if(user){
             messages.push('Username not Availiable');
         }
@@ -148,17 +110,27 @@ router.post('/signup',function(req,res){
                 res.redirect('/users/profile');
             }
 
-            //email send
+            //email preparation
             const msg = {
                 to: newUser.username,
                 from: 'stadio18@hotmail.com',
-                subject: 'Welcome'+ req.body.username,
+                subject: 'Welcome '+ req.body.name,
                 text: 'and easy to do anywhere, even with Node.js',
                 html: 'First Time SignUp',
-                templateId: '6ed27339-1aca-4c55-adaf-146bc27e9ecb'
+                templateId: '6ed27339-1aca-4c55-adaf-146bc27e9ecb',
+                //substitutions are for sendgrid template
+                substitutions: {
+                    name: req.body.name,
+                    username: req.body.username ,
+                    password: req.body.pwd
+                }
             };
-
-            sgMail.send(msg);
+            //Sending email
+            sgMail.send(msg,function(err,response){
+                if(err) console.log(err);
+                else
+                    console.log('Yay! Our templated email has been sent');
+            });
 
         }//end of else
     })
@@ -214,9 +186,6 @@ router.post('/login',function(req,res){
 })
 
 router.post('/forgot',function(req,res){
-    var emailTemplate=path.join(__dirname,'../views/templates','resetPassword');
-    var resetPassword=new EmailTemplate(emailTemplate);
-
     User.findOne({username: req.body.username},function(err,user){
         if (err) console.log(err);
         if(!user){
@@ -240,30 +209,65 @@ router.post('/forgot',function(req,res){
                 user.save(function(err){
                     if (err) console.log(err);
                 })
-                //email send
-                resetPassword.render({host: req.headers.host, token: token , passExpires: passExpires},function(err,results){
-                    if(err) return console.log(err);
 
-                    var mailOptions = {
-                        from: 'dionisis.ef@gmail.com',
-                        to: req.body.username,
-                        subject: 'Reset Password',
-                        html: results.html
-                    };
-
-                    transporter.sendMail(mailOptions, function(error, info){
-                        if (error) {
-                            console.log(error);
-                        } else {
-                            console.log('Email sent: ' + info.response);
-                        }
-                    })
-                })
+                //email preparation
+                const msg = {
+                    to: req.body.username,
+                    from: 'stadio18@hotmail.com',
+                    subject: 'Reset Password',
+                    templateId: 'ff7f427b-a38e-44b5-ae7b-46fbd1adc82d',
+                    //substitutions are for sendgrid template
+                    substitutions: {
+                        host: req.headers.host,
+                        token: token ,
+                        passExpires: passExpires
+                    }
+                };
+                //Sending email
+                sgMail.send(msg,function(err,response){
+                    if(err) console.log(err);
+                    else
+                        console.log('Yay! Our templated email for password reset has been sent');
+                });
             })//end of crypto
             res.render('forgot',{
                 errors: 'An e-mail has been sent to '+ req.body.username
             })
         }//end of else
+    })
+})
+
+//Reset password
+router.get('/reset/:token',function(req,res){
+    User.findOne({resetPasswordToken: req.params.token},function(err,user){
+        if (err) console.log(err);
+        if(!user){
+            console.log('Password reset token is invalid or has expired.');
+            res.render('reset',{
+                errors: 'Password reset token is invalid or has expired.',
+                message:'',
+                token:''
+            })
+        }
+        if(user){
+            var timeSet=user.resetPasswordExpires.getTime();
+            var timeNow=Date.now();
+            if(timeNow > timeSet){
+                console.log('Password expired');
+                res.render('reset',{
+                    errors: 'Password reset token is invalid or has expired.',
+                    message: '',
+                    token:''
+                })
+            }else{
+                console.log('User reset ok');
+                res.render('reset',{
+                    errors:'',
+                    message:'',
+                    token: req.params.token
+                });
+            }
+        }
     })
 })
 

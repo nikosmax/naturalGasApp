@@ -57,13 +57,14 @@
                         <option>2018</option>
                         <option>2019</option>
                         <option>2020</option>
+                        <option>2021</option>
                     </select>
                      </div>
                 </div>
                 <div id="month" class="form-group">
                     <label class="control-label col-sm-2" for="month">Μήνας:</label>
                     <div class="col-sm-7">
-                    <select id="selectMonth" class="form-control" name="month">
+                    <select multiple id="selectMonth" class="form-control" name="month">
                         <option>Ιανουάριος</option>
                         <option>Φεβρουάριος</option>
                         <option>Μάρτιος</option>
@@ -84,7 +85,7 @@
                     <label class="control-label col-sm-2" for="month">Έξοδα:</label>
                     <div class="col-sm-7">
                     <select id="selectExpenses"  onchange="expensesFunction()" class="form-control" name="expenses">
-                        <option id="selectText">Επιλέξτε τα έξοδα του μήνα..</option>
+                        <option value="default" id="selectText">Επιλέξτε τα έξοδα του μήνα..</option>
                         <option value="salary">Βοηθός Διαχειριστή</option>
                         <option value="ika">Εργοδοτική Εισ. ΙΚΑ ΤΕΑΜ</option>
                         <option value="water">ΕΥΔΑΠ</option>
@@ -106,178 +107,74 @@
                         </div>
                 </div>
 
-                <%if(typeof expenses!=='undefined'){%>
+                <% if ( typeof expenses !== 'undefined' ) { %>
                     <input class=form-control" type="hidden" name="year" value="<%=expenses.year%>">
                     <input class=form-control" type="hidden" name="month" value="<%=expenses.month%>">
-                <%}%>
+                <% } %>
 
-                <div id="salary" class="form-group">
-                    <label class="control-label col-sm-4" for="salary">Βοηθός Διαχειριστή:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="salary" value="<%=typeof expenses!=='undefined'?expenses.salary:null%>">
-                    <button onclick="delFunction('salary')" type="button" class="btn-md" >delete</button>
-                    </div>
-                </div>
-                <div id="ika" class="form-group">
-                    <label class="control-label col-sm-4" for="ika">Εργοδοτική Εισ. ΙΚΑ ΤΕΑΜ:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="ika" value="<%=typeof expenses!=='undefined'?expenses.ika:null%>">
-                    <button onclick="delFunction('ika')" type="button" class="btn-md">delete</button>
-                        </div>
-                </div>
-                <div id="water" class="form-group">
-                    <label class="control-label col-sm-4" for="water">ΕΥΔΑΠ:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="water" value="<%=typeof expenses!=='undefined'?expenses.water:null%>">
-                    <button onclick="delFunction('water')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="energy" class="form-group">
-                    <label class="control-label col-sm-4" for="energy">ΔΕΗ:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="energy" value="<%=typeof expenses!=='undefined'?expenses.energy:null%>">
-                    <button onclick="delFunction('energy')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="cleaning" class="form-group">
-                    <label class="control-label col-sm-4" for="cleaning">Καθαριότητα:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="cleaning" value="<%=typeof expenses!=='undefined'?expenses.cleaning:null%>">
-                    <button onclick="delFunction('cleaning')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="light" class="form-group">
-                    <label class="control-label col-sm-4" for="light">Λαμπτήρες:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="light" value="<%=typeof expenses!=='undefined'?expenses.light:null%>">
-                    <button onclick="delFunction('light')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="drains" class="form-group">
-                    <label class="control-label col-sm-4" for="drains">Αποχέτευση:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="drains" value="<%=typeof expenses!=='undefined'?expenses.drains:null%>">
-                    <button onclick="delFunction('drains')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="disinsectisation" class="form-group">
-                    <label class="control-label col-sm-4" for="disinsectisation">Απεντόμωση:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="disinsectisation" value="<%=typeof expenses!=='undefined'?expenses.disinsectisation:null%>">
-                    <button onclick="delFunction('disinsectisation')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="garden" class="form-group">
-                    <label class="control-label col-sm-4" for="garden">Συντήρηση Κήπου:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="garden" value="<%=typeof expenses!=='undefined'?expenses.garden:null%>">
-                    <button onclick="delFunction('garden')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="liftUpKeep" class="form-group">
-                    <label class="control-label col-sm-4" for="liftUpKeep">Ασανσέρ Συντήρηση:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="liftUpKeep" value="<%=typeof expenses!=='undefined'?expenses.liftUpKeep:null%>">
-                    <button onclick="delFunction('liftUpKeep')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="liftRepair" class="form-group">
-                    <label class="control-label col-sm-4" for="liftRepair">Ασανσέρ Ανταλ. Επισκευή:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="liftRepair" value="<%=typeof expenses!=='undefined'?expenses.liftRepair:null%>">
-                    <button onclick="delFunction('liftRepair')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="heat" class="form-group">
-                    <label class="control-label col-sm-4" for="heat">Πετρέλαιο/Αέριο:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="heat" value="<%=typeof expenses!=='undefined'?expenses.heat:null%>">
-                    <button onclick="delFunction('heat')" type="button" class="btn-md">delete</button>
-                     </div>
-                </div>
-                <div id="heatUpKeep" class="form-group">
-                    <label class="control-label col-sm-4" for="heat">Συντήρηση Καυστήρα/Λέβητα:</label>
-                    <div class="col-sm-5">
-                        <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="heatUpKeep" value="<%=typeof expenses!=='undefined'?expenses.heatUpKeep:null%>">
-                        <button onclick="delFunction('heatUpKeep')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="heatRepair" class="form-group">
-                    <label class="control-label col-sm-4" for="heatRepair">Επισκευή Καυστήρα/Λέβητα:</label>
-                    <div class="col-sm-5">
-                        <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="heatRepair" value="<%=typeof expenses!=='undefined'?expenses.heatRepair:null%>">
-                        <button onclick="delFunction('heatRepair')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
+                <div id="expensesId" class="form-group">
 
-                <div id="reserve" class="form-group">
-                    <label class="control-label col-sm-4" for="reserve">Αποθεματικό:</label>
-                    <div class="col-sm-5">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="reserve" value="<%=typeof expenses!=='undefined'?expenses.reserve:null%>">
-                    <button onclick="delFunction('reserve')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="shared" class="form-group">
-                    <label class="control-label col-sm-4" for="shared">Αμοιβή εκδ. Κοινοχρήστων:</label>
-                    <div class="col-sm-5">
-                    <input  type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="shared" value="<%=typeof expenses!=='undefined'?expenses.shared:null%>">
-                    <button onclick="delFunction('shared')" type="button" class="btn-md">delete</button>
-                    </div>
-                </div>
-                <div id="otherExpenses" class="form-group">
-                    <label class="control-label col-sm-4" for="otherExpenses">Λοιπά Έξοδα:</label>
-                    <div class="col-sm-5">
-                    <input type="text" class="form-control" name="otherExpCom" placeholder="Π.χ Περιγραφή Εξόδου" value="<%=typeof expenses!=='undefined'?expenses.otherExpCom:null%>">
-                    <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="otherExpenses" placeholder="Κόστος εξόδου" value="<%=typeof expenses!=='undefined'?expenses.otherExpenses:null%>">
-                    <button onclick="delFunction('otherExpenses')" type="button" class="btn-md">delete</button>
-                    </div>
                 </div>
                 <br>
+                <div id="heatCountsCheckboxIncludeId" class="form-group">
+                  <label class="control-label col-sm-4" for="email">Υπάρχουν μονάδες θέρμανσης?</label>
+                  <div class="col-sm-8">
+                    <label class="checkbox-inline"><input id="heatCountsCheckbox" onclick="showInputsForFlatHeatCounts()" type="checkbox">Ναι</label>
+                  </div>
+                </div>
                 <div id="labelHeatCountId" class="text-center">
                     <label>Μονάδες Θέρμανσης για κάθε Διαμέρισμα</label>
-                </div>
-                <br>
-
-                <div id="removeFromPost"><!--Καταχώρηση εξόδων αρχικα-->
-                     <% if(typeof flatsShownNav !== 'undefined'){ %>
-                       <%  flatsShownNav.forEach(function( flatsShownNav){ %>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2 flatLabels" for="email"><%=flatsShownNav.flatNum%>:</label>
-                        <div class="col-sm-7">
-                            <input onChange="this.value=this.value.replace(/,/g, '.');" class=form-control" type="text" name="flatheatcount" value="0">
-                            <input class=form-control" type="hidden" name="debit" value="">
-                            <input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav._id%>">
-                        </div>
+                    <br>
+                    <div id="removeFromPost"><!--Καταχώρηση εξόδων αρχικα-->
+                      <div class="col-sm-6">
+                        <label>Προηγούμενη μέτρηση</label>
+                      </div>
+                      <div class="col-sm-6">
+                        <label>Τελευταία μέτρηση</label>
+                      </div>
+                        <% if(typeof flatsShownNav !== 'undefined'){ %>
+                          <%  flatsShownNav.forEach(function( flatsShownNav){ %>
+                             <div class="form-group col-sm-6">
+                                 <label class="control-label col-sm-1 flatLabels"><%=flatsShownNav.flatNum%>:</label>
+                                 <div class="col-sm-4">
+                                     <input class=form-control" type="text" name="flatHeatCountHistory" value="<%=flatsShownNav.flatHeatCountHistory%>">
+                                 </div>
+                             </div>
+                             <div class="form-group col-sm-6">
+                                 <label class="control-label col-sm-1 flatLabels"><%=flatsShownNav.flatNum%>:</label>
+                                 <div class="col-sm-4">
+                                     <input onChange="this.value=this.value.replace(/,/g, '.');" class=form-control" type="text" name="flatheatcount" value="0">
+                                     <input class=form-control" type="hidden" name="debit" value="">
+                                     <input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav._id%>">
+                                 </div>
+                             </div>
+                          <% }) %>
+                        <%}%>
                     </div>
-                           <% }) %>
-                     <%}%>
-                </div>
 
-                <div id="correctionPost"><!--Διόρθωση των εξόδων και έχουμε αυτονομία οπότε και δεν έχουμε μονάδες θέρμανσης-->
-                    <% var count=0%>
-                    <% if(typeof flatHeatCount!=='undefined'){ %>
-                    <%  flatHeatCount.forEach(function( flatHeatCount){ %>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="email"><%=flatsShownNav[count].flatNum%>:</label>
-                        <!--Δημιουργείται ένα array επειδη έχουμε το ίδιο name flatheatcount,debit,flat -->
-                        <div class="col-sm-7">
-                            <input onChange="this.value=this.value.replace(/,/g, '.');" class=form-control" type="text" name="flatheatcount" value="<%=flatHeatCount.flatheatcount%>">
-                            <input class=form-control" type="text" name="debit" value="<%=flatHeatCount.debit%>">
-                            <input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav[count]._id%>">
+                    <div id="correctionPost"><!--Διόρθωση των εξόδων αν δεν έχουμε αυτονομία δεν θα έχουμε και μονάδες θέρμανσης-->
+                        <% if(typeof flatHeatCount!=='undefined'){ %>
+                        <%  flatHeatCount.forEach(function(flatHeatCount, index){ %>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email"><%=flatsShownNav[index].flatNum%>:</label>
+                            <!--Δημιουργείται ένα array επειδη έχουμε το ίδιο name flatheatcount,debit,flat -->
+                            <div class="col-sm-7">
+                                <input onChange="this.value=this.value.replace(/,/g, '.');" class=form-control" type="text" name="flatheatcount" value="<%=flatHeatCount.flatheatcount%>">
+                                <input class=form-control" type="text" name="debit" value="<%=flatHeatCount.debit%>">
+                                <input class=form-control" type="hidden" name="flat" value="<%=flatsShownNav[index]._id%>">
+                            </div>
                         </div>
+                        <% }) %>
+                        <%}%>
                     </div>
-                    <%count+=1%>
-                    <% }) %>
-                    <%}%>
                 </div>
-
                 <br>
 
                 <div id="comments" class="form-group">
-                     <label class="control-label col-sm-2" for="email">Διευκρινίσεις:</label>
-                <div class="col-sm-7">
-                    <input style="width:80%;" class=form-control" type="text" placeholder="Π.χ Περιλαμβάνει και τον Ιούλιο" name="comments" value="<%=typeof expenses!=='undefined'?expenses.comments:null%>">
-                </div>
+                  <label class="control-label col-sm-2" for="email">Διευκρινίσεις:</label>
+                  <div class="col-sm-7">
+                      <input style="width:80%;" class=form-control" type="text" placeholder="Π.χ Περιλαμβάνει και τον Ιούλιο" name="comments" value="<%=typeof expenses!=='undefined'?expenses.comments:null%>">
+                  </div>
                 </div>
 
                 <div class="text-center">
@@ -290,167 +187,259 @@
 </div>
 
 <script>
+  let obj = {
+    salary: 'Βοηθός Διαχειριστή',
+    ika: 'Εργοδοτική Εισ. ΙΚΑ ΤΕΑΜ',
+    water: 'ΕΥΔΑΠ',
+    energy: 'ΔΕΗ',
+    cleaning: 'Καθαριότητα',
+    light: 'Λαμπτήρες',
+    drains: 'Αποχέτευση',
+    disinsectisation: 'Απεντόμωση',
+    garden: 'Συντήρηση Κήπου',
+    liftUpKeep: 'Ασανσέρ Συντήρηση',
+    liftRepair: 'Ασανσέρ Ανταλ. Επισκευή',
+    heat: 'Πετρέλαιο/Αέριο',
+    heatUpKeep: 'Συντήρηση Καυστήρα/Λέβητα',
+    heatRepair: 'Επισκευή Καυστήρα/Λέβητα',
+    reserve: 'Αποθεματικό',
+    shared: 'Αμοιβή εκδ. Κοινοχρήστων'
+  }
+  let text,val,cost;
 // Ελέγχουμε αν υπάρχουν έξοδα για να εμφανίσουμε την φόρμα της διόρθωσης -->
-<%if(typeof expenses!=='undefined'){%>
-    var removeYear=document.getElementById('year');
-    var removeMonth=document.getElementById('month');
-    removeYear.parentNode.removeChild(removeYear);//Remove div year from submit
-    removeMonth.parentNode.removeChild(removeMonth); //Remove div month from submit
+<% if ( typeof expenses !== 'undefined' ) { %>
+    $('#year').remove();//Remove div year from submit
+    $('#month').remove();//Remove div month from submit
     document.getElementById('textId').innerHTML='ΕΞΟΔΑ <br> ΜΗΝΑΣ: <%=expenses.month%> - ΈΤΟΣ : <%=expenses.year%>';
     document.getElementById('selectText').innerHTML='Προσθέστε τυχόν έξοδα που δεν καταχωρήθηκαν..';
-    var elemDivFirst=document.getElementById('removeFromPost');
-    elemDivFirst.parentNode.removeChild(elemDivFirst);
-    <%if(block.heatType==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι χωρις αυτονομία δεν εμφανίζουμε τις μοναδες θέρμανσης
-        document.getElementById('labelHeatCountId').style.display='none';//Απόκρυψη του τίτλου μονάδες θέρμανσης
-        var flatheatcount = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
-        for(i=0;i<flatheatcount.length;i++){
-            flatheatcount[i].style.display='none';//Να μην εμφανίζονται οι μονάδες θέρμανσης
-        }
-    <%}%>
+    $('#removeFromPost').remove();
+    //Εαν η θέρμανση είναι χωρις αυτονομία δεν εμφανίζουμε τις μοναδες θέρμανσης
+    <% if ( block.heatType === 'Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά' ) { %>
+        $('#labelHeatCountId').hide();
+    <% } %>
+    //hide div element with question Υπάρχουν μονάδες θέρμανσης? .includes
+    //checkbox also
+    $('#heatCountsCheckboxIncludeId').hide();
     document.getElementById('monthexpensesPost').action="/users/monthExpenses/<%=id%>";
     document.getElementById('btnSubmit').innerHTML='Διόρθωση';
 
-<% for(var key in expenses){%>
+<% for( var key in expenses ) { %>
     <% if(expenses.hasOwnProperty(key)){%>
-        <% if(key!='year' && key!='month' && key!='otherExpCom'){%>
-            <% if(expenses[key]!=null){%>
-                    document.getElementById('<%=key %>').style.display='block';
-            <%}else {%>
-                    document.getElementById('<%=key %>').style.display='none';
-            <%}%>
-        <%}%>
-    <%}%>
-<%}%>
+        <% if (key != 'year' && key != 'month' && key != 'otherExpCom' && key != 'comments') { %>
+            <% if (expenses[key]  != null ) { %>
+              <% if ( key == 'otherExpenses' ) { %>
+                $('#expensesId').append(`
+                  <div id="otherExpenses" class="form-group">
+                      <label class="control-label col-sm-4" for="otherExpenses">Λοιπά Έξοδα:</label>
+                      <div class="col-sm-5">
+                      <input type="text" class="form-control" name="otherExpCom" placeholder="Π.χ Περιγραφή Εξόδου" value="<%=typeof expenses!=='undefined'?expenses.otherExpCom:null%>">
+                      <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="otherExpenses" placeholder="Κόστος εξόδου" value="<%=typeof expenses!=='undefined'?expenses.otherExpenses:null%>">
+                      <button onclick="delFunction('otherExpenses')" type="button" class="btn-md">delete</button>
+                      </div>
+                  </div>
+                `);
+              <% } else { %>
+                val = '<%=key%>';
+                text = obj['<%=key%>'];
+                cost = '<%=expenses[key]%>';
+                $('#expensesId').append(`
+                  <div id="${val}" class="form-group">
+                      <label class="control-label col-sm-4" for="<%=key%>">${text}</label>
+                      <div class="col-sm-5">
+                      <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="${val}" value="${cost}">
+                      <button onclick="delFunction('${val}')" type="button" class="btn-md" >delete</button>
+                      </div>
+                  </div>
+                `);
+              <% } %>
+            <% } %>
+        <% } %>
+    <% } %>
+<% } %>
 
-<%}else{%><!--Εφόσον δεν υπάρχουν έξοδα εμφανίζουμε τη φόρμα της πρώτης καταχώρησης -->
-    var divRmvCor=document.getElementById('correctionPost');
-    divRmvCor.parentNode.removeChild(divRmvCor);//Δεν εμφανίζουμε την φόρμα διορθωσης εφόσον δεν έχουμε έξοδα
-    <%if(block.heatType==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){%>//Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
-       document.getElementById('labelHeatCountId').style.display='none';//ΔΕν εμφανίζουμε τον τίτλο μονάδες θέρμανσης
-        var flatheatcount = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
-        var flatLabels = document.getElementsByClassName('control-label col-sm-2 flatLabels');//Αριθμός διαμερίσματος
-        for(i=0;i<flatheatcount.length;i++){
-            flatheatcount[i].style.display='none';//Να μην εμφανίζονται οι μονάδες θέρμανσης
-            flatLabels[i].style.display='none';//Να μην εμφανίζονται οι αριθμοί διαμερισμάτων
-        }
-    <%}%>
+<% } else { %> //Εφόσον δεν υπάρχουν έξοδα εμφανίζουμε τη φόρμα της πρώτης καταχώρησης -->
+  var months=["Ιανουάριος","Φεβρουάριος","Μάρτιος","Απρίλιος","Μαιος","Ιούνιος","Ιούλιος","Αύγουστος","Σεπτέμβριος","Οκτώβριος",
+      "Νοέμβριος","Δεκέμβριος"];
+    var dateNow = new Date();
+    var year = dateNow.getFullYear();
+    var month = dateNow.getMonth();
+    //set current year
+    document.getElementById("selectYear").value = year;
+    //set current month
+    document.getElementById("selectMonth").value = months[month];
+    //Δεν εμφανίζουμε την φόρμα διορθωσης εφόσον δεν έχουμε έξοδα καταχωρημένα
+    $('#correctionPost').remove();
+    $('#heatCountsCheckboxIncludeId').hide();
+    //Εαν η θέρμανση είναι κεντρική δεν εμφανίζουμε τις μοναδες θέρμανσης
+    <% if ( block.heatType === 'Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά' ) { %>
+      $('#labelHeatCountId').hide();
+    <% } %>
     document.getElementById('monthexpensesPost').action="/users/monthexpenses";
-    //Δεν εμφανίζουμε τα έξοδα μεχρι να τα επιλέξουμε απο το μενού
-    var arrayElemNotShow=['btnDelete','salary','ika','water','energy','cleaning','light','drains','disinsectisation','garden',
-        'liftUpKeep','liftRepair','heat','heatUpKeep','heatRepair','reserve','shared','otherExpenses'];
+    $('#labelHeatCountId').hide();
+<% } %>//end of if else
 
-    for(i=0;i<arrayElemNotShow.length;i++){
-        document.getElementById(arrayElemNotShow[i]).style.display='none';
+//Εμφάνιση των εξόδων που επιλέγουμε από το μενού
+function expensesFunction() {
+  let selectedOptionValue = $('#selectExpenses').val();
+  let selectedText = $("#selectExpenses :selected").text();
+  //document.getElementById(selectedOption).style.display='block';
+  if ( selectedOptionValue == 'otherExpenses' ) {
+    $('#expensesId').append(`
+      <div id="otherExpenses" class="form-group">
+          <label class="control-label col-sm-4" for="otherExpenses">Λοιπά Έξοδα:</label>
+          <div class="col-sm-5">
+          <input type="text" class="form-control" name="otherExpCom" placeholder="Π.χ Περιγραφή Εξόδου" value="<%=typeof expenses!=='undefined'?expenses.otherExpCom:null%>">
+          <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="otherExpenses" placeholder="Κόστος εξόδου" value="<%=typeof expenses!=='undefined'?expenses.otherExpenses:null%>">
+          <button onclick="delFunction('otherExpenses')" type="button" class="btn-md">delete</button>
+          </div>
+      </div>
+    `);
+    $('#selectExpenses').val('default');
+  } else {
+    if ( selectedText != 'Επιλέξτε τα έξοδα του μήνα..' ) {
+      $('#expensesId').append(`
+        <div id="${selectedOptionValue}" class="form-group">
+            <label class="control-label col-sm-4" for="${selectedOptionValue}">${selectedText}</label>
+            <div class="col-sm-5">
+            <input type="text" onChange="this.value=this.value.replace(/,/g, '.');" class="form-control" name="${selectedOptionValue}" value="<%=typeof expenses!=='undefined'?expenses['${selectedOptionValue}']:null%>">
+            <button onclick="delFunction('${selectedOptionValue}')" type="button" class="btn-md" >delete</button>
+            </div>
+        </div>
+      `);
     }
-<%}%>//end of if else
+    if ( selectedOptionValue == 'heat' ) {
+      $('#heatCountsCheckboxIncludeId').show();
+    }
+    $('#selectExpenses').val('default');
+  }
+}
 
-    function expensesFunction() {//Εμφάνιση των εξόδων που επιλέγουμε από το μενού
-        var x = document.getElementById("selectExpenses").value;
-        document.getElementById(x).style.display='block';
+function delFunction(id){//Διαγραφή ενός εξόδου και θέτουμε την τιμή του σε null
+  $(`#${id}`).remove();
+  if ( id == 'heat' ) {
+    $('#heatCountsCheckboxIncludeId').hide();
+  }
+  $('#selectExpenses').val('default');
+}
+
+function showInputsForFlatHeatCounts() {
+  if ( $('#heatCountsCheckbox').is(':checked') ) {
+    $('#labelHeatCountId').show();
+  } else {
+    $('#labelHeatCountId').hide();
+  }
+}
+
+function calc() {
+  let salaryEx = $('[name="salary"]').length ? $($('[name="salary"]')[0]).val() : 0;
+  let ikaEx = $('[name="ika"]').length ? $($('[name="ika"]')[0]).val() : 0;
+  let waterEx = $('[name="water"]').length ? $($('[name="water"]')[0]).val() : 0;
+  let energyEx = $('[name="energy"]').length ? $($('[name="energy"]')[0]).val() : 0;
+  let cleaningEx = $('[name="cleaning"]').length ? $($('[name="cleaning"]')[0]).val() : 0;
+  let lightEx = $('[name="light"]').length ? $($('[name="light"]')[0]).val() : 0;
+  let drainsEx = $('[name="drains"]').length ? $($('[name="drains"]')[0]).val() : 0;
+  let disinsectisationEx = $('[name="disinsectisation"]').length ? $($('[name="disinsectisation"]')[0]).val() : 0;
+  let gardenEx = $('[name="garden"]').length ? $($('[name="garden"]')[0]).val() : 0;
+  let liftUpKeepEx = $('[name="liftUpKeep"]').length ? $($('[name="liftUpKeep"]')[0]).val() : 0;
+  let liftRepairEx = $('[name="liftRepair"]').length ? $($('[name="liftRepair"]')[0]).val() : 0;
+  let heatEx = $('[name="heat"]').length ? $($('[name="heat"]')[0]).val() : 0;
+  let heatUpKeepEx = $('[name="heatUpKeep"]').length ? $($('[name="heatUpKeep"]')[0]).val() : 0;
+  let heatRepairEx = $('[name="heatRepair"]').length ? $($('[name="heatRepair"]')[0]).val() : 0;
+  let reserveEx = $('[name="reserve"]').length ? $($('[name="reserve"]')[0]).val() : 0;
+  let sharedEx = $('[name="shared"]').length ? $($('[name="shared"]')[0]).val() : 0;
+  let otherExpensesEx = $('[name="otherExpenses"]').length ? $($('[name="otherExpenses"]')[0]).val() : 0;
+
+  var flatheatcountEx = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης τωρινές
+  var flatHeatCountHistoryEx = document.getElementsByName('flatHeatCountHistory');//Μονάδες θέρμανσης τωρινές
+  var typeofheatEx = '<%=block.heatType%>';//Τύπος θέρμανσης
+  var blockHeatFixed= '<%=block.heatFixed%>';//Παγιο θέρμανσης
+  var flatsShownNav= <%- JSON.stringify(flatsShownNav)%>;
+  var totalExpKoin = Number(salaryEx) + Number(ikaEx) + Number(waterEx) +
+                     Number(energyEx) + Number(cleaningEx) + Number(lightEx) +
+                     Number(drainsEx) + Number(disinsectisationEx) +
+                     Number(gardenEx) + Number(reserveEx) + Number(sharedEx) +
+                     Number(otherExpensesEx);
+  //Συνολικά έξοδα κοινοχρήστων χωρίς εξοδα ασανσερ και θέρμανσης -->
+  var totalExpLift = Number(liftUpKeepEx) + Number(liftRepairEx);
+  //Συνολικά έξοδα ασανσερ συντήρηση συν επισκευη ανταλλακτικά -->
+  var totalExpHeat = Number(heatEx) + Number(heatUpKeepEx) + Number(heatRepairEx);
+  var sumΩixXil = 0;
+  var sumeixfi = 0;
+  var sumeixΩi = 0;
+  var flatTotal; //Συνολικα έξοδα διαμερίσματος
+
+  //Υπολογισμός του sumOf(Ωi x Χιλιοστά θέρμανσης) -->
+  //Εαν έχουμε έξοδα θέρμανσης και η θέρμανση δεν είναι κεντρική υπολόγισε sumΩixXil -->
+  var flatHeatCountDifference;
+  if( totalExpHeat && typeofheatEx != 'Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά' ) {
+    flatsShownNav.forEach(function(flatsShownNav, index) {
+      //in correction mode flatHeatCountHistoryEx dont exist
+      if( flatHeatCountHistoryEx.length ) {
+        flatHeatCountDifference = Number(flatheatcountEx[index].value) - Number(flatHeatCountHistoryEx[index].value);
+      } else {
+        flatHeatCountDifference = Number(flatheatcountEx[index].value);
+      }
+      sumΩixXil += flatHeatCountDifference*flatsShownNav.koinratio;
+      sumeixfi += flatsShownNav.ei*flatsShownNav.fi;
+      sumeixΩi += flatsShownNav.ei*flatHeatCountDifference;
+    })
+  } else {
+    //Αλλιώς εαν δεν έχουμε έξοδα θέρμανσης το sumΩixXil ίσον με ένα -->
+    sumΩixXil = 1;
+    sumeixfi = 1;
+    sumeixΩi = 1;
+  }
+
+  //Ελέγχουμε αν έχουμε έξοδα θέρμανσης με μηδενικές μονάδες έχει να κάνει με το πάγιο του αερίου το καλοκαίρι -->
+  //Αυτό συμβαίνει οταν totalExpHeat != 0 και sumeixΩi = 0;
+  let heatExpenseWithoutHeatCounts = false;
+  if ( totalExpHeat && !sumΩixXil ) {
+    heatExpenseWithoutHeatCounts = true;
+  }
+
+  //calc debit for each flat
+  var debit=document.getElementsByName('debit');
+  flatsShownNav.forEach(function(flatsShownNav, index) {
+    if( typeofheatEx !== 'Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά' ) {
+      /*
+        flatHeatCountHistoryEx length is true only on first post of expenses
+        On correction flatHeatCountHistoryEx input is disabled.
+      */
+      if ( flatHeatCountHistoryEx.length && !heatExpenseWithoutHeatCounts ) {
+        flatHeatCountDifference = Number(flatheatcountEx[index].value) - Number(flatHeatCountHistoryEx[index].value);
+      } else if ( flatHeatCountHistoryEx.length && heatExpenseWithoutHeatCounts ) {
+        //μονάδες θέρμανσης θέτονται ίσον με ένα  γιατί με μηδέν δεν θα βγαίνει αποτέλεσμα
+        flatHeatCountDifference=1;
+        sumΩixXil=1000;
+      } else {
+        flatHeatCountDifference = Number(flatheatcountEx[index].value);
+      }
     }
 
-    function delFunction(id){//Διαγραφή ενός εξόδου και θέτουμε την τιμή του σε null
-        document.getElementById(id).style.display='none';
-        var textChild= document.getElementById(id).childNodes;
-        var secDiv=textChild[3].childNodes;
-        secDiv[1].value=null;
+    if ( typeofheatEx === 'Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά' ) {
+        flatTotal =(((flatsShownNav.koinratio*(totalExpKoin))/1000)+
+                    ((flatsShownNav.liftratio*totalExpLift)/1000)+
+                    ((flatsShownNav.koinratio*totalExpHeat)/1000)).toFixed(2);
+
+    } else if ( typeofheatEx === 'Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά' ) {
+        flatTotal=(((flatsShownNav.koinratio*(totalExpKoin))/1000)+
+                    ((flatsShownNav.liftratio*totalExpLift)/1000)+
+                    ((flatsShownNav.koinratio*flatHeatCountDifference*(100-blockHeatFixed)*Number(heatEx)/100)/sumΩixXil)+
+                    ((flatsShownNav.koinratio*blockHeatFixed*Number(heatEx)/100)/1000)+
+                    (flatsShownNav.koinratio*Number(heatUpKeepEx)/1000)+
+                    (flatsShownNav.koinratio*Number(heatRepairEx)/1000)).toFixed(2);
+
+    } else if ( typeofheatEx === 'Αυτόνομη Θέρμανση με ωρομέτρηση και συντελεστές ei fi' ) {
+        flatTotal = (((flatsShownNav.koinratio * totalExpKoin) / 1000) +
+                    ((flatsShownNav.liftratio * totalExpLift) / 1000) +
+                    ((flatsShownNav.ei * flatHeatCountDifference / sumeixΩi) * (1 - sumeixfi)) * Number(heatEx) +
+                    (flatsShownNav.ei * flatsShownNav.fi / sumeixfi) * sumeixfi * Number(heatEx) +
+                     flatsShownNav.ei * Number(heatUpKeepEx) +
+                     flatsShownNav.ei * Number(heatRepairEx)).toFixed(2);
     }
-    
-    function calc() {
-        var salaryEx = document.getElementsByName('salary')[0].value;
-        var ikaEx = document.getElementsByName('ika')[0].value;
-        var waterEx = document.getElementsByName('water')[0].value;
-        var energyEx = document.getElementsByName('energy')[0].value;
-        var cleaningEx = document.getElementsByName('cleaning')[0].value;
-        var lightEx = document.getElementsByName('light')[0].value;
-        var drainsEx = document.getElementsByName('drains')[0].value;
-        var disinsectisationEx = document.getElementsByName('disinsectisation')[0].value;
-        var gardenEx = document.getElementsByName('garden')[0].value;
-        var liftUpKeepEx = document.getElementsByName('liftUpKeep')[0].value;
-        var liftRepairEx = document.getElementsByName('liftRepair')[0].value;
-        var heatEx = document.getElementsByName('heat')[0].value;
-        var heatUpKeepEx = document.getElementsByName('heatUpKeep')[0].value;
-        var heatRepairEx = document.getElementsByName('heatRepair')[0].value;
-        var reserveEx = document.getElementsByName('reserve')[0].value;
-        var sharedEx = document.getElementsByName('shared')[0].value;
-        var otherExpensesEx = document.getElementsByName('otherExpenses')[0].value;
-
-        var flatheatcountEx = document.getElementsByName('flatheatcount');//Μονάδες θέρμανσης
-        var typeofheatEx = '<%=block.heatType%>';//Τύπος θέρμανσης
-        var blockHeatFixed= '<%=block.heatFixed%>';//Παγιο θέρμανσης
-        var flatsShownNav= <%- JSON.stringify(flatsShownNav)%>;
-        var totalExpKoin = Number(salaryEx) + Number(ikaEx) + Number(waterEx) + Number(energyEx) + Number(cleaningEx) + Number(lightEx) + Number(drainsEx) +
-                Number(disinsectisationEx) + Number(gardenEx) + Number(reserveEx) + Number(sharedEx) + Number(otherExpensesEx);
-        <!-- Συνολικά έξοδα κοινοχρήστων χωρίς εξοδα ασανσερ και θέρμανσης -->
-        var totalExpLift = Number(liftUpKeepEx) + Number(liftRepairEx);
-        <!-- Συνολικά έξοδα ασανσερ συντήρηση συν επισκευη ανταλλακτικά -->
-        var totalExpHeat = Number(heatEx) + Number(heatUpKeepEx) + Number(heatRepairEx);
-        var count = 0;
-        var sumΩixXil = 0;
-        var sumeixfi = 0;
-        var sumeixΩi = 0;
-
-        var flatTotal;
-
-        //Υπολογισμός του sumOf(Ωi x Χιλιοστά θέρμανσης) -->
-        //Εαν έχουμε έξοδα θέρμανσης και η θέρμανση δεν είναι κεντρική υπολόγισε sumΩixXil -->
-        if(totalExpHeat && typeofheatEx!='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){
-            flatsShownNav.forEach(function( flatsShownNav){
-                sumΩixXil+= flatheatcountEx[count].value*flatsShownNav.koinratio;
-                sumeixfi+=flatsShownNav.ei*flatsShownNav.fi;
-                sumeixΩi+= flatsShownNav.ei*flatheatcountEx[count].value;
-                count+=1;
-            })
-        }else {//Αλλιώς εαν δεν έχουμε έξοδα θέρμανσης το sumΩixXil ίσον με ένα -->
-            sumΩixXil=1;
-            sumeixfi=1;
-            sumeixΩi=1;
-        }
-
-        //Ελέγχουμε αν έχουμε έξοδα θέρμανσης με μηδενικές μονάδες έχει να κάνει με το πάγιο του αερίου το καλοκαίρι -->
-        var flatCheck;
-        var flag=0;
-        if(sumΩixXil===0){//Εάν το αθροισμα τον μοναδων θέρμανσης είναι ίσον με το μηδέν θέτω flag=1
-            flag=1;
-        }
-
-        count=0;
-        var debit=document.getElementsByName('debit');
-
-        flatsShownNav.forEach(function( flatsShownNav) {
-            if(typeofheatEx!=='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά'){
-                flatCheck=flatheatcountEx[count].value;
-                    if(flag){
-                        flatCheck=1;//μονάδες θέρμνασης θέτονται ίσον με ένα  γιατί με μηδέν δεν θα βγαίνει αποτέλεσμα
-                        sumΩixXil=1000;
-                    }
-            }
-
-            if(typeofheatEx==='Κεντρική θέρμανση χωρίς αυτονομία με χιλιοστά') {
-                flatTotal =(((flatsShownNav.koinratio*(totalExpKoin))/1000)+
-                            ((flatsShownNav.liftratio*totalExpLift)/1000)+
-                            ((flatsShownNav.koinratio*totalExpHeat)/1000)).toFixed(2);
-
-            }else if(typeofheatEx==='Αυτόνομη Θέρμανση με ωρομέτρηση και χιλιοστά'){
-                flatTotal=(((flatsShownNav.koinratio*(totalExpKoin))/1000)+
-                            ((flatsShownNav.liftratio*totalExpLift)/1000)+
-                            ((flatsShownNav.koinratio*flatCheck*(100-blockHeatFixed)*Number(heatEx)/100)/sumΩixXil)+
-                            ((flatsShownNav.koinratio*blockHeatFixed*Number(heatEx)/100)/1000)+
-                            (flatsShownNav.koinratio*Number(heatUpKeepEx)/1000)+
-                            (flatsShownNav.koinratio*Number(heatRepairEx)/1000)).toFixed(2);
-
-            }else if(typeofheatEx==='Αυτόνομη Θέρμανση με ωρομέτρηση και συντελεστές ei fi'){
-                flatTotal = (((flatsShownNav.koinratio * totalExpKoin) / 1000) +
-                            ((flatsShownNav.liftratio * totalExpLift) / 1000) +
-                            ((flatsShownNav.ei * flatheatcountEx[count].value / sumeixΩi) * (1 - sumeixfi)) * Number(heatEx) +
-                            (flatsShownNav.ei * flatsShownNav.fi / sumeixfi) * sumeixfi * Number(heatEx) +
-                             flatsShownNav.ei * Number(heatUpKeepEx) +
-                             flatsShownNav.ei * Number(heatRepairEx)).toFixed(2);
-            }
-            debit[count].value=flatTotal;
-            count+=1;
-        })
-    }
+    debit[index].value = flatTotal;
+  })
+}
 </script>
 
 <% include templates/footer.ejs %>

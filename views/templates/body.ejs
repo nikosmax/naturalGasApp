@@ -27,8 +27,8 @@
 
 <!--The above wouldn't work in JS, EJS isn't causing this problem.
 What you want is: typeof message === "undefined"-->
-<% if(typeof user==="undefined"){%>
 <script>
+<% if(typeof user==="undefined"){%>
     var navBarRight=document.getElementById('navBarRight');
     var createLiElem=document.createElement('LI');
         createLiElem.id='signup';
@@ -46,51 +46,46 @@ What you want is: typeof message === "undefined"-->
     createLinkElem.href='/login';
     createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-in"></span> Είσοδος';
     createLiElem.appendChild(createLinkElem);
-
-</script>
 <%}%>
 
 <% if(typeof user!=="undefined"){%>
     <%if(typeof usrnm!=='undefined' && usrnm==='admin@admin.com'){%>
-        <script>
-            var navBarRight=document.getElementById('navBarRight');
-            var createLiElem=document.createElement('LI');
-            createLiElem.id='admin';
-            navBarRight.appendChild(createLiElem);
-            var createLinkElem=document.createElement('a');
-            createLinkElem.href='/admin/adminPage';
-            createLinkElem.innerHTML='<span class="glyphicon glyphicon-tasks"></span> Admin';
-            createLiElem.appendChild(createLinkElem);
+        var navBarRight=document.getElementById('navBarRight');
+        var createLiElem=document.createElement('LI');
+        createLiElem.id='admin';
+        navBarRight.appendChild(createLiElem);
+        var createLinkElem=document.createElement('a');
+        createLinkElem.href='/admin/adminPage';
+        createLinkElem.innerHTML='<span class="glyphicon glyphicon-tasks"></span> Admin';
+        createLiElem.appendChild(createLinkElem);
 
-            var navBarRight=document.getElementById('navBarRight');
-            var createLiElem=document.createElement('LI');
-            createLiElem.id='logout';
-            navBarRight.appendChild(createLiElem);
-            var createLinkElem=document.createElement('a');
-            createLinkElem.href='/logout';
-            createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-out"></span> Έξοδος';
-            createLiElem.appendChild(createLinkElem);
-            var createSpanElem=document.createElement('SPAN');
-        </script>
+        var navBarRight=document.getElementById('navBarRight');
+        var createLiElem=document.createElement('LI');
+        createLiElem.id='logout';
+        navBarRight.appendChild(createLiElem);
+        var createLinkElem=document.createElement('a');
+        createLinkElem.href='/logout';
+        createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-out"></span> Έξοδος';
+        createLiElem.appendChild(createLinkElem);
+        var createSpanElem=document.createElement('SPAN');
     <%}else{%>
-        <script>
-            var navBarRight=document.getElementById('navBarRight');
-            var createLiElem=document.createElement('LI');
-            createLiElem.id='profile';
-            navBarRight.appendChild(createLiElem);
-            var createLinkElem=document.createElement('a');
-            createLinkElem.href='/users/profile';
-            createLinkElem.innerHTML='<span class="glyphicon glyphicon-tasks"></span> Προφίλ';
-            createLiElem.appendChild(createLinkElem);
+        var navBarRight=document.getElementById('navBarRight');
+        var createLiElem=document.createElement('LI');
+        createLiElem.id='profile';
+        navBarRight.appendChild(createLiElem);
+        var createLinkElem=document.createElement('a');
+        createLinkElem.href='/users/profile';
+        createLinkElem.innerHTML='<span class="glyphicon glyphicon-tasks"></span> Προφίλ';
+        createLiElem.appendChild(createLinkElem);
 
-            var navBarRight=document.getElementById('navBarRight');
-            var createLiElem=document.createElement('LI');
-            createLiElem.id='logout';
-            navBarRight.appendChild(createLiElem);
-            var createLinkElem=document.createElement('a');
-            createLinkElem.href='/logout';
-            createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-out"></span> Έξοδος';
-            createLiElem.appendChild(createLinkElem);
-        </script>
+        var navBarRight=document.getElementById('navBarRight');
+        var createLiElem=document.createElement('LI');
+        createLiElem.id='logout';
+        navBarRight.appendChild(createLiElem);
+        var createLinkElem=document.createElement('a');
+        createLinkElem.href='/logout';
+        createLinkElem.innerHTML='<span class="glyphicon glyphicon-log-out"></span> Έξοδος';
+        createLiElem.appendChild(createLinkElem);
     <%}%>
 <%}%>
+</script>

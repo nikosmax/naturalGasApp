@@ -43,27 +43,30 @@
 
 <script>
     var d= new Date();
+    //set current year on calendar header
    document.getElementById("getYear").innerHTML =d.getFullYear();
-console.log(d);
+
     function calcCalendar(setYear){
         var yearFromDb;//Το έτος από την database
+        //clear all months
+        $.each($('td'),function(i,elem) {
+          //set background color to grey
+          $(elem).css("background-color","#f1f1f1");
+          //get td text.If it has link, text is inside it
+          var tdHrefText = $(elem).text();
+          //if has link remove it
+          $(elem).find('a').remove();
+          //set text to td after a link removed
+          $(elem).text(tdHrefText);
+        })
         <%for (var i=0; i<calendar.length; i++){%>
             yearFromDb= <%=calendar[i].year%>
             tdTable=document.getElementById("<%=calendar[i].month%>");
             tdTableText=tdTable.innerHTML;
-           if(yearFromDb===setYear){
+           if( yearFromDb === setYear ){
                 tdTable.style.backgroundColor  = "lightgreen";
                 tdTable.innerHTML='<a href="/users/monthExpenses/<%=calendar[i]._id %>">'+tdTable.innerHTML+'</a>';
-            }else{
-               tdTable.style.backgroundColor  = "#f1f1f1";
-               var pos= tdTableText.search('</a>');
-              if(pos!==-1) {
-                  tdTableText = tdTableText.slice(pos - 3, pos);
-                  tdTable.innerHTML = tdTableText;
-              }else if(pos===-1){
-                  tdTable.innerHTML = tdTableText;
-              }
-           }
+            }
         <%}%>
     }
 
@@ -82,5 +85,3 @@ console.log(d);
     }
 
 </script>
-
-

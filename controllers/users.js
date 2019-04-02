@@ -158,45 +158,45 @@ if(req.body.typeOfPayment==='paypal'){
 })
 
 router.get('/success', function(req, res) {
-    var paymentId = req.query.paymentId;
-    var payerId = { 'payer_id': req.query.PayerID };
-    //If validUntil is equal to Αγόρασε Μονάδες then dateNow is equal to new Date else is equal to validUntil Date
-    var dateNow=req.user.validUntil==='Αγόρασε Μονάδες'? new Date():req.user.validUntil;
+  var paymentId = req.query.paymentId;
+  var payerId = { 'payer_id': req.query.PayerID };
+  //If validUntil is equal to Αγόρασε Μονάδες then dateNow is equal to new Date else is equal to validUntil Date
+  var dateNow=req.user.validUntil==='Αγόρασε Μονάδες'? new Date():req.user.validUntil;
 
-    paypal.payment.execute(paymentId, payerId, function(error, payment){
-        if(error){
-            console.log(error);
-        } else {
-            if (payment.state === 'approved'){
-                //console.log(payment['transactions'][0]['amount']['total']);
-                User.findById(req.user._id,function(err,user){
-                    if(err) console.log(err);
-                    user.credits+=Number(payment['transactions'][0]['amount']['total']);
-                    dateNow.setMonth(dateNow.getMonth()+Number(payment['transactions'][0]['amount']['total']));
-                    user.validUntil=dateNow;
+  paypal.payment.execute(paymentId, payerId, function(error, payment){
+    if(error){
+        console.log(error);
+    } else {
+      if ( payment.state === 'approved' ) {
+          //console.log(payment['transactions'][0]['amount']['total']);
+          User.findById(req.user._id,function(err,user){
+              if(err) console.log(err);
+              user.credits+=Number(payment['transactions'][0]['amount']['total']);
+              dateNow.setMonth(dateNow.getMonth()+Number(payment['transactions'][0]['amount']['total']));
+              user.validUntil=dateNow;
 
-                    user.save(function(err,update){
-                        if(err) throw err;
-                        console.log('update');
-                    })
-                })
-                res.render('success',{
-                    name: req.user.name,
-                    username:req.user.username,
-                    flatsShownNav:req.flatsShow,
-                    calendar:req.calendarShow,
-                    amount:payment['transactions'][0]['amount']['total']
-                });
-            } else {
-                res.send('payment not successful');
-            }
-        }
-    });
+              user.save(function(err,update){
+                  if(err) throw err;
+                  console.log('update');
+              })
+          })
+          res.render('success',{
+              name: req.user.name,
+              username:req.user.username,
+              flatsShownNav:req.flatsShow,
+              calendar:req.calendarShow,
+              amount:payment['transactions'][0]['amount']['total']
+          });
+      } else {
+          res.send('payment not successful');
+      }
+    }
+  });
 });
 
 //Block page
 router.get('/block',function(req,res){
-Block.findOne({'user': req.user._id},function(err,block) {
+  Block.findOne({'user': req.user._id},function(err,block) {
     if (err) console.log(err);
     if (block) {
         res.render('block', {
@@ -205,14 +205,14 @@ Block.findOne({'user': req.user._id},function(err,block) {
         calendar:req.calendarShow,
         block:block
     });
-    }else{
-            res.render('block', {
-            name: req.user.name,
-            flatsShownNav:req.flatsShow,
-            calendar:req.calendarShow
-        });
+    } else {
+          res.render('block', {
+          name: req.user.name,
+          flatsShownNav:req.flatsShow,
+          calendar:req.calendarShow
+      });
     }
-})
+  })
 })
 
 //block post first time contents
@@ -267,155 +267,156 @@ router.post('/block',function(req,res){
 
 //block update contents
 router.post('/blockUpdate',function(req,res){
-        Block.findOne({user: req.user._id}, function (err, block) {
-            if (err) console.log(err);
+  Block.findOne({user: req.user._id}, function (err, block) {
+    if (err) console.log(err);
+    req.checkBody('address','Η διεύθυνση πρέπει να είναι συμπληρωμένη').notEmpty();
+    req.checkBody('postal','Το πεδίο Τ.Κ πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('phone','Το πεδίο τηλέφωνο πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('mobile','Το πεδίο κινητό πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπληρωμένος').isNumeric();
+    req.checkBody('heatType','Ο τύπος θέρμανσης πρέπει να είναι επιλεγμένος').notEmpty();
+    req.checkBody('heatFixed','Το πεδίο Πάγιο θέρμανσης πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').optional({ checkFalsy: true }).isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
-            req.checkBody('address','Η διεύθυνση πρέπει να είναι συμπληρωμένη').notEmpty();
-            req.checkBody('postal','Το πεδίο Τ.Κ πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-            req.checkBody('phone','Το πεδίο τηλέφωνο πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-            req.checkBody('mobile','Το πεδίο κινητό πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-            req.checkBody('totalFlats','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπληρωμένος').isNumeric();
-            req.checkBody('heatType','Ο τύπος θέρμανσης πρέπει να είναι επιλεγμένος').notEmpty();
-            req.checkBody('heatFixed','Το πεδίο Πάγιο θέρμανσης πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-            req.checkBody('reserve','Αποθεματικό Πρέπει να είναι αριθμός').optional({ checkFalsy: true }).isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
+    var errors=req.validationErrors();
 
-            var errors=req.validationErrors();
+    if(errors)
+    {
+      console.log('errors');
+      res.render('block',{
+          name: req.user.name,
+          flatsShownNav:req.flatsShow,
+          calendar:req.calendarShow,
+          block:block,
+          errors:errors
+      })
+    } else {
+      block.address = req.body.address;
+      block.location = req.body.location;
+      block.postal = req.body.postal;
+      block.nameRes = req.body.nameRes;
+      block.phone = req.body.phone;
+      block.mobile = req.body.mobile;
+      block.heatType = req.body.heatType;
+      block.heatFixed = req.body.heatFixed;
+      block.totalFlats = req.body.totalFlats;
+      block.reserve = req.body.reserve;
 
-            if(errors)
-            {
-                console.log('errors');
-                res.render('block',{
-                    name: req.user.name,
-                    flatsShownNav:req.flatsShow,
-                    calendar:req.calendarShow,
-                    block:block,
-                    errors:errors
-                })
-            }else {
-                block.address = req.body.address;
-                block.location = req.body.location;
-                block.postal = req.body.postal;
-                block.nameRes = req.body.nameRes;
-                block.phone = req.body.phone;
-                block.mobile = req.body.mobile;
-                block.heatType = req.body.heatType;
-                block.heatFixed = req.body.heatFixed;
-                block.totalFlats = req.body.totalFlats;
-                block.reserve = req.body.reserve;
-
-                block.save(function (err, update) {
-                    if (err) console.log(err);
-                console.log('block updated');
-                res.redirect('block');
-                })
-            }//end of if else errors
-        })
+      block.save(function (err, update) {
+          if (err) console.log(err);
+      console.log('block updated');
+      res.redirect('block');
+      })
+    }//end of if else errors
+  })
 })
 
 //Flat page
 router.get('/flat',function(req,res){
-    if(typeof req.blockData._id==='undefined'){//if block  is undefined
-        res.render('flat',{
-            name: req.user.name,
-            calendar:req.calendarShow
-        });
-    }else{//if block is not undefined
-        Flat.count({block:req.blockData._id},function(err,count){
-            if (err) console.log(err);
-            res.render('flat',{
-                name: req.user.name,
-                block:req.blockData,
-                count:count,
-                flatsShownNav:req.flatsShow,
-                calendar:req.calendarShow
-            });
-        })
-    }
+  if( typeof req.blockData._id === 'undefined' ){//if block  is undefined
+      res.render('flat',{
+          name: req.user.name,
+          calendar:req.calendarShow
+      });
+  } else {//if block is not undefined
+    Flat.count({block:req.blockData._id},function(err,count){
+      if (err) console.log(err);
+      res.render('flat',{
+          name: req.user.name,
+          block:req.blockData,
+          count:count,
+          flatsShownNav:req.flatsShow,
+          calendar:req.calendarShow
+      });
+    })
+  }
 })
 
 //Flat post first time contents
 router.post('/flat',function(req,res){
-    Block.findOne({user: req.user._id},function(err,block) {
-            if (err) conslole.log(err);
+  Block.findOne({user: req.user._id},function(err,block) {
+    if (err) conslole.log(err);
 
-        req.checkBody('flatNum','Ο αριθμός διαμερίσματος πρέπει να είναι συμπληρωμένος').notEmpty();
-        req.checkBody('phone','Το πεδίο Τηλέφωνο πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-        req.checkBody('mobile','Το πεδίο Κινητό πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-        req.checkBody('email','Το πεδίο email δεν είναι αποδεκτό').optional({ checkFalsy: true }).isEmail();
-        req.checkBody('koinratio','Το πεδίο Αναλογία Δαπανών Κοινοχρήστων πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-        req.checkBody('liftratio','Το πεδίο Αναλογία Δαπανών Ανελκυστήρα πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-        req.checkBody('flatxil','Το πεδίο Χιλιοστά Διαμερίσματος για θέρμανση πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-        req.checkBody('ei','Το πεδίο ei πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-        req.checkBody('fi','Το πεδίο fi πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
-        req.checkBody('balance','Το πεδίο Υπόλοιπο Διαμερίσματος πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
+    req.checkBody('flatNum','Ο αριθμός διαμερίσματος πρέπει να είναι συμπληρωμένος').notEmpty();
+    req.checkBody('phone','Το πεδίο Τηλέφωνο πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('mobile','Το πεδίο Κινητό πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('email','Το πεδίο email δεν είναι αποδεκτό').optional({ checkFalsy: true }).isEmail();
+    req.checkBody('koinratio','Το πεδίο Αναλογία Δαπανών Κοινοχρήστων πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('liftratio','Το πεδίο Αναλογία Δαπανών Ανελκυστήρα πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('flatxil','Το πεδίο Χιλιοστά Διαμερίσματος για θέρμανση πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('ei','Το πεδίο ei πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('fi','Το πεδίο fi πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('flatHeatCountHistory','Το πεδίο Μονάδες θέρμανσης Διαμερίσματος εως Σήμερα πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    req.checkBody('balance','Το πεδίο Υπόλοιπο Διαμερίσματος πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
-        var errors=req.validationErrors();
+    var errors=req.validationErrors();
 
-        if(errors)
-        {
-            console.log('errors');
-            res.render('flat',{
-                name: req.user.name,
-                block:req.blockData,
-                count:req.flatsShow.length,
-                flatsShownNav:req.flatsShow,
-                calendar:req.calendarShow,
-                errors:errors
-            })
-        }else {
-            if (block) {
-                var newFlat = new Flat({
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    phone: req.body.phone,
-                    mobile: req.body.mobile,
-                    email: req.body.email,
-                    flatNum: req.body.flatNum,
-                    koinratio: req.body.koinratio,
-                    liftratio: req.body.liftratio,
-                    flatxil: req.body.flatxil,
-                    ei: req.body.ei,
-                    fi: req.body.fi,
-                    owner: req.body.owner,
-                    balance: req.body.balance,
-                    block: block._id
-                })
+    if(errors)
+    {
+      console.log('errors');
+      res.render('flat',{
+          name: req.user.name,
+          block:req.blockData,
+          count:req.flatsShow.length,
+          flatsShownNav:req.flatsShow,
+          calendar:req.calendarShow,
+          errors:errors
+      })
+    } else {
+      if (block) {
+          var newFlat = new Flat({
+              firstname: req.body.firstname,
+              lastname: req.body.lastname,
+              phone: req.body.phone,
+              mobile: req.body.mobile,
+              email: req.body.email,
+              flatNum: req.body.flatNum,
+              koinratio: req.body.koinratio,
+              liftratio: req.body.liftratio,
+              flatxil: req.body.flatxil,
+              ei: req.body.ei,
+              fi: req.body.fi,
+              flatHeatCountHistory:req.body.flatHeatCountHistory,
+              owner: req.body.owner,
+              balance: req.body.balance,
+              block: block._id
+          })
 
-                newFlat.save(function (err) {
-                    if (err) console.log(err);
-                    else console.log('Flat saved successfully');
-                    res.redirect('flat');
-                })
-            } else {
-                console.log('Block not found');
-                Flat.count({}, function (err, count) {
-                    res.render('flat', {
-                        name: req.user.name,
-                        block: req.blockData,
-                        count: count,
-                        flatsShownNav: req.flatsShow,//show flats in left navigation menu
-                        calendar: req.calendarShow,
-                        errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία'
-                    })
-                })
-            }
-        }
-    })
+          newFlat.save(function (err) {
+              if (err) console.log(err);
+              else console.log('Flat saved successfully');
+              res.redirect('flat');
+          })
+      } else {
+        console.log('Block not found');
+        Flat.count({}, function (err, count) {
+          res.render('flat', {
+              name: req.user.name,
+              block: req.blockData,
+              count: count,
+              flatsShownNav: req.flatsShow,//show flats in left navigation menu
+              calendar: req.calendarShow,
+              errors: 'Δεν υπάρχει καταχωρημένη πολυκατοικία'
+          })
+        })
+      }
+    }
+  })
 })
 
 //flat page contents and info
 router.get('/flat/:flatId',function(req,res){
-    Flat.findOne({_id: req.params.flatId},function(err,flat){
-        if(err) console.log(err);
-        res.render('flat',{
-            name: req.user.name,
-            block:req.blockData,//from session cookie blockData
-            flatsShownNav:req.flatsShow,//show flats in left navigation menu
-            calendar:req.calendarShow,
-            count:null,//We use it only for the page /flat to know when we have fill the total number of flats
-            flat:flat
-        })
+  Flat.findOne({_id: req.params.flatId},function(err,flat){
+    if(err) console.log(err);
+    res.render('flat', {
+        name: req.user.name,
+        block:req.blockData,//from session cookie blockData
+        flatsShownNav:req.flatsShow,//show flats in left navigation menu
+        calendar:req.calendarShow,
+        count:null,//We use it only for the page /flat to know when we have fill the total number of flats
+        flat:flat
     })
+  })
 })
 
 //flat page corrections
@@ -432,6 +433,7 @@ router.post('/flat/:flatId',function(req,res){
         req.checkBody('flatxil','Το πεδίο Χιλιοστά Διαμερίσματος για θέρμανση πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
         req.checkBody('ei','Το πεδίο ei πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
         req.checkBody('fi','Το πεδίο fi πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+        req.checkBody('flatHeatCountHistory','Το πεδίο Μονάδες θέρμανσης Διαμερίσματος εως Σήμερα πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
         req.checkBody('balance','Το πεδίο Υπόλοιπο Διαμερίσματος πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
 
         var errors=req.validationErrors();
@@ -461,6 +463,7 @@ router.post('/flat/:flatId',function(req,res){
             flat.koinratio = req.body.koinratio;
             flat.liftratio = req.body.liftratio;
             flat.flatxil = req.body.flatxil;
+            flat.flatHeatCountHistory = req.body.flatHeatCountHistory,
             flat.owner = req.body.owner;
             flat.balance = req.body.balance;
 
@@ -486,7 +489,7 @@ router.get('/monthexpenses',function(req,res){
         name: req.user.name,
         flatsShownNav:req.flatsShow,//show flats in left navigation menu
         calendar:req.calendarShow,
-        block:req.blockData,
+        block:req.blockData,//from qookie
         errorMessage:false
     });
 })
@@ -495,6 +498,7 @@ router.get('/monthexpenses',function(req,res){
 router.post('/monthexpenses',function(req,res){
     Expenses.findOne({year:req.body.year,month:req.body.month,block: req.blockData._id},function(err,expenses){
         if(err) console.log(err);
+        //check if these expenses exist in database. if exist show error
         if(expenses){
             res.render('monthExpenses',{
                 name: req.user.name,
@@ -503,10 +507,35 @@ router.post('/monthexpenses',function(req,res){
                 block:req.blockData,
                 errorMessage:'Έχει γίνει υπολογισμός για την συγκεκριμένη επιλογή έτους και μήνα'
             })
-        }else {
+        } else {
+            //check if we have multiple months selected
+            let months = req.body.month;
+            let monthsLength = months.length;
+            //if we have more than one month create expenses for each month except
+            //last one , thats why we put monthsLength-1
+            if ( Array.isArray(months) ) {
+              let arrayOfExpenses = [];
+              for ( let i=0; i<monthsLength-1; i++) {
+                arrayOfExpenses.push(new Expenses({
+                    year: req.body.year,
+                    month: months[i],
+                    isInMultipleNotLast:true,
+                    block: req.blockData._id
+                }))
+              }
+              arrayOfExpenses.forEach(function(expense,index) {
+                expense.save().then(function(res) {
+                  console.log(res);
+                },function(err) {
+                  console.log(err);
+                })
+              })
+            }
+
+            //set last month from selected months
             var newExpenses = new Expenses({
                 year: req.body.year,
-                month: req.body.month,
+                month: Array.isArray(months) ? months[monthsLength-1] : months,
                 salary: req.body.salary,
                 ika: req.body.ika,
                 water: req.body.water,
@@ -526,71 +555,78 @@ router.post('/monthexpenses',function(req,res){
                 otherExpenses: req.body.otherExpenses,
                 otherExpCom:req.body.otherExpCom,
                 comments:req.body.comments,
+                isInMultipleNotLast:false,
                 block: req.blockData._id
             })
-
-            newExpenses.save().then(function () {
+            //debit is calculated on front on form submit
+            newExpenses.save().then(function (response) {
                 console.log('New expense saved');
-                Expenses.findOne({block: req.blockData._id, year: req.body.year, month: req.body.month}, function (err, expenses) {
-                    if (err) console.log(err);
-                    if (!expenses){
-                        console.log('no expenses');
-                    }else{
-                        var i=-1;
-
-                        var loop=function() {
-                            i++;
-                            if (i === req.body.flat.length){
-                                done();
-                                return;
-                            }
-                            var flatCounts = new FlatHeatCount({
-                                flatheatcount: req.body.flatheatcount[i],
-                                debit:req.body.debit[i],
-                                extraPayoff: 0,
-                                flat: req.body.flat[i],
-                                expenses: expenses._id
-                            })
-                                return flatCounts.save(function(err){
-                                    if(err) console.log(err);
-                                    //console.log('new count added..');
-                                    loop();
-                                })
+                //new implementation
+                let flatsLength = req.body.flat.length;
+                let arrayOfFlatCountsPromises = [];
+                for ( let i=0; i<flatsLength; i++ ) {
+                  /*
+                    if we dont have heat cost then flaheatcount must be zero else
+                    flat heat count difference is equal to last count minus
+                    previous count
+                  */
+                  let flatHeatCountDifference = 0; //intialize to zero
+                  if ( req.body.heat !== "" ) {
+                    flatHeatCountDifference = Number(req.body.flatheatcount[i]) - Number(req.body.flatHeatCountHistory[i]);
+                  }
+                  var flatCounts = new FlatHeatCount({
+                      flatheatcount: flatHeatCountDifference,
+                      debit:req.body.debit[i],
+                      extraPayoff: 0,
+                      flat: req.body.flat[i],
+                      expenses: response._id
+                  })
+                  let promiseOfFlatCounts = new Promise(function(resolve,reject) {
+                      flatCounts.save(function(err,flatheatcount){
+                        if(err) {
+                          console.log(err);
+                        } else {
+                          resolve(flatheatcount);
                         }
+                      })
+                    })
+                    arrayOfFlatCountsPromises.push(promiseOfFlatCounts);
+                }
 
-                        loop();
-
-                        function done() {
-                            console.log('All data with debits has been loaded :).');
-
-                            var debit=req.body.debit;
-                            var i=-1;
-
-                            var loop=function() {
-                                i++;
-                                if (i === req.body.flat.length){
-                                    console.log('All data with new balance has been loaded :).');
-                                    return;
-                                }
-                                Flat.findOne({block: req.blockData._id,_id: req.body.flat[i]}).exec().then(function(flat) {
-                                    if (err) console.log(err);
-                                    //console.log(debit[i] + ' ' + flat.flatNum );
-                                    flat.balance+=Number(debit[i]);
-
-                                    return flat.save(function(err){
-                                        if(err) console.log(err);
-                                        //console.log('new debit added..');
-                                        loop();
-                                    })
-                                })
-                            };
-
-                            loop();
-                        }
-
-                        res.redirect('/users/monthExpenses');
-                    }
+                Promise.all(arrayOfFlatCountsPromises).then(function(results) {
+                  console.log('Flat heat counts saved')
                 })
+
+                //save new debit to flat
+                let debit = req.body.debit;
+                //array of flat promises
+                let arrayOfFlatsPromises = [];
+                for ( let i=0; i<flatsLength; i++ ) {
+                  let promiseOfFlat = new Promise(function(resolve,reject) {
+                    Flat.findOne({block: req.blockData._id,_id: req.body.flat[i]}).exec().then(function(flat) {
+                        if (err) console.log(err);
+                        //console.log(debit[i] + ' ' + flat.flatNum );
+                        flat.balance += Number(debit[i]);
+                        //update flatHeatCount history only if we have heat expenses
+                        if ( req.body.heat !== "" ) {
+                          flat.flatHeatCountHistory = Number(req.body.flatheatcount[i]);
+                        }
+                        flat.save(function(error, flat) {
+                          if  ( error ) {
+                            reject(error);
+                          } else {
+                            resolve(flat);
+                          }
+                        })
+                    })
+                  })
+                  arrayOfFlatsPromises.push(promiseOfFlat);
+                }
+
+                Promise.all(arrayOfFlatsPromises).then(function(results) {
+                  console.log('all flat debits updated');
+                })
+                res.redirect('/users/monthExpenses');
             }, function (err) {
                 if (err) console.log(err);
             })
@@ -602,50 +638,30 @@ router.post('/monthexpenses',function(req,res){
 router.get('/monthexpenses/:monthexpensesId',function(req,res){
     Expenses.findOne({_id: req.params.monthexpensesId},function(err,expenses){
         if(err) console.log(err);
+        //no need to pass on front isInMultipleNotLast property
         var filterExpenses = {
-            year:'',
-            month:'',
-            salary:'',
-            ika:'',
-            water:'',
-            energy:'',
-            cleaning:'',
-            light:'',
-            drains:'',
-            disinsectisation:'',
-            garden:'',
-            liftUpKeep:'',
-            liftRepair:'',
-            heat:'',
-            heatUpKeep:'',
-            heatRepair:'',
-            reserve:'',
-            shared:'',
-            otherExpenses:'',
-            otherExpCom:'',
-            comments:''
+            year: expenses.year,
+            month: expenses.month,
+            salary: expenses.salary,
+            ika: expenses.ika,
+            water: expenses.water,
+            energy: expenses.energy,
+            cleaning: expenses.cleaning,
+            light: expenses.light,
+            drains: expenses.drains,
+            disinsectisation: expenses.disinsectisation,
+            garden: expenses.garden,
+            liftUpKeep: expenses.liftUpKeep,
+            liftRepair: expenses.liftRepair,
+            heat: expenses.heat,
+            heatUpKeep: expenses.heatUpKeep,
+            heatRepair: expenses.heatRepair,
+            reserve: expenses.reserve,
+            shared: expenses.shared,
+            otherExpenses: expenses.otherExpenses,
+            otherExpCom: expenses.otherExpCom,
+            comments: expenses.comments
         };
-        filterExpenses['year']=expenses.year;
-        filterExpenses['month']=expenses.month;
-        filterExpenses['salary']=expenses.salary;
-        filterExpenses['ika']=expenses.ika;
-        filterExpenses['water']=expenses.water;
-        filterExpenses['energy']=expenses.energy;
-        filterExpenses['cleaning']=expenses.cleaning;
-        filterExpenses['light']=expenses.light;
-        filterExpenses['drains']=expenses.drains;
-        filterExpenses['disinsectisation']=expenses.disinsectisation;
-        filterExpenses['garden']=expenses.garden;
-        filterExpenses['liftUpKeep']=expenses.liftUpKeep;
-        filterExpenses['liftRepair']=expenses.liftRepair;
-        filterExpenses['heat']=expenses.heat;
-        filterExpenses['heatUpKeep']=expenses.heatUpKeep;
-        filterExpenses['heatRepair']=expenses.heatRepair;
-        filterExpenses['reserve']=expenses.reserve;
-        filterExpenses['shared']=expenses.shared;
-        filterExpenses['otherExpenses']=expenses.otherExpenses;
-        filterExpenses['otherExpCom']=expenses.otherExpCom;
-        filterExpenses['comments']=expenses.comments;
 
     FlatHeatCount.find({expenses:expenses._id}, null, {sort: {_id: 1}}, function(err,flatHeatCount) {
         if (err) console.log(err);
@@ -690,7 +706,7 @@ router.post('/monthexpenses/:monthexpensesId',function(req,res){
             expenses.otherExpCom= req.body.otherExpCom;
             expenses.comments= req.body.comments;
 
-        console.log(expenses);//...................................................................................
+        //...................................................................................
         expenses.save(function(err){
             if(err) console.log(err);
             console.log('expenses saved');
@@ -1140,5 +1156,3 @@ router.post('/paymentControl',function(req,res){
 })
 
 module.exports = router;
-
-

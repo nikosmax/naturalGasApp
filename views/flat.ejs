@@ -99,9 +99,13 @@
                     <label for="name">Συντελεστής fi:</label>
                     <input type="text" class="form-control" name="fi" value="<%= typeof flat!=='undefined'?flat.fi:null%>">
                 </div>
+                <div id="fiId" class="form-group">
+                    <label for="name">Μονάδες θέρμανσης Διαμερίσματος εως Σήμερα:</label>
+                    <input type="text" class="form-control" name="flatHeatCountHistory" value="<%= typeof flat!=='undefined'?flat.flatHeatCountHistory:null%>">
+                </div>
                 <div class="form-group">
                     <label for="name">Υπόλοιπο Διαμερίσματος σε Ευρώ:</label>
-                    <input type="text" class="form-control" name="balance" value="<%= typeof flat!=='undefined'?flat.balance:null%>">
+                    <input type="text" class="form-control" name="balance" value="<%= typeof flat!=='undefined'?flat.balance.toFixed(2):null%>">
                 </div>
                 <div class="form-group">
                     <label for="name">Ιδιοκτήτης:</label>

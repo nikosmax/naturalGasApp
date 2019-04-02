@@ -23,7 +23,8 @@ var expenseSchema=new Schema({
     otherExpenses:      Number,//Λοιπά έξοδα
     otherExpCom:        String,//Περιγραφη εξόδου για τα λοιπά
     comments:           String,//για να μπει στο πινακα των αποτελεσμάτων
-    block :      [{ type: Schema.Types.ObjectId, ref: 'Block' }]
+    isInMultipleNotLast:Boolean,//Set true if not last month from multiple selections months
+    block :             [{ type: Schema.Types.ObjectId, ref: 'Block' }]
 })
 
 //create the mongoose Model by calling mongoose.model.

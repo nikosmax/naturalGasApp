@@ -70,6 +70,40 @@ router.get('/about',function(req,res){
     res.render('about');
 })
 
+//naturalgas page
+router.get('/naturalGas',function(req,res){
+    res.render('naturalgas');
+})
+
+router.post('/naturalGas',function(req,res){
+    var meters = req.body.meters;
+
+    var meters = req.body.meters; // μέτρα σωλήνα
+    var turns = req.body.angles;   // αριθμός γωνιών
+    var Q = req.body.kcal; //θερμίδες λέβητα
+    var meleth = req.body.gasStudy; //τιμή μελέτης
+    var Adeksameni = req.body.removeTank; //απομακρυνση δεξαμενής
+    var Alevita = req.body.removeTank; //απομακρυνση λέβητα παλιού
+    var anixneuths = req.body.gasDetector; //ανιχνευτής αερίου
+
+    var n=0.85; // βαθμός απόδοσης λέβητα 
+    var Hi=10.3; // κατώτερη θερμογόνος δύναμη φυσικού αερίου σε KWh/m^3
+    var pn=0.79; // πυκνότητα φυσικού αερίου σε Kg/m^3
+    var v=0.000014; // δυναμικό ιξώδες ρευστού σε m^2/sec
+    var k=0.5; // τραχύτητα χαλυβδοσωλήνα σε mm
+
+// $A=pi()*pow($di[$i]/2,2); // επιφάνεια διατομής σωλήνα σε m^2
+// $V=$Q/(859*$Hi*$n); // παροχή
+// $u=$V/($A*3600); //ταχύτητα σωλήνα πρέπει να είναι < 6m/sec
+// $Re=$di[$i]*$u/$v; //αριθμός Reynolds
+// $j=0.25/(pow(log10(($k/(3700*$di[$i]))+(5.74/pow($Re,0.9))),2)); //αντίσταση ροής
+// $Dp=$j*$pn*pow($u,2)* meters/(2*100*$di[$i]); // πτώση πίεσης σε σωλήνα  se mbar (υπαρχει το 100 στη σχέση απο Pa σε mbar)
+// $Dpt=4*$pn*pow($u,2)/2+1.3*$pn*pow($u,2)/2+3*0.5*$pn*pow($u,2)/2+$turns*0.7*$pn*pow($u,2)/2+2*$pn*pow($u,2)/2; //πτώση πίεσης σε τοπικές αντιστάσεις (μετρητής+τ90 καθαρισμού+βαλβιδες σφαιρικές+γωνίες+φίλτρο) σε Pa
+// $Dph=-3*(-0.04); // πτώση πίεσης λόγω άνωσης σε mbar
+// $Dpol=$Dp + $Dpt/100 + $Dph; // το  100 στη σχέση απο Pa σε mbar 
+    res.render('naturalGas');
+})
+
 router.post('/signup',function(req,res){
     User.findOne({username: req.body.username},function(err,user){
         if(err) throw err;

@@ -1,0 +1,100 @@
+<% include templates/header.ejs %>
+<body>
+
+<div class="container">
+    <% include templates/body.ejs %>
+    <h1>Κόστος Εγκατάστασης Φυσικού Aερίου</h1>
+    <form class="form-vertical" method="post" action="">
+        <div class="form-group">
+            <label for="meters">Μέτρα σωλήνα φυσικου αεριου από τον μετρητή μέχρι το καυστήρα:</label>
+            <input type="text" class="form-control" name="meters" value="">
+        </div>
+        <div class="form-group">
+            <label for="angles">Αριθμός γωνιών από το μετρητή μέχρι το καυστήρα (αλλαγή διεύθυνσης του σωλήνα):</label>
+            <input type="text" class="form-control" name="angles" value="">
+        </div>
+        <div class="form-group">
+            <label for="kcal">Θερμίδες λέβητα σε Kcal/h:</label>
+            <div>
+            <select id="selectKcal" class="form-control" name="kcal">
+                <option value="20000">20.000</option>
+                <option value="30000">30.000</option>
+                <option value="40000">40.000</option>
+                <option value="50000">50.000</option>
+                <option value="60000">60.000</option>
+                <option value="70000">70.000</option>
+                <option value="80000">80.000</option>
+                <option value="90000">90.000</option>
+                <option value="100000">100.000</option>
+                <option value="110000">110.000</option>
+                <option value="120000">120.000</option>
+                <option value="130000">130.000</option>
+                <option value="140000">140.000</option>
+                <option value="150000">150.000</option>
+                <option value="160000">160.000</option>
+                <option value="170000">170.000</option>
+                <option value="180000">180.000</option>
+                <option value="190000">190.000</option>
+                <option value="200000">200.000</option>
+                <option value="210000">210.000</option>
+                <option value="220000">220.000</option>
+                <option value="230000">230.000</option>
+                <option value="240000">240.000</option>
+                <option value="250000">250.000</option>
+                <option value="260000">260.000</option>
+                <option value="270000">270.000</option>
+                <option value="280000">280.000</option>
+                <option value="290000">290.000</option>
+                <option value="300000">300.000</option>
+                <option value="0" selected="selected">Επέλεξε</option>
+            </select>
+             </div>
+        </div>
+        <div class="form-group">
+            <label> Όταν η ισχύς είναι μεγαλύτερη των 170.000 Kcal/h τότε απαιτείται συσκευή ελέγχου στεγανότητας βαλβίδων. </em></p>
+            Η συσκευή περιλαμβάνεται στην τιμή όταν επιλεγούν οι κατάλληλες θερμίδες! 
+            Ο καυστήρας που τοποθετείται είναι <strong>Radiant</strong>. 
+            <p>Για θερμίδες λέβητα πάνω από 200.000Kcal/h ο καυστήρας είναι διβάθμιος<strong>*</strong>.</p></label>
+        </div>
+        <div class="form-group">
+            <label for="changeHeater">Αλλαγή λέβητα:</label>
+            <div>
+            <select class="form-control" name="changeHeater">
+                <option value="0">ΟΧΙ</option>
+                <option value="900">ΝΑΙ</option>                
+            </select>
+             </div>
+        </div>
+
+        <div class="form-group">
+            <label for="gasDetector">Ανιχνευτής αέριου και ηλεκτροβάννα:</label>
+            <div>
+            <select class="form-control" name="gasDetector">
+                <option value="0">ΟΧΙ</option>
+                <option value="110">ΝΑΙ</option>                
+            </select>
+             </div>
+        </div>
+
+        <div class="form-group">
+            <label for="gasStudy">Μελέτη εγκατάστασης <strong>φυσικού αερίου:</label>
+            <input type="text" class="form-control" name="gasStudy" value="200" disabled>
+        </div>
+
+        <div class="form-group">
+            <label for="removeTank">Απομάκρυνση δεξαμενής πετρελαίου:</label>
+            <select class="form-control" name="removeTank">
+                <option value="0">ΟΧΙ</option>
+                <option value="300">ΝΑΙ</option>                
+            </select>
+        </div>
+        <button type="submit" class="btn btn-info">Submit</button>
+
+    </form>    
+
+</div>
+
+<% include templates/footer.ejs %>
+</body>
+
+</html>

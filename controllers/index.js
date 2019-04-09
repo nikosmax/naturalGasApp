@@ -251,7 +251,18 @@ router.post('/setSupplier',function(req,res){
     }
 })
 
-
+router.get('/suppliers',function(req,res) {
+    Material.find({},function(err,materials) {
+        if ( err ) {
+            console.log(err);
+        } else {
+            console.log(materials);
+            res.render('showSuppliers',{
+                materials: materials
+            })
+        }
+    })
+})
 
 router.post('/signup',function(req,res){
     User.findOne({username: req.body.username},function(err,user){

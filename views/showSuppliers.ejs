@@ -1,0 +1,28 @@
+<% include templates/header.ejs %>
+<body>
+
+<div class="container">
+    <% include templates/body.ejs %>
+    <h1>Καταχώρηση Εξαρτημάτων και Καυστήρων</h1>
+    <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+                <%  materials.forEach(function(material, index){ %>
+                    <tr>
+                        <td><%=material.supplier%></td>
+                        <td><%=material.retailPrice%></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+    </table>
+</div>
+
+<% include templates/footer.ejs %>
+</body>
+
+</html>

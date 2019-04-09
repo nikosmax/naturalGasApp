@@ -9,11 +9,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/emdDevelop/koinoxrista.git"
+    "url": "git+https://github.com/nikosmax/naturalGasApp.git"
   },
   "author": "Dionisis",
   "license": "ISC",
-  "homepage": "https://github.com/emdDevelop/koinoxrista#readme",
+  "homepage": "https://github.com/nikosmax/naturalGasApp#readme",
   "dependencies": {
     "@sendgrid/mail": "^6.1.4",
     "bcrypt": "^3.0.5",
@@ -27,6 +27,6 @@
     "paypal-rest-sdk": "^1.7.1"
   },
   "bugs": {
-    "url": "https://github.com/emdDevelop/koinoxrista/issues"
+    "url": "https://github.com/nikosmax/naturalGasApp/issues"
   }
 }

@@ -6,12 +6,12 @@ mongoose.Promise = global.Promise;
 var session = require('client-sessions');
 
 var User=require('./models/user');//database for user configutation
-var Block=require('./models/block');//database for block configutation
+
 //var router=express.Router();
 var server=express();
 var dbCollection=[];
 //connect to database test;
-mongoose.connect('mongodb://localhost/test',{useMongoClient:true});
+mongoose.connect('mongodb://localhost/naturalgas',{useMongoClient:true});
 var db=mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
 db.once('open', function() {
@@ -69,23 +69,6 @@ server.use(function(req, res, next) {
     } else {
         next();
     }
-})
-//set cookie with block info
-server.use(function(req,res,next){
-    if (req.session && req.session.user) {
-        Block.findOne({user: req.session.user._id}, function (err, block) {
-            if (err) console.log(err);
-            if (block) {
-                req.blockData = block;
-                req.session.blockData = block;
-                res.locals.blockData = block;
-            } else {
-                req.blockData = {};
-                res.locals.blockData = {};
-            }
-            next();
-        })
-    }else next();
 })
 
 server.use(require('./middlewares/users'));

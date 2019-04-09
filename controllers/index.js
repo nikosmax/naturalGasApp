@@ -2,6 +2,7 @@ var express=require('express');
 var router=express.Router();
 var path=require('path');
 var User=require('../models/user');
+var Material=require('../models/material');
 var sgMail=require('../middlewares/sendgrid');
 var crypto = require('crypto');
 /*
@@ -76,33 +77,181 @@ router.get('/naturalGas',function(req,res){
 })
 
 router.post('/naturalGas',function(req,res){
-    var meters = req.body.meters;
 
-    var meters = req.body.meters; // μέτρα σωλήνα
-    var turns = req.body.angles;   // αριθμός γωνιών
-    var Q = req.body.kcal; //θερμίδες λέβητα
-    var meleth = req.body.gasStudy; //τιμή μελέτης
-    var Adeksameni = req.body.removeTank; //απομακρυνση δεξαμενής
-    var Alevita = req.body.removeTank; //απομακρυνση λέβητα παλιού
-    var anixneuths = req.body.gasDetector; //ανιχνευτής αερίου
+    var pipeDn15 = {
+        diatomi: 0.0161,
+        inches: "1/2\"",
+        dn: "DN15",
+        cost: 22,
+        electrovalve: 80
+    }
 
-    var n=0.85; // βαθμός απόδοσης λέβητα 
-    var Hi=10.3; // κατώτερη θερμογόνος δύναμη φυσικού αερίου σε KWh/m^3
-    var pn=0.79; // πυκνότητα φυσικού αερίου σε Kg/m^3
-    var v=0.000014; // δυναμικό ιξώδες ρευστού σε m^2/sec
-    var k=0.5; // τραχύτητα χαλυβδοσωλήνα σε mm
+    var pipeDn20 = {
+        diatomi: 0.0217,
+        inches: "3/4\"",
+        dn: "DN20",
+        cost: 22,
+        electrovalve: 80
+    }
 
-// $A=pi()*pow($di[$i]/2,2); // επιφάνεια διατομής σωλήνα σε m^2
-// $V=$Q/(859*$Hi*$n); // παροχή
-// $u=$V/($A*3600); //ταχύτητα σωλήνα πρέπει να είναι < 6m/sec
-// $Re=$di[$i]*$u/$v; //αριθμός Reynolds
-// $j=0.25/(pow(log10(($k/(3700*$di[$i]))+(5.74/pow($Re,0.9))),2)); //αντίσταση ροής
-// $Dp=$j*$pn*pow($u,2)* meters/(2*100*$di[$i]); // πτώση πίεσης σε σωλήνα  se mbar (υπαρχει το 100 στη σχέση απο Pa σε mbar)
-// $Dpt=4*$pn*pow($u,2)/2+1.3*$pn*pow($u,2)/2+3*0.5*$pn*pow($u,2)/2+$turns*0.7*$pn*pow($u,2)/2+2*$pn*pow($u,2)/2; //πτώση πίεσης σε τοπικές αντιστάσεις (μετρητής+τ90 καθαρισμού+βαλβιδες σφαιρικές+γωνίες+φίλτρο) σε Pa
-// $Dph=-3*(-0.04); // πτώση πίεσης λόγω άνωσης σε mbar
-// $Dpol=$Dp + $Dpt/100 + $Dph; // το  100 στη σχέση απο Pa σε mbar 
-    res.render('naturalGas');
+    var pipeDn25 = {
+        diatomi: 0.0273,
+        inches: "1\"",
+        dn: "DN25",
+        cost: 29,
+        electrovalve: 80
+    }
+
+    var pipeDn32 = {
+        diatomi: 0.0360,
+        inches: "1 1/4\"",
+        dn: "DN32",
+        cost: 34,
+        electrovalve: 100
+    }
+
+    var pipeDn40 = {
+        diatomi: 0.0419,
+        inches: "1 1/2\"",
+        dn: "DN40",
+        cost: 47,
+        electrovalve: 100
+    }
+
+    var pipeDn50 = {
+        diatomi: 0.0531,
+        inches: "2\"",
+        dn: "DN50",
+        cost: 52,
+        electrovalve: 150
+    }
+
+    var pipeDn65 = {
+        diatomi: 0.0689,
+        inches: "2 1/2\"",
+        dn: "DN50",
+        cost: 60,
+        electrovalve: 300
+    }
+
+    var heaters = {
+        20000: 970,
+        30000: 1037,
+        40000: 1100
+    }
+
+//     1/2"	DN15	0,0161
+// 3/4"	DN20	0,0217
+// 1"	DN25	0,0273
+// 1 1/4"	DN32	0,0360
+// 1 1/2"	DN40	0,0419
+// 2"	DN50	0,0531
+// 2 1/2"	DN65	0,0689
+
+    var diatomes = [pipeDn15, pipeDn20, pipeDn25, pipeDn32, 
+                    pipeDn40, pipeDn50, pipeDn65];
+
+    var meters = eval(req.body.meters); // μέτρα σωλήνα
+    var turns = eval(req.body.angles);  // αριθμός γωνιών
+    var Q = eval(req.body.kcal);//θερμίδες λέβητα
+    var meleth = eval(req.body.gasStudy);//τιμή μελέτης
+    var Adeksameni = eval(req.body.removeTank);//απομακρυνση δεξαμενής
+    var Alevita = eval(req.body.changeHeater);//απομακρυνση λέβητα παλιού
+    var anixneuths = eval(req.body.gasDetector);//ανιχνευτής αερίου
+    var dH = eval(req.body.dH);
+
+    var n = 0.85;// βαθμός απόδοσης λέβητα 
+    var Hi = 10.3; // κατώτερη θερμογόνος δύναμη φυσικού αερίου σε KWh/m^3
+    var pn = 0.79; // πυκνότητα φυσικού αερίου σε Kg/m^3
+    var v = 0.000014; // δυναμικό ιξώδες ρευστού σε m^2/sec
+    var k = 0.5; // τραχύτητα χαλυβδοσωλήνα σε mm
+
+    var diatomesLength = diatomes.length;
+    var index;
+    for (var i = 0; i < diatomesLength; i++){ 
+        var A = Math.PI*Math.pow(diatomes[i].diatomi/2,2); // επιφάνεια διατομής σωλήνα σε m^2
+        var V= Q/(859*Hi*n); // παροχή
+        var u= V/(A*3600); //ταχύτητα σωλήνα πρέπει να είναι < 6m/sec
+        var Re= diatomes[i].diatomi*u/v; //αριθμός Reynolds
+        var j=0.25/(Math.pow(Math.log10((k/(3700*diatomes[i].diatomi))+(5.74/Math.pow(Re,0.9))),2)); //αντίσταση ροής
+        var Dp=j*pn*Math.pow(u,2)* meters/(2*100*diatomes[i].diatomi); // πτώση πίεσης σε σωλήνα  se mbar (υπαρχει το 100 στη σχέση απο Pa σε mbar)
+        //πτώση πίεσης σε τοπικές αντιστάσεις 
+        //(μετρητής+τ90 καθαρισμού+βαλβιδες σφαιρικές+γωνίες+φίλτρο) σε Pa
+        var Dpt= (4*pn*Math.pow(u,2)/2) + 
+                 (1.3*pn*Math.pow(u,2)/2) + 
+                 (3*0.5*pn*Math.pow(u,2)/2) + 
+                 (turns*0.7*pn*Math.pow(u,2)/2) + 
+                 (2*pn*Math.pow(u,2)/2);
+        var Dph= dH*(-0.04); // πτώση πίεσης λόγω άνωσης σε mbar
+        var Dpol=Dp + Dpt/100 + Dph; // το  100 στη σχέση απο Pa σε mbar 
+        if (Dpol < 2) {
+            index = i;
+            break;
+        }    
+    }
+
+    var totalCost = heaters[Q] + anixneuths + meleth + Adeksameni + 
+                    diatomes[index].electrovalve + diatomes[index].cost * meters;
+
+    res.render('naturalGasResults',{
+        meters: meters,
+        q: Q,
+        diatomi: diatomes[i].dn,
+        dpol: Dpol.toFixed(2),
+        cost: totalCost,
+        changeHeater: Alevita == 0 ? "NO" : "YES",
+        removeTank: Adeksameni == 0 ? "NO" : "YES",
+        gasDetector: anixneuths == 0 ? "NO" : "YES"
+    });
 })
+
+router.get('/setSupplier',function(req,res){
+    res.render('supplier');
+})
+
+router.post('/setSupplier',function(req,res){
+    req.checkBody('supplier','Ο προμηθευτής πρέπει να είναι συμπληρωμένος').notEmpty();
+    //req.checkBody('location','Η διεύθυνση πρέπει να είναι συμπληρωμένη').optional({ checkFalsy: true }).isNumeric();
+    //req.checkBody('email','Το πεδίο τηλέφωνο πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    // req.checkBody('phone','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπληρωμένος').isNumeric();
+    // req.checkBody('mobile','Το πεδίο κινητό πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    // req.checkBody('materialType','Ο συνολικός αριθμός Διαμερισμάτων πρέπει να είναι συμπληρωμένος').isNumeric();
+    // req.checkBody('materialDescription','Ο τύπος θέρμανσης πρέπει να είναι επιλεγμένος').notEmpty();
+    // req.checkBody('retailPrice','Το πεδίο Πάγιο θέρμανσης πρέπει να είναι συμπληρωμένο με αριθμούς').optional({ checkFalsy: true }).isNumeric();
+    // req.checkBody('discount','Αποθεματικό Πρέπει να είναι αριθμός').optional({ checkFalsy: true }).isCurrency({allow_negatives: false,allow_decimal: true,require_decimal: false,digits_after_decimal: [1,2]});
+
+    var errors=req.validationErrors();
+
+    if(errors)
+    {
+        console.log(errors);
+        res.render('supplier',{
+            errors:errors
+        })
+    }else {
+
+        var newMaterial = new Material({
+            supplier:   req.body.supplier,
+            location:   req.body.location,
+            email:      req.body.email,
+            phone:      req.body.phone,
+            mobile:     req.body.mobile,
+            materialType:   req.body.materialType,
+            materialDescription:  req.body.materialDescription,
+            retailPrice: req.body.retailPrice,
+            discount:    req.body.discount
+        })
+
+        newMaterial.save(function(err){
+            if (err) console.log(err);
+            else console.log('Material saved successfully');
+            res.render('supplier',{
+            });
+        })
+    }
+})
+
+
 
 router.post('/signup',function(req,res){
     User.findOne({username: req.body.username},function(err,user){

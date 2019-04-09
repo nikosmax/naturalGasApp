@@ -1,0 +1,56 @@
+<% include templates/header.ejs %>
+<body>
+
+<div class="container">
+    <% include templates/body.ejs %>
+    <h1>Καταχώρηση Εξαρτημάτων και Καυστήρων</h1>
+    <form class="form-vertical" method="post" action="">
+        <div class="form-group">
+            <label for="supplier">Προμηθευτής:</label>
+            <input type="text" class="form-control" name="supplier" value="">
+        </div>
+        <div class="form-group">
+            <label for="location">Διεύθυνση Προμηθευτή:</label>
+            <input type="text" class="form-control" name="location" value="">
+        </div>
+        <div class="form-group">
+            <label for="email">email:</label>
+            <input type="text" class="form-control" name="email" value="">
+        </div>
+ 
+        <div class="form-group">
+            <label for="phone">Τηλέφωνο Προμηθευτή:</label>
+            <input type="text" class="form-control" name="phone" value="">
+        </div>
+        <div class="form-group">
+            <label for="mobile">Κινητό Προμηθευτή:</label>
+            <input type="text" class="form-control" name="mobile" value="">
+        </div>
+        <div class="form-group">
+            <label for="materialType">Είδος:</label>
+            <input type="text" class="form-control" name="materialType" value="">
+        </div>
+
+        <div class="form-group">
+            <label for="materialDescription">Περιγραφή Είδους:</label>
+            <input type="text" class="form-control" name="materialDescription" value="">
+        </div>
+        <div class="form-group">
+            <label for="retailPrice">Λιανική Τιμή Προμηθευτή:</label>
+            <input type="text" class="form-control" name="retailPrice" value="">
+        </div>
+        <div class="form-group">
+            <label for="discount">Έκπτωση Προμηθευτή:</label>
+            <input type="text" class="form-control" name="discount" value="">
+        </div>
+        
+        <button type="submit" class="btn btn-info">Submit</button>
+
+    </form>    
+
+</div>
+
+<% include templates/footer.ejs %>
+</body>
+
+</html>

@@ -16,7 +16,7 @@
   "homepage": "https://github.com/emdDevelop/koinoxrista#readme",
   "dependencies": {
     "@sendgrid/mail": "^6.1.4",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^3.0.5",
     "body-parser": "^1.17.2",
     "client-sessions": "^0.8.0",
     "ejs": "^2.5.6",
